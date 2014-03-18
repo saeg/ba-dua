@@ -85,6 +85,11 @@
 					</properties>
 					<excludes>
 						<exclude>LICENSE</exclude>
+						<!--
+							This file was copied from JaCoCo (http://jacoco.org)
+							and is licensed under EPL. We just change the package declaration
+						-->
+						<exclude>src/main/java/br/usp/each/saeg/badua/core/internal/ContentTypeDetector.java</exclude>
 					</excludes>
 				</configuration>
 				<executions>
@@ -95,7 +100,61 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<archive>
+						<manifestEntries>
+							<Premain-Class>br.usp.each.saeg.badua.agent.rt.internal.PreMain</Premain-Class>
+						</manifestEntries>
+						<manifest>
+							<mainClass>br.usp.each.saeg.badua.cli.Main</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm-debug-all</artifactId>
+			<version>4.2</version>
+		</dependency>
+		<dependency>
+			<groupId>br.usp.each.saeg</groupId>
+			<artifactId>saeg-commons</artifactId>
+			<version>0.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>args4j</groupId>
+			<artifactId>args4j</artifactId>
+			<version>2.0.26</version>
+		</dependency>
+		<dependency>
+			<groupId>br.usp.each.saeg</groupId>
+			<artifactId>bytecode-analysis</artifactId>
+			<version>0.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>br.usp.each.saeg</groupId>
+			<artifactId>opal</artifactId>
+			<version>0.0.3</version>
+		</dependency>
+	</dependencies>
 
 </project>
