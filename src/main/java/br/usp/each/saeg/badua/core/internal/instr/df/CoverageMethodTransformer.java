@@ -116,6 +116,8 @@ public class CoverageMethodTransformer extends MethodTransformer {
     private void instrument32(final MethodNode methodNode, final ProgramGraph g,
             final Graph<Block> dfg, final Dua[] duas) {
 
+        final Graph<Block> inverse = dfg.inverse();
+
         final int index = idGen.nextId();
         final int var = methodNode.maxLocals;
 
@@ -128,11 +130,12 @@ public class CoverageMethodTransformer extends MethodTransformer {
 
             final BitSets sets = new BitSets(duas, dfg.get(node.id));
             final InsnList insns = methodNode.instructions;
+            final boolean singlePred = inverse.neighbors(node.id).size() == 1;
 
             if (node == g.getRootNode() && node.getParents().length == 0) {
                 LabelFrameNode.insertBefore(first(node), insns, init32(sets, var));
             } else {
-                LabelFrameNode.insertBefore(first(node), insns, probe32(sets, var));
+                LabelFrameNode.insertBefore(first(node), insns, probe32(sets, var, singlePred));
             }
             if (node.getChildren().length == 0) {
                 LabelFrameNode.insertBefore(last(node), insns, update32(var, index));
@@ -170,6 +173,8 @@ public class CoverageMethodTransformer extends MethodTransformer {
     private void instrument64(final MethodNode methodNode, final ProgramGraph g,
             final Graph<Block> dfg, final Dua[] duas) {
 
+        final Graph<Block> inverse = dfg.inverse();
+
         final int windows = (duas.length + 63) / 64;
         final int[] index = new int[windows];
         final int[] vars = new int[windows];
@@ -187,11 +192,12 @@ public class CoverageMethodTransformer extends MethodTransformer {
 
             final BitSets sets = new BitSets(duas, dfg.get(node.id));
             final InsnList insns = methodNode.instructions;
+            final boolean singlePred = inverse.neighbors(node.id).size() == 1;
 
             if (node == g.getRootNode() && node.getParents().length == 0) {
                 LabelFrameNode.insertBefore(first(node), insns, init64(sets, vars));
             } else {
-                LabelFrameNode.insertBefore(first(node), insns, probe64(sets, vars));
+                LabelFrameNode.insertBefore(first(node), insns, probe64(sets, vars, singlePred));
             }
             if (node.getChildren().length == 0) {
                 LabelFrameNode.insertBefore(last(node), insns, update64(vars, ldata(vars), index));
@@ -235,7 +241,7 @@ public class CoverageMethodTransformer extends MethodTransformer {
         il.add(new VarInsnNode(Opcodes.ISTORE, covered(var)));
         il.add(new InsnNode(Opcodes.ICONST_0));
         il.add(new VarInsnNode(Opcodes.ISTORE, alive(var)));
-        il.add(new InsnNode(Opcodes.ICONST_0));
+        il.add(new InsnNode(Opcodes.ICONST_M1));
         il.add(new VarInsnNode(Opcodes.ISTORE, sleepy(var)));
         il.add(new MethodInsnNode(Opcodes.INVOKESTATIC, className,
                 InstrSupport.INITMETHOD_NAME, InstrSupport.INITMETHOD_DESC));
@@ -250,7 +256,7 @@ public class CoverageMethodTransformer extends MethodTransformer {
             il.add(new VarInsnNode(Opcodes.LSTORE, lcovered(vars, i)));
             il.add(new InsnNode(Opcodes.LCONST_0));
             il.add(new VarInsnNode(Opcodes.LSTORE, lalive(vars, i)));
-            il.add(new InsnNode(Opcodes.LCONST_0));
+            il.add(new LdcInsnNode(-1L));
             il.add(new VarInsnNode(Opcodes.LSTORE, lsleepy(vars, i)));
         }
         il.add(new MethodInsnNode(Opcodes.INVOKESTATIC, className,
@@ -269,7 +275,7 @@ public class CoverageMethodTransformer extends MethodTransformer {
             il.add(new VarInsnNode(Opcodes.ISTORE, alive(var)));
         }
         if (node_sleepy != 0) {
-            il.add(InstrSupport.push(node_sleepy));
+            il.add(InstrSupport.push(~node_sleepy));
             il.add(new VarInsnNode(Opcodes.ISTORE, sleepy(var)));
         }
         return il;
@@ -286,27 +292,28 @@ public class CoverageMethodTransformer extends MethodTransformer {
                 il.add(new VarInsnNode(Opcodes.LSTORE, lalive(vars, i)));
             }
             if (long_sleepy[i] != 0) {
-                il.add(new LdcInsnNode(long_sleepy[i]));
+                il.add(new LdcInsnNode(~long_sleepy[i]));
                 il.add(new VarInsnNode(Opcodes.LSTORE, lsleepy(vars, i)));
             }
         }
         return il;
     }
 
-    private static InsnList probe32(final BitSets sets, final int var) {
+    private static InsnList probe32(final BitSets sets, final int var, final boolean singlePred) {
         final int potcov = BitSetUtils.toInteger(sets.potcov);
         final int born = BitSetUtils.toInteger(sets.born);
         final int disabled = BitSetUtils.toInteger(sets.disabled);
         final int node_sleepy = BitSetUtils.toInteger(sets.sleepy);
+        final int potcov_p = BitSetUtils.toInteger(sets.potcovpuse);
 
         final InsnList il = new InsnList();
         // Update covered
         if (potcov != 0) {
-            il.add(new VarInsnNode(Opcodes.ILOAD, sleepy(var)));
-            il.add(new InsnNode(Opcodes.ICONST_M1));
-            il.add(new InsnNode(Opcodes.IXOR));
             il.add(new VarInsnNode(Opcodes.ILOAD, alive(var)));
-            il.add(new InsnNode(Opcodes.IAND));
+            if (!singlePred && potcov_p != 0) {
+                il.add(new VarInsnNode(Opcodes.ILOAD, sleepy(var)));
+                il.add(new InsnNode(Opcodes.IAND));
+            }
             il.add(InstrSupport.push(potcov));
             il.add(new InsnNode(Opcodes.IAND));
             il.add(new VarInsnNode(Opcodes.ILOAD, covered(var)));
@@ -330,26 +337,27 @@ public class CoverageMethodTransformer extends MethodTransformer {
             il.add(new VarInsnNode(Opcodes.ISTORE, alive(var)));
         }
         // Update sleepy
-        il.add(InstrSupport.push(node_sleepy));
+        il.add(InstrSupport.push(~node_sleepy));
         il.add(new VarInsnNode(Opcodes.ISTORE, sleepy(var)));
         return il;
     }
 
-    private static InsnList probe64(final BitSets sets, final int[] var) {
+    private static InsnList probe64(final BitSets sets, final int[] var, final boolean singlePred) {
         final long[] potcov = BitSetUtils.toLongArray(sets.potcov, var.length);
         final long[] born = BitSetUtils.toLongArray(sets.born, var.length);
         final long[] disabled = BitSetUtils.toLongArray(sets.disabled, var.length);
         final long[] node_sleepy = BitSetUtils.toLongArray(sets.sleepy, var.length);
+        final long[] potcov_p = BitSetUtils.toLongArray(sets.potcovpuse, var.length);
 
         final InsnList il = new InsnList();
         for (int i = 0; i < var.length; i++) {
             // Update covered
             if (potcov[i] != 0) {
-                il.add(new VarInsnNode(Opcodes.LLOAD, lsleepy(var, i)));
-                il.add(new LdcInsnNode(-1L));
-                il.add(new InsnNode(Opcodes.LXOR));
                 il.add(new VarInsnNode(Opcodes.LLOAD, lalive(var, i)));
-                il.add(new InsnNode(Opcodes.LAND));
+                if (!singlePred && potcov_p[i] != 0) {
+                    il.add(new VarInsnNode(Opcodes.LLOAD, lsleepy(var, i)));
+                    il.add(new InsnNode(Opcodes.LAND));
+                }
                 il.add(new LdcInsnNode(potcov[i]));
                 il.add(new InsnNode(Opcodes.LAND));
                 il.add(new VarInsnNode(Opcodes.LLOAD, lcovered(var, i)));
@@ -374,10 +382,10 @@ public class CoverageMethodTransformer extends MethodTransformer {
             }
             // Update sleepy
             if (node_sleepy[i] != 0) {
-                il.add(new LdcInsnNode(node_sleepy[i]));
+                il.add(new LdcInsnNode(~node_sleepy[i]));
                 il.add(new VarInsnNode(Opcodes.LSTORE, lsleepy(var, i)));
             } else {
-                il.add(new InsnNode(Opcodes.LCONST_0));
+                il.add(new LdcInsnNode(-1L));
                 il.add(new VarInsnNode(Opcodes.LSTORE, lsleepy(var, i)));
             }
         }
@@ -406,7 +414,7 @@ public class CoverageMethodTransformer extends MethodTransformer {
             il.add(new InsnNode(Opcodes.DUP2_X2));
             il.add(new InsnNode(Opcodes.LALOAD));
             il.add(new InsnNode(Opcodes.LOR));
-            il.add(new InsnNode(Opcodes.LASTORE)); // -
+            il.add(new InsnNode(Opcodes.LASTORE));
         }
         return il;
     }
