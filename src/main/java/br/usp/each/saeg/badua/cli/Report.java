@@ -154,8 +154,14 @@ public class Report implements IdGenerator {
         };
         mn.accept(mi);
 
-        final BitSet mnData = BitSetUtils.valueOf(Arrays.copyOfRange(
-                data.get(className), classProbeCount - methodProbeCount, classProbeCount));
+        final long[] dataArray = data.get(className);
+        final BitSet mnData;
+        if (dataArray == null) {
+            mnData = new BitSet();
+        } else {
+            mnData = BitSetUtils.valueOf(Arrays.copyOfRange(dataArray,
+                    classProbeCount - methodProbeCount, classProbeCount));
+        }
 
         if (showClasses) {
             classCoveredDuas = classCoveredDuas + mnData.cardinality();
