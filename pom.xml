@@ -14,7 +14,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.usp.each.saeg</groupId>
 	<artifactId>ba-dua</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.2</version>
 	<name>ba-dua</name>
 	<url>https://github.com/saeg/ba-dua</url>
 	<description>Bitwise Algorithm - powered Definion-Use Association coverage</description>
@@ -24,7 +24,7 @@
 		<url>https://github.com/saeg/ba-dua</url>
 		<connection>scm:git:https://github.com/saeg/ba-dua.git</connection>
 		<developerConnection>scm:git:git@github.com:saeg/ba-dua.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>ba-dua-0.0.2</tag>
 	</scm>
 
 	<distributionManagement>
