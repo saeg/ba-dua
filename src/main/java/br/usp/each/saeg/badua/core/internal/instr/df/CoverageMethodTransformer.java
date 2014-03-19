@@ -39,11 +39,12 @@ import br.usp.each.saeg.bytecode.analysis.graph.defuse.VariablesCollector;
 import br.usp.each.saeg.commons.BitSetUtils;
 import br.usp.each.saeg.opal.Block;
 import br.usp.each.saeg.opal.Graph;
+import br.usp.each.saeg.opal.requirement.DepthFirstDuaAnalyzer;
 import br.usp.each.saeg.opal.requirement.Dua;
 
 public class CoverageMethodTransformer extends MethodTransformer {
 
-    private static final DuaAnalyzer DUA = new DuaAnalyzer();
+    private static final DepthFirstDuaAnalyzer DUA = new DepthFirstDuaAnalyzer();
 
     private final String className;
 
