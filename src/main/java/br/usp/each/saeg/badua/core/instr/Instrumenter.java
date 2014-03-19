@@ -17,8 +17,6 @@ import java.io.OutputStream;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.ClassNode;
 
 import br.usp.each.saeg.badua.core.internal.ContentTypeDetector;
 import br.usp.each.saeg.badua.core.internal.instr.ClassInstrumenter;
@@ -29,11 +27,9 @@ public class Instrumenter {
     private static final int DEFAULT = 0;
 
     public byte[] instrument(final ClassReader reader) {
-        final ClassNode cn = new ClassNode(Opcodes.ASM4);
-        final ClassWriter writer = new ClassWriter(DEFAULT);
-        final ClassVisitor ci = new ClassInstrumenter(cn);
+        final ClassWriter writer = new ClassWriter(reader, DEFAULT);
+        final ClassVisitor ci = new ClassInstrumenter(writer);
         reader.accept(ci, ClassReader.EXPAND_FRAMES);
-        cn.accept(writer);
         return writer.toByteArray();
     }
 
