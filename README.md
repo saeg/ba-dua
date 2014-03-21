@@ -1,7 +1,7 @@
 ba-dua
 ======
 
-ba-dua (Bitwise Algorithm - powered Definion-Use Association coverage) is a intra-procedural data-flow testing tool for Java programs.
+ba-dua (Bitwise Algorithm - powered Definion-Use Association coverage) is an intra-procedural data-flow testing tool for Java programs.
 
 This is an implementation of the bitwise algorithm for data-flow testing proposed in: 
 "An efficient bitwise algorithm for intra-procedural data-flow testing coverage". Published in Information Processing Letters. Volume 113 Issue 8, April, 2013. Pages 293-300.
@@ -22,7 +22,7 @@ after instrumentation, you should run the instrumented classes with ba-dua JAR i
 
 ### Agent instrumentation
 
-You can instead of offline instrumentation use the Java agent. Java agent instrument classes as they are loaded by de JVM. Just include ba-dua JAR in the JVM Java agent option.
+You can instead of offline instrumentation use the Java agent. Java agent instrument classes as they are loaded by the JVM. Just include ba-dua JAR in the JVM Java agent option.
 
 ### Reporting
 
