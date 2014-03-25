@@ -138,7 +138,7 @@
 		<dependency>
 			<groupId>br.usp.each.saeg</groupId>
 			<artifactId>saeg-commons</artifactId>
-			<version>0.0.3</version>
+			<version>0.0.4</version>
 		</dependency>
 		<dependency>
 			<groupId>args4j</groupId>
@@ -148,12 +148,12 @@
 		<dependency>
 			<groupId>br.usp.each.saeg</groupId>
 			<artifactId>bytecode-analysis</artifactId>
-			<version>0.5.3</version>
+			<version>0.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>br.usp.each.saeg</groupId>
 			<artifactId>opal</artifactId>
-			<version>0.0.3</version>
+			<version>0.0.4</version>
 		</dependency>
 	</dependencies>
 
