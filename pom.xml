@@ -102,6 +102,62 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.2</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<shadedArtifactAttached>true</shadedArtifactAttached>
+							<shadedClassifierName>all</shadedClassifierName>
+							<minimizeJar>true</minimizeJar>
+							<artifactSet>
+								<includes>
+									<include>org.ow2.asm:*</include>
+									<include>args4j:args4j</include>
+									<include>br.usp.each.saeg:*</include>
+								</includes>
+							</artifactSet>
+							<relocations>
+								<relocation>
+									<pattern>org.objectweb.asm</pattern>
+									<shadedPattern>br.usp.each.saeg.badua.asm</shadedPattern>
+								</relocation>
+								<relocation>
+									<pattern>org.kohsuke.args4j</pattern>
+									<shadedPattern>br.usp.each.saeg.badua.args4j</shadedPattern>
+								</relocation>
+								<relocation>
+									<pattern>br.usp.each.saeg.commons</pattern>
+									<shadedPattern>br.usp.each.saeg.badua.commons</shadedPattern>
+								</relocation>
+								<relocation>
+									<pattern>br.usp.each.saeg.opal</pattern>
+									<shadedPattern>br.usp.each.saeg.badua.opal</shadedPattern>
+								</relocation>
+								<relocation>
+									<pattern>br.usp.each.saeg.bytecode.analysis</pattern>
+									<shadedPattern>br.usp.each.saeg.badua.bytecode.analysis</shadedPattern>
+								</relocation>
+							</relocations>
+							<transformers>
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>br.usp.each.saeg.badua.cli.Main</mainClass>
+									<manifestEntries>
+										<Premain-Class>br.usp.each.saeg.badua.agent.rt.internal.PreMain</Premain-Class>
+									</manifestEntries>
+								</transformer>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!--
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.4</version>
 				<configuration>
@@ -126,6 +182,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			-->
 		</plugins>
 	</build>
 
