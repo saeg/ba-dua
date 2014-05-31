@@ -1,7 +1,7 @@
 ba-dua [![Build Status](https://travis-ci.org/saeg/ba-dua.svg?branch=master)](https://travis-ci.org/saeg/ba-dua)
 ======
 
-ba-dua (Bitwise Algorithm - powered Definion-Use Association coverage) is an intra-procedural data-flow testing tool for Java programs.
+ba-dua (Bitwise Algorithm - powered Definition-Use Association coverage) is an intra-procedural data-flow testing tool for Java programs.
 
 This is an implementation of the bitwise algorithm for data-flow testing proposed in:
 "An efficient bitwise algorithm for intra-procedural data-flow testing coverage". Published in Information Processing Letters. Volume 113 Issue 8, April, 2013. Pages 293-300.

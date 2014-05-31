@@ -17,7 +17,7 @@
 	<version>0.0.4-SNAPSHOT</version>
 	<name>ba-dua</name>
 	<url>https://github.com/saeg/ba-dua</url>
-	<description>Bitwise Algorithm - powered Definion-Use Association coverage</description>
+	<description>Bitwise Algorithm - powered Definition-Use Association coverage</description>
 	<inceptionYear>2014</inceptionYear>
 
 	<scm>
