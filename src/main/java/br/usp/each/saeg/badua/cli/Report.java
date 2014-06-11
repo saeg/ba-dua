@@ -20,8 +20,6 @@ import java.util.Arrays;
 import java.util.BitSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
@@ -32,18 +30,15 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import br.usp.each.saeg.badua.core.internal.ContentTypeDetector;
+import br.usp.each.saeg.badua.core.internal.instr.CoverageMethodTransformer;
 import br.usp.each.saeg.badua.core.internal.instr.IdGenerator;
 import br.usp.each.saeg.badua.core.internal.instr.MethodInstrumenter;
-import br.usp.each.saeg.badua.core.internal.instr.df.CoverageMethodTransformer;
-import br.usp.each.saeg.bytecode.analysis.graph.defuse.VariableRef;
 import br.usp.each.saeg.commons.BitSetUtils;
 import br.usp.each.saeg.commons.io.Files;
-import br.usp.each.saeg.opal.requirement.Dua;
-import br.usp.each.saeg.opal.requirement.Use.Type;
 
 public class Report implements IdGenerator {
 
-    private static MethodVisitor NOP = new MethodVisitor(Opcodes.ASM4) {
+    private static MethodVisitor NOP = new MethodVisitor(Opcodes.ASM5) {
         // Use default implementation
     };
 
@@ -54,8 +49,6 @@ public class Report implements IdGenerator {
     private final boolean showClasses;
 
     private final boolean showMethods;
-
-    private final boolean showAll;
 
     private Map<String, long[]> data;
 
@@ -72,9 +65,8 @@ public class Report implements IdGenerator {
     public Report(final ReportOptions options) {
         this.inputFile = options.getInput();
         this.classes = options.getClasses();
-        showClasses = options.showClasses() | options.showAll();
-        showMethods = options.showMethods() | options.showAll();
-        showAll = options.showAll();
+        showClasses = options.showClasses();
+        showMethods = options.showMethods();
     }
 
     public void run() throws IOException, ClassNotFoundException {
@@ -96,7 +88,7 @@ public class Report implements IdGenerator {
             try {
                 if (detector.getType() == ContentTypeDetector.CLASSFILE) {
                     final ClassReader cr = new ClassReader(detector.getInputStream());
-                    final ClassNode cn = new ClassNode(Opcodes.ASM4);
+                    final ClassNode cn = new ClassNode(Opcodes.ASM5);
                     cr.accept(cn, ClassReader.EXPAND_FRAMES);
                     analyze(cn);
                 }
@@ -114,13 +106,13 @@ public class Report implements IdGenerator {
 
         // before analyze
         className = cn.name;
-        methodProbeCount = 0;
         classProbeCount = 0;
         classCoveredDuas = 0;
         classTotalDuas = 0;
 
         // iteration order is important!
         for (final MethodNode mn : cn.methods) {
+            methodProbeCount = 0; // reset method probe counter
             analyze(mn);
         }
 
@@ -165,36 +157,13 @@ public class Report implements IdGenerator {
 
         if (showClasses) {
             classCoveredDuas = classCoveredDuas + mnData.cardinality();
-            classTotalDuas = classTotalDuas + mt.getDuas().length;
+            classTotalDuas = classTotalDuas + mt.getDefUseChains().length;
         }
 
         if (showMethods) {
             System.out.println(String.format("%s.%s%s\t(%d/%d)", className,
-                    mn.name, mn.desc, mnData.cardinality(), mt.getDuas().length));
+                    mn.name, mn.desc, mnData.cardinality(), mt.getDefUseChains().length));
         }
-
-        if (showAll) {
-            final Dua[] duas = mt.getDuas();
-            for (int i = 0; i < duas.length; i++) {
-                final Dua dua = duas[i];
-                if (mnData.get(i))
-                    dua.cover();
-
-                final Set<Integer> defLines = mt.getGraph().get(dua.def).lines();
-                final Set<Integer> useLines = new TreeSet<Integer>();
-                if (dua.use.type == Type.P_USE) {
-                    useLines.addAll(mt.getGraph().get(dua.use.puse().from).lines());
-                }
-                useLines.addAll(mt.getGraph().get(dua.use.id()).lines());
-                final VariableRef var = mt.getVariables().get(dua.var);
-
-                System.out.println(String.format("-> %s, %s, %s, %s",
-                        defLines, useLines, var, dua.isCovered()));
-            }
-        }
-
-        // after analyze we could reset methodProbeCount
-        methodProbeCount = 0;
     }
 
     private String[] toArray(final List<String> l) {

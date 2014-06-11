@@ -57,6 +57,9 @@ public class LabelFrameNode extends LabelNode {
 
     private static LabelFrameNode create(final AbstractInsnNode location) {
         AbstractInsnNode insn = location.getPrevious();
+        if (insn == null) {
+            return null;
+        }
         while (true) {
             switch (insn.getType()) {
             case AbstractInsnNode.LABEL:

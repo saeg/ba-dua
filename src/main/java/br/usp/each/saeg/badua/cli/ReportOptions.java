@@ -30,10 +30,6 @@ public class ReportOptions {
     @Option(name = "-show-methods", aliases = "--sm", usage = "show method coverage")
     private boolean showMethods;
 
-    @Option(name = "-show-all", aliases = "--all",
-            usage = "show all data data-flow coverage requirements")
-    private boolean showAll;
-
     public File getInput() {
         return input;
     }
@@ -48,10 +44,6 @@ public class ReportOptions {
 
     public boolean showMethods() {
         return showMethods;
-    }
-
-    public boolean showAll() {
-        return showAll;
     }
 
 }

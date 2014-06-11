@@ -16,8 +16,6 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-import br.usp.each.saeg.badua.core.internal.instr.df.CoverageMethodTransformer;
-
 public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
 
     private String className;
@@ -31,7 +29,7 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
     private int classProbeCount;
 
     public ClassInstrumenter(final ClassVisitor cv) {
-        super(Opcodes.ASM4, cv);
+        super(Opcodes.ASM5, cv);
     }
 
     @Override
@@ -145,7 +143,8 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
         mv.visitMethodInsn(Opcodes.INVOKESTATIC,
                 InstrSupport.RUNTIME_OWNER,
                 InstrSupport.RUNTIME_NAME,
-                InstrSupport.RUNTIME_DESC);
+                InstrSupport.RUNTIME_DESC,
+                false);
 
         // Stack[0]: [J
 

@@ -47,7 +47,7 @@ public class ContentTypeDetector {
      * Creates a new detector based on the given input. To process the complete
      * original input afterwards use the stream returned by
      * {@link #getInputStream()}.
-     * 
+     *
      * @param in
      *            input to read the header from
      * @throws IOException
@@ -81,6 +81,7 @@ public class ContentTypeDetector {
             case Opcodes.V1_5:
             case Opcodes.V1_6:
             case Opcodes.V1_7:
+            case Opcodes.V1_8:
                 return CLASSFILE;
             }
         }
@@ -97,7 +98,7 @@ public class ContentTypeDetector {
     /**
      * Returns an input stream instance to read the complete content (including
      * the header) of the underlying stream.
-     * 
+     *
      * @return input stream containing the complete content
      */
     public InputStream getInputStream() {
@@ -106,7 +107,7 @@ public class ContentTypeDetector {
 
     /**
      * Returns the detected file type.
-     * 
+     *
      * @return file type
      */
     public int getType() {
