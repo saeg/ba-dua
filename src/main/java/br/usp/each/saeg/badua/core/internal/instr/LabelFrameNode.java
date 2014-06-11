@@ -38,25 +38,36 @@ public class LabelFrameNode extends LabelNode {
     public static void insertBefore(final AbstractInsnNode location,
             final InsnList insns, final InsnList insert) {
 
+        final LabelFrameNode lfn = create(location);
+        if (lfn != null) {
+            insert.add(lfn);
+        }
+        insns.insertBefore(location, insert);
+    }
+
+    public static void insertBefore(final AbstractInsnNode location,
+            final InsnList insns, final AbstractInsnNode insert) {
+
+        final LabelFrameNode lfn = create(location);
+        insns.insertBefore(location, insert);
+        if (lfn != null) {
+            insns.insertBefore(location, lfn);
+        }
+    }
+
+    private static LabelFrameNode create(final AbstractInsnNode location) {
         AbstractInsnNode insn = location.getPrevious();
         while (true) {
             switch (insn.getType()) {
             case AbstractInsnNode.LABEL:
-                final LabelFrameNode lfn = (LabelFrameNode) insn;
-                final LabelFrameNode label = create(lfn);
-                if (label != null) {
-                    insert.add(label);
-                }
-                break;
+                return create((LabelFrameNode) insn);
             case AbstractInsnNode.FRAME:
             case AbstractInsnNode.LINE:
                 insn = insn.getPrevious();
                 continue;
             default:
-                break;
+                return null;
             }
-            insns.insertBefore(location, insert);
-            return;
         }
     }
 
