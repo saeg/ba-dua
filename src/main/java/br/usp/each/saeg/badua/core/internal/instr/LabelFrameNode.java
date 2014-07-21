@@ -91,11 +91,13 @@ public class LabelFrameNode extends LabelNode {
                     changed = true;
                 }
             }
+            label.addFrameNode(frame);
         }
 
         if (!changed)
             return null;
 
+        lfn.frames.clear();
         return label;
     }
 
