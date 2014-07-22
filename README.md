@@ -15,7 +15,7 @@ The implementation is described in: "Data-flow Testing in the Large". Published 
 To instrument Java classes you should use the **instrument** program.
 
 ```
-java -jar ba-dua-VERSION-jar-with-dependencies.jar instrument
+java -jar ba-dua-VERSION-all.jar instrument
 ```
 
 after instrumentation, you should run the instrumented classes with ba-dua JAR in the *classpath*.
@@ -29,7 +29,7 @@ You can instead of offline instrumentation use the Java agent. Java agent instru
 After program execution a new file (coverage.ser) will be created in your current directory. You should use the **report** program to visualize the program coverage.
 
 ```
-java -jar ba-dua-VERSION-jar-with-dependencies.jar report
+java -jar ba-dua-VERSION-all.jar report
 ```
 
 ## License
@@ -38,7 +38,7 @@ ba-dua is licensed under the Eclipse Public License - v 1.0 (http://www.eclipse.
 
 ## Notice
 
-ba-dua JAR is distributed with ASM 4.2 (http://asm.ow2.org) and args4j (http://args4j.kohsuke.org) embedded.
+ba-dua JAR is distributed with ASM 5.0.3 (http://asm.ow2.org) and args4j 2.0.26 (http://args4j.kohsuke.org) embedded.
 We also included a class (ContentTypeDetector) from JaCoCo project (http://www.eclemma.org/jacoco/). The only change in this class was the package declaration. The command line interface tools is inspired by the pull request #86 from JaCoCo.
 
 - ASM is distributed under the BSD License.
