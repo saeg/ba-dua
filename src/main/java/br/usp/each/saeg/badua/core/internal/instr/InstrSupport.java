@@ -56,17 +56,17 @@ public final class InstrSupport {
     // --- Initialization Method
 
     /**
-     * Name of the initialization method.
+     * Name of the method that returns data-flow coverage field of a class.
      */
-    public static final String INITMETHOD_NAME = "$initData";
+    public static final String INITMETHOD_NAME = "$getData";
 
     /**
-     * Descriptor of the initialization method.
+     * Descriptor of the method that returns data-flow coverage field of a class.
      */
     public static final String INITMETHOD_DESC = "()[J";
 
     /**
-     * Access modifiers of the initialization method.
+     * Access modifiers of the method that returns data-flow coverage field of a class.
      */
     public static final int INITMETHOD_ACC = Opcodes.ACC_SYNTHETIC |
                                              Opcodes.ACC_PRIVATE |
