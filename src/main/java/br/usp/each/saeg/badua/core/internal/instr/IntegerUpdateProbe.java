@@ -36,8 +36,8 @@ public final class IntegerUpdateProbe extends Probe {
         mv.visitVarInsn(Opcodes.ILOAD, vCovered);
         mv.visitInsn(Opcodes.I2L);
         mv.visitMethodInsn(Opcodes.INVOKESTATIC, owner,
-                InstrSupport.INITMETHOD_NAME,
-                InstrSupport.INITMETHOD_DESC, false);
+                InstrSupport.DATAMETHOD_NAME,
+                InstrSupport.DATAMETHOD_DESC, false);
         InstrSupport.push(mv, index);
         mv.visitInsn(Opcodes.DUP2_X2);
         mv.visitInsn(Opcodes.LALOAD);

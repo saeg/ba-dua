@@ -58,17 +58,17 @@ public final class InstrSupport {
     /**
      * Name of the method that returns data-flow coverage field of a class.
      */
-    public static final String INITMETHOD_NAME = "$getData";
+    public static final String DATAMETHOD_NAME = "$getData";
 
     /**
      * Descriptor of the method that returns data-flow coverage field of a class.
      */
-    public static final String INITMETHOD_DESC = "()[J";
+    public static final String DATAMETHOD_DESC = "()[J";
 
     /**
      * Access modifiers of the method that returns data-flow coverage field of a class.
      */
-    public static final int INITMETHOD_ACC = Opcodes.ACC_SYNTHETIC |
+    public static final int DATAMETHOD_ACC = Opcodes.ACC_SYNTHETIC |
                                              Opcodes.ACC_PRIVATE |
                                              Opcodes.ACC_STATIC |
                                              Opcodes.ACC_FINAL;
@@ -88,7 +88,7 @@ public final class InstrSupport {
      */
     public static void assertNotInstrumented(final String member, final String owner)
             throws IllegalStateException {
-        if (member.equals(DATAFIELD_NAME) || member.equals(INITMETHOD_NAME)) {
+        if (member.equals(DATAFIELD_NAME) || member.equals(DATAMETHOD_NAME)) {
             throw new IllegalStateException(format("Class %s is already instrumented.", owner));
         }
     }

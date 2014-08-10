@@ -117,9 +117,9 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
         fv.visitEnd();
 
         final MethodVisitor mv = cv.visitMethod(
-                InstrSupport.INITMETHOD_ACC,
-                InstrSupport.INITMETHOD_NAME,
-                InstrSupport.INITMETHOD_DESC,
+                InstrSupport.DATAMETHOD_ACC,
+                InstrSupport.DATAMETHOD_NAME,
+                InstrSupport.DATAMETHOD_DESC,
                 null, null);
         mv.visitCode();
 
