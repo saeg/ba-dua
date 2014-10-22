@@ -132,18 +132,11 @@ public class Report implements IdGenerator {
             return;
         }
 
-        // we need to instrument the method to verify if a size overflow occurs
+        // we instrument the method to get the probe count
         final CoverageMethodTransformer mt = new CoverageMethodTransformer(className, this);
         final MethodInstrumenter mi = new MethodInstrumenter(mn.access, mn.name, mn.desc,
-                mn.signature, toArray(mn.exceptions), NOP, mt) {
+                mn.signature, toArray(mn.exceptions), NOP, mt);
 
-            @Override
-            public void sizeOverflow() {
-                classProbeCount = classProbeCount - methodProbeCount;
-                methodProbeCount = 0;
-            }
-
-        };
         mn.accept(mi);
 
         final long[] dataArray = data.get(className);

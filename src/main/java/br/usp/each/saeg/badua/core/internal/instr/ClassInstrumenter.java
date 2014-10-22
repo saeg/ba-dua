@@ -24,8 +24,6 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
 
     private boolean interfaceType;
 
-    private int methodProbeCount;
-
     private int classProbeCount;
 
     public ClassInstrumenter(final ClassVisitor cv) {
@@ -40,7 +38,6 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
                       final String superName,
                       final String[] interfaces) {
 
-        methodProbeCount = 0;
         classProbeCount = 0;
         className = name;
         withFrames = (version & 0xff) >= Opcodes.V1_6;
@@ -84,20 +81,7 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
             return next;
 
         final CoverageMethodTransformer mt = new CoverageMethodTransformer(className, this);
-        return new MethodInstrumenter(access, name, desc, signature, exceptions, next, mt) {
-
-            @Override
-            public void sizeOverflow() {
-                classProbeCount = classProbeCount - methodProbeCount;
-            }
-
-            @Override
-            public void visitEnd() {
-                super.visitEnd();
-                methodProbeCount = 0;
-            }
-
-        };
+        return new MethodInstrumenter(access, name, desc, signature, exceptions, next, mt);
     }
 
     @Override
@@ -174,7 +158,6 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
 
     @Override
     public int nextId() {
-        methodProbeCount++;
         return classProbeCount++;
     }
 
