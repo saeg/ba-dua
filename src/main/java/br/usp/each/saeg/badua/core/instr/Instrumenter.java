@@ -19,6 +19,7 @@ import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 
 import br.usp.each.saeg.badua.core.internal.ContentTypeDetector;
+import br.usp.each.saeg.badua.core.internal.data.CRC64;
 import br.usp.each.saeg.badua.core.internal.instr.ClassInstrumenter;
 import br.usp.each.saeg.commons.io.Files;
 
@@ -27,8 +28,9 @@ public class Instrumenter {
     private static final int DEFAULT = 0;
 
     public byte[] instrument(final ClassReader reader) {
+        final long classId = CRC64.checksum(reader.b);
         final ClassWriter writer = new ClassWriter(reader, DEFAULT);
-        final ClassVisitor ci = new ClassInstrumenter(writer);
+        final ClassVisitor ci = new ClassInstrumenter(classId, writer);
         reader.accept(ci, ClassReader.EXPAND_FRAMES);
         return writer.toByteArray();
     }

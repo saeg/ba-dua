@@ -86,10 +86,11 @@
 					<excludes>
 						<exclude>LICENSE</exclude>
 						<!--
-							This file was copied from JaCoCo (http://jacoco.org)
-							and is licensed under EPL. We just change the package declaration
+							This files was copied from JaCoCo (http://jacoco.org)
+							and are licensed under EPL. We just change the package declaration
 						-->
 						<exclude>src/main/java/br/usp/each/saeg/badua/core/internal/ContentTypeDetector.java</exclude>
+						<exclude>src/main/java/br/usp/each/saeg/badua/core/internal/data/CRC64.java</exclude>
 					</excludes>
 				</configuration>
 				<executions>

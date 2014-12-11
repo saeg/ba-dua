@@ -15,21 +15,21 @@ import java.util.Map;
 
 public class RuntimeData {
 
-    private final Map<String, long[]> data = new HashMap<String, long[]>();
+    private final Map<Long, long[]> data = new HashMap<Long, long[]>();
 
-    public long[] getExecutionData(final String className, final int size) {
+    public long[] getExecutionData(final long classId, final int size) {
         synchronized (data) {
-            long[] dataArray = data.get(className);
+            long[] dataArray = data.get(classId);
             if (dataArray == null) {
                 dataArray = new long[size];
-                data.put(className, dataArray);
+                data.put(classId, dataArray);
             }
             return dataArray;
         }
     }
 
     public Object getData() {
-        return new HashMap<String, long[]>(data);
+        return new HashMap<Long, long[]>(data);
     }
 
 }

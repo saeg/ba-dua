@@ -30,7 +30,7 @@ public final class InstrSupport {
 
     public static final String RUNTIME_NAME = "getData";
 
-    public static final String RUNTIME_DESC = "(Ljava/lang/String;I)[J";
+    public static final String RUNTIME_DESC = "(JI)[J";
 
     // --- Data Field
 

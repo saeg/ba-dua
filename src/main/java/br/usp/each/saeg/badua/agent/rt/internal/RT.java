@@ -26,8 +26,8 @@ public final class RT {
     public static void init() {
     }
 
-    public static long[] getData(final String className, final int size) {
-        return DATA.getExecutionData(className, size);
+    public static long[] getData(final long classId, final int size) {
+        return DATA.getExecutionData(classId, size);
     }
 
 }

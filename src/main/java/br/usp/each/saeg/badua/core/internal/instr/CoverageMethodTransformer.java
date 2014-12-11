@@ -66,7 +66,6 @@ public class CoverageMethodTransformer extends MethodTransformer {
         if (chains.length == 0)
             return;
 
-
         // basic block definitions
         final Set<Variable>[] defs = (Set<Variable>[]) new Set<?>[basicBlocks.length];
         for (int b = 0; b < basicBlocks.length; b++) {

@@ -39,7 +39,7 @@ ba-dua is licensed under the Eclipse Public License - v 1.0 (http://www.eclipse.
 ## Notice
 
 ba-dua JAR is distributed with ASM 5.0.3 (http://asm.ow2.org) and args4j 2.0.26 (http://args4j.kohsuke.org) embedded.
-We also included a class (ContentTypeDetector) from JaCoCo project (http://www.eclemma.org/jacoco/). The only change in this class was the package declaration. The command line interface tools is inspired by the pull request #86 from JaCoCo.
+We also included two classes (ContentTypeDetector and CRC64) from JaCoCo project (http://www.eclemma.org/jacoco/). The only change in this classes was the package declaration. The command line interface tools is inspired by the pull request #86 from JaCoCo.
 
 - ASM is distributed under the BSD License.
 - args4j is distributed under the MIT License.
