@@ -15,15 +15,19 @@ import br.usp.each.saeg.badua.core.runtime.RuntimeData;
 public final class RT {
 
     private static RuntimeData DATA;
-    static {
-        DATA = Agent.getInstance().getData();
-    }
 
     private RT() {
         // No instances
     }
 
     public static void init() {
+        init(Agent.getInstance().getData());
+    }
+
+    public static void init(final RuntimeData data) {
+        synchronized (RT.class) {
+            DATA = data;
+        }
     }
 
     public static long[] getData(final long classId, final int size) {
