@@ -1,4 +1,4 @@
-ba-dua [![Build Status](https://travis-ci.org/saeg/ba-dua.svg?branch=master)](https://travis-ci.org/saeg/ba-dua) [![DOI](https://zenodo.org/badge/4232/saeg/ba-dua.png)](http://dx.doi.org/10.5281/zenodo.11006)
+ba-dua [![Build Status](https://travis-ci.org/saeg/ba-dua.svg?branch=master)](https://travis-ci.org/saeg/ba-dua) [![Coverage Status](https://coveralls.io/repos/saeg/ba-dua/badge.png)](https://coveralls.io/r/saeg/ba-dua) [![DOI](https://zenodo.org/badge/4232/saeg/ba-dua.png)](http://dx.doi.org/10.5281/zenodo.11006)
 ======
 
 ba-dua (Bitwise Algorithm - powered Definition-Use Association coverage) is an intra-procedural data-flow testing tool for Java programs.
