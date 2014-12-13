@@ -10,7 +10,6 @@
  */
 package br.usp.each.saeg.badua.test.validation;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.BitSet;
 
@@ -55,7 +54,7 @@ public class MaxTest extends ValidationTest {
         cw.visit(classVersion, classAccessor, className, null, superName, null);
         mw = cw.visitMethod(methodAccessor, methodName, methodDesc, null, null);
         mw.visitCode();
-        // block 0 (definitions {array, length, i, max})
+        // block 0 (definitions {0, 1, 2, 3})
         mw.visitInsn(Opcodes.ICONST_0);
         mw.visitVarInsn(Opcodes.ISTORE, 2);
         mw.visitVarInsn(Opcodes.ALOAD, 0);
@@ -63,30 +62,30 @@ public class MaxTest extends ValidationTest {
         mw.visitIincInsn(2, 1);
         mw.visitInsn(Opcodes.IALOAD);
         mw.visitVarInsn(Opcodes.ISTORE, 3);
-        // block 1 (p-uses {i, length})
+        // block 1 (p-uses {1, 2})
         final Label backLoop = new Label();
         mw.visitLabel(backLoop);
         mw.visitVarInsn(Opcodes.ILOAD, 2);
         mw.visitVarInsn(Opcodes.ILOAD, 1);
         final Label breakLoop = new Label();
         mw.visitJumpInsn(Opcodes.IF_ICMPGE, breakLoop);
-        // block 3 (p-uses {array, i, max})
+        // block 3 (p-uses {0, 2, 3})
         mw.visitVarInsn(Opcodes.ALOAD, 0);
         mw.visitVarInsn(Opcodes.ILOAD, 2);
         mw.visitInsn(Opcodes.IALOAD);
         mw.visitVarInsn(Opcodes.ILOAD, 3);
         final Label jump = new Label();
         mw.visitJumpInsn(Opcodes.IF_ICMPLE, jump);
-        // block 5 (definitions {max}, uses {array, i})
+        // block 5 (definitions {3}, uses {0, 2})
         mw.visitVarInsn(Opcodes.ALOAD, 0);
         mw.visitVarInsn(Opcodes.ILOAD, 2);
         mw.visitInsn(Opcodes.IALOAD);
         mw.visitVarInsn(Opcodes.ISTORE, 3);
-        // block 4 (definitions {i}, uses {i})
+        // block 4 (definitions {2}, uses {2})
         mw.visitLabel(jump);
         mw.visitIincInsn(2, 1);
         mw.visitJumpInsn(Opcodes.GOTO, backLoop);
-        // block 2 ( uses {max})
+        // block 2 ( uses {3})
         mw.visitLabel(breakLoop);
         mw.visitVarInsn(Opcodes.ILOAD, 3);
         mw.visitInsn(Opcodes.IRETURN);
@@ -129,63 +128,89 @@ public class MaxTest extends ValidationTest {
     */
 
     @Test
-    public void testException1() throws Exception {
-        Throwable e = null;
+    public void testException1() {
+        final int[] array = new int[0];
         try {
-            method.invoke(null, new int[0], 0);
-        } catch (final InvocationTargetException exception) {
-            e = exception.getCause();
+            max(array);
+        } catch (final Exception ignore) {
+            /* ignore */
         }
-        Assert.assertTrue(e instanceof IndexOutOfBoundsException);
         assertCoverage();
     }
 
     @Test
-    public void testException2() throws Exception {
-        Throwable e = null;
+    public void testException2() {
+        final int[] array = new int[] { 1, 2, 3 };
         try {
-            method.invoke(null, new int[] { 1, 2, 3, 4, 5 }, 6);
-        } catch (final InvocationTargetException exception) {
-            e = exception.getCause();
+            maxLength(array, array.length + 1);
+        } catch (final Exception ignore) {
+            /* ignore */
         }
-        Assert.assertTrue(e instanceof IndexOutOfBoundsException);
         assertCoverage();
     }
 
     @Test
-    public void test1() throws Exception {
-        final int max = (Integer) method.invoke(null, new int[] { 1, 2, 3, 4, 5 }, 5);
-        Assert.assertEquals(5, max);
-        assertCoverage(0, 2, 3, 4, 5, 7, 9, 10, 12, 14, 15, 17, 18, 19, 21, 22);
-    }
+    public void test1() {
+        final int[] array = new int[] { 1 };
 
-    @Test
-    public void test2() throws Exception {
-        final int max = (Integer) method.invoke(null, new int[] { 5, 4, 3, 2, 1 }, 5);
-        Assert.assertEquals(5, max);
-        assertCoverage(1, 3, 4, 5, 8, 9, 11, 13, 17, 18, 20, 21);
-    }
-
-    @Test
-    public void test3() throws Exception {
-        final int max = (Integer) method.invoke(null, new int[] { 5 }, 1);
-        Assert.assertEquals(5, max);
+        Assert.assertEquals(1, max(array));
         assertCoverage(4, 6, 11);
     }
 
     @Test
-    public void test4() throws Exception {
-        final int max = (Integer) method.invoke(null, new int[] { 1, 2, 5, 3, 4 }, 5);
-        Assert.assertEquals(5, max);
+    public void test2() {
+        final int[] array = new int[] { 1, 2 };
+
+        Assert.assertEquals(2, max(array));
+        assertCoverage(0, 2, 3, 4, 5, 7, 9, 10, 12, 14, 18);
+    }
+
+    @Test
+    public void test3() {
+        final int[] array = new int[] { 2, 1 };
+
+        Assert.assertEquals(2, max(array));
+        assertCoverage(1, 3, 4, 5, 8, 9, 11, 13, 18);
+    }
+
+    @Test
+    public void test4() {
+        final int[] array = new int[] { 1, 2, 3 };
+
+        Assert.assertEquals(3, max(array));
+        assertCoverage(0, 2, 3, 4, 5, 7, 9, 10, 12, 14, 15, 17, 18, 19, 21, 22);
+    }
+
+    @Test
+    public void test5() {
+        final int[] array = new int[] { 3, 2, 1 };
+
+        Assert.assertEquals(3, max(array));
+        assertCoverage(1, 3, 4, 5, 8, 9, 11, 13, 17, 18, 20, 21);
+    }
+
+    @Test
+    public void test6() {
+        final int[] array = new int[] { 1, 3, 2 };
+
+        Assert.assertEquals(3, max(array));
+        assertCoverage(0, 1, 2, 3, 4, 5, 7, 9, 10, 12, 14, 16, 17, 18, 20, 21);
+    }
+
+    @Test
+    public void test7() {
+        final int[] array = new int[] { 1, 2, 3, 2 };
+
+        Assert.assertEquals(3, max(array));
         assertCoverage(0, 1, 2, 3, 4, 5, 7, 9, 10, 12, 14, 15, 16, 17, 18, 19, 20, 21, 22);
     }
 
     @Test
-    public void test5() throws Exception {
-        method.invoke(null, new int[] { 5 }, 1);
-        method.invoke(null, new int[] { 5, 4 }, 2);
-        method.invoke(null, new int[] { 1, 2, 5, 3, 4 }, 5);
-        assertCoverage(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22);
+    public void test8() {
+        final int[] array = new int[] { 2, 1, 3, 2 };
+
+        Assert.assertEquals(3, max(array));
+        assertCoverage(0, 1, 2, 3, 4, 5, 8, 9, 12, 13, 14, 16, 17, 18, 19, 20, 21, 22);
     }
 
     private void assertCoverage(final int... expectedCoveredChains) {
@@ -195,6 +220,18 @@ public class MaxTest extends ValidationTest {
             expected.set(ecc);
         }
         Assert.assertEquals(expected, covered);
+    }
+
+    private int maxLength(final int[] array, final int length) {
+        try {
+            return (Integer) method.invoke(null, array, length);
+        } catch (final Exception ignore) {
+            throw new RuntimeException(ignore.getCause());
+        }
+    }
+
+    private int max(final int[] array) {
+        return maxLength(array, array.length);
     }
 
 }
