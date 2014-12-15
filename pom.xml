@@ -96,6 +96,12 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<excludes>
+						<exclude>br/usp/each/saeg/badua/core/internal/ContentTypeDetector.class</exclude>
+						<exclude>br/usp/each/saeg/badua/core/internal/data/CRC64.class</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.eluder.coveralls</groupId>
