@@ -30,6 +30,7 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import br.usp.each.saeg.badua.core.internal.ContentTypeDetector;
+import br.usp.each.saeg.badua.core.internal.data.CRC64;
 import br.usp.each.saeg.badua.core.internal.instr.CoverageMethodTransformer;
 import br.usp.each.saeg.badua.core.internal.instr.IdGenerator;
 import br.usp.each.saeg.badua.core.internal.instr.MethodInstrumenter;
@@ -50,7 +51,9 @@ public class Report implements IdGenerator {
 
     private final boolean showMethods;
 
-    private Map<String, long[]> data;
+    private Map<Long, long[]> data;
+
+    private long classId;
 
     private String className;
 
@@ -90,6 +93,7 @@ public class Report implements IdGenerator {
                     final ClassReader cr = new ClassReader(detector.getInputStream());
                     final ClassNode cn = new ClassNode(Opcodes.ASM5);
                     cr.accept(cn, ClassReader.EXPAND_FRAMES);
+                    classId = CRC64.checksum(cr.b);
                     analyze(cn);
                 }
             } finally {
@@ -139,7 +143,7 @@ public class Report implements IdGenerator {
 
         mn.accept(mi);
 
-        final long[] dataArray = data.get(className);
+        final long[] dataArray = data.get(classId);
         final BitSet mnData;
         if (dataArray == null) {
             mnData = new BitSet();
@@ -160,12 +164,7 @@ public class Report implements IdGenerator {
     }
 
     private String[] toArray(final List<String> l) {
-        final String[] array = new String[l.size()];
-        int i = 0;
-        for (final String string : l) {
-            array[i++] = string;
-        }
-        return array;
+        return l.toArray(new String[l.size()]);
     }
 
     @Override
@@ -175,10 +174,10 @@ public class Report implements IdGenerator {
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, long[]> read(final File file) throws IOException, ClassNotFoundException {
+    private Map<Long, long[]> read(final File file) throws IOException, ClassNotFoundException {
         final ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
         try {
-            return (Map<String, long[]>) ois.readObject();
+            return (Map<Long, long[]>) ois.readObject();
         } finally {
             ois.close();
         }
