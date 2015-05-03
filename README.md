@@ -13,6 +13,8 @@ This is an implementation of the bitwise algorithm for data-flow testing propose
 
 The implementation is described in: "Data-flow Testing in the Large". Published in IEEE International Conference on Software Testing, Verification and Validation (ICST) 2014.
 
+ba-dua is still an experimental tool. If you are looking for a general purpose coverage tool we recommend [JaCoCo](http://www.eclemma.org/jacoco/). JaCoCo is definitely the better coverage tool for Java. If you are looking for mutation test we recommend [PIT](http://pitest.org/). If you don't know what data-flow coverage is, you can read [this](http://www.bullseye.com/coverage.html#other_dataFlow) definitions.
+
 ## Examples
 
 ### Offline instrumentation
