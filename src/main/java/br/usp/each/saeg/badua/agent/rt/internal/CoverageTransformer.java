@@ -22,7 +22,7 @@ public class CoverageTransformer implements ClassFileTransformer {
     private final Instrumenter instrumenter;
 
     public CoverageTransformer() {
-        instrumenter = new Instrumenter();
+        instrumenter = new Instrumenter(RT.class);
     }
 
     @Override

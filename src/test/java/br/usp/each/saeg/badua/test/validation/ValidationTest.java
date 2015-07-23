@@ -12,6 +12,7 @@ package br.usp.each.saeg.badua.test.validation;
 
 import java.io.IOException;
 
+import br.usp.each.saeg.badua.agent.rt.internal.RT;
 import br.usp.each.saeg.badua.core.instr.Instrumenter;
 
 public abstract class ValidationTest {
@@ -27,7 +28,7 @@ public abstract class ValidationTest {
     }
 
     private static byte[] instrument(final String name, final byte[] bytes) {
-        final Instrumenter instrumenter = new Instrumenter();
+        final Instrumenter instrumenter = new Instrumenter(RT.class);
 
         try {
             return instrumenter.instrument(bytes, name);

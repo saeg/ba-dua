@@ -27,10 +27,16 @@ public class Instrumenter {
 
     private static final int DEFAULT = 0;
 
+    private final Class<?> runtime;
+
+    public Instrumenter(final Class<?> runtime) {
+        this.runtime = runtime;
+    }
+
     public byte[] instrument(final ClassReader reader) {
         final long classId = CRC64.checksum(reader.b);
         final ClassWriter writer = new ClassWriter(reader, DEFAULT);
-        final ClassVisitor ci = new ClassInstrumenter(classId, writer);
+        final ClassVisitor ci = new ClassInstrumenter(classId, writer, runtime);
         reader.accept(ci, ClassReader.EXPAND_FRAMES);
         return writer.toByteArray();
     }

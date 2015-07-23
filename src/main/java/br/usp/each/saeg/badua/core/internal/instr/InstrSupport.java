@@ -26,8 +26,6 @@ public final class InstrSupport {
         // No instances
     }
 
-    public static final String RUNTIME_OWNER = "br/usp/each/saeg/badua/agent/rt/internal/RT";
-
     public static final String RUNTIME_NAME = "getData";
 
     public static final String RUNTIME_DESC = "(JI)[J";
