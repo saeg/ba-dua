@@ -28,8 +28,6 @@ import br.usp.each.saeg.commons.BitSetUtils;
 
 public class MaxTest extends ValidationTest {
 
-    private Class<?> klass;
-
     private Method method;
 
     private long classId;
@@ -94,7 +92,7 @@ public class MaxTest extends ValidationTest {
         cw.visitEnd();
 
         final byte[] bytes = cw.toByteArray();
-        klass = addClass(className, bytes);
+        final Class<?> klass = addClass(className, bytes);
         method = klass.getMethod(methodName, int[].class, int.class);
         classId = CRC64.checksum(bytes);
 
