@@ -15,7 +15,7 @@
 
 	<groupId>br.usp.each.saeg</groupId>
 	<artifactId>ba-dua</artifactId>
-	<version>0.0.5</version>
+	<version>0.0.6-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>ba-dua</name>
 	<url>https://github.com/saeg/ba-dua</url>
@@ -34,7 +34,7 @@
 		<url>https://github.com/saeg/ba-dua</url>
 		<connection>scm:git:https://github.com/saeg/ba-dua.git</connection>
 		<developerConnection>scm:git:git@github.com:saeg/ba-dua.git</developerConnection>
-		<tag>ba-dua-0.0.5</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<distributionManagement>
