@@ -170,15 +170,9 @@ public class CoverageMethodTransformer extends MethodTransformer {
                 LabelFrameNode.insertBefore(first[b], methodNode.instructions, p);
 
             }
-            if (isReturn(last[b].getOpcode())) {
-                for (int w = 0; w < windows; w++) {
-                    final Probe p = update(methodNode, w, indexes[w]);
-                    LabelFrameNode.insertBefore(last[b], methodNode.instructions, p);
-                }
-            }
         }
 
-        // Finally, update the frames
+        // Finally, update the frames and add exit probes
         while (insn != null) {
             if (insn instanceof FrameNode) {
                 final FrameNode frame = (FrameNode) insn;
@@ -199,6 +193,11 @@ public class CoverageMethodTransformer extends MethodTransformer {
                     frame.local.add(type);
                     frame.local.add(type);
                     frame.local.add(type);
+                }
+            } else if (isReturn(insn.getOpcode())) {
+                for (int w = 0; w < windows; w++) {
+                    final Probe p = update(methodNode, w, indexes[w]);
+                    LabelFrameNode.insertBefore(insn, methodNode.instructions, p);
                 }
             }
             insn = insn.getNext();
