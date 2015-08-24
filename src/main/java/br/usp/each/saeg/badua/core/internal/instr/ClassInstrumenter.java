@@ -128,6 +128,7 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
         // Stack[0]: [J
         mv.visitInsn(Opcodes.POP);
         mv.visitLdcInsn(classId);
+        mv.visitLdcInsn(className);
         InstrSupport.push(mv, classProbeCount);
         mv.visitMethodInsn(Opcodes.INVOKESTATIC,
                 runtime.getName().replace('.', '/'),
@@ -155,7 +156,7 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
         mv.visitLabel(alreadyInitialized);
         mv.visitInsn(Opcodes.ARETURN);
 
-        mv.visitMaxs(3, 0);
+        mv.visitMaxs(4, 0);
         mv.visitEnd();
 
         super.visitEnd();

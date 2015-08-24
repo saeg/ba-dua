@@ -30,7 +30,7 @@ public final class RT {
         }
     }
 
-    public static long[] getData(final long classId, final int size) {
+    public static long[] getData(final long classId, final String className, final int size) {
         return DATA.getExecutionData(classId, size);
     }
 

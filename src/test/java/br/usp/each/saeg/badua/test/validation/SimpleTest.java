@@ -160,7 +160,7 @@ public class SimpleTest extends ValidationTest {
     }
 
     private void assertCoverage(final int... expectedCoveredChains) {
-        final BitSet covered = BitSetUtils.valueOf(RT.getData(classId, 1));
+        final BitSet covered = BitSetUtils.valueOf(RT.getData(classId, null, 1));
         final BitSet expected = new BitSet();
         for (final int ecc : expectedCoveredChains) {
             expected.set(ecc);
