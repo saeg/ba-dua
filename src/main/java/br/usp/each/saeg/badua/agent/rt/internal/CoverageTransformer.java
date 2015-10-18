@@ -39,7 +39,7 @@ public class CoverageTransformer implements ClassFileTransformer {
             return instrumenter.instrument(classfileBuffer, className);
         } catch (final IOException e) {
             final IllegalClassFormatException ex = new IllegalClassFormatException(e.getMessage());
-            ex.initCause(ex);
+            ex.initCause(e);
             throw ex;
         }
     }
