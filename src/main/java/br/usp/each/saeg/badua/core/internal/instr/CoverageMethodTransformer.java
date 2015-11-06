@@ -93,9 +93,9 @@ public class CoverageMethodTransformer extends MethodTransformer {
 
                 final DefUseChain chain = chains[i];
 
-                if (chain.target != -1 ? chain.target == b : chain.use == b) {
+                if (chain.isPredicateChain() ? chain.target == b : chain.use == b) {
                     potcov[b].set(i);
-                    if (chain.target != -1) {
+                    if (chain.isPredicateChain()) {
                         potcovpuse[b].set(i);
                     }
                 }
@@ -108,7 +108,7 @@ public class CoverageMethodTransformer extends MethodTransformer {
                     disabled[b].set(i);
                 }
 
-                if (chain.target != -1) {
+                if (chain.isPredicateChain()) {
                     if (chain.use != b) {
                         sleepy[b].set(i);
                     }
