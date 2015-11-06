@@ -52,8 +52,10 @@ public class CoverageMethodTransformer extends MethodTransformer {
             throw new RuntimeException(e);
         }
 
+        final AbstractInsnNode[] insns = methodNode.instructions.toArray();
         final DefUseFrame[] frames = analyzer.getDefUseFrames();
         final Variable[] variables = analyzer.getVariables();
+        final int[][] paths = analyzer.getPaths();
         final int[][] successors = analyzer.getSuccessors();
         final int[][] predecessors = analyzer.getPredecessors();
         final int[][] basicBlocks = analyzer.getBasicBlocks();
@@ -76,27 +78,26 @@ public class CoverageMethodTransformer extends MethodTransformer {
         }
 
         // bit-sets
-        final BitSet[] potcov = new BitSet[basicBlocks.length];
+        final BitSet[] potcovcuse = new BitSet[basicBlocks.length];
         final BitSet[] potcovpuse = new BitSet[basicBlocks.length];
         final BitSet[] born = new BitSet[basicBlocks.length];
         final BitSet[] disabled = new BitSet[basicBlocks.length];
-        final BitSet[] sleepy = new BitSet[basicBlocks.length];
         for (int b = 0; b < basicBlocks.length; b++) {
 
-            potcov[b] = new BitSet(chains.length);
+            potcovcuse[b] = new BitSet(chains.length);
             potcovpuse[b] = new BitSet(chains.length);
             born[b] = new BitSet(chains.length);
             disabled[b] = new BitSet(chains.length);
-            sleepy[b] = new BitSet(chains.length);
 
             for (int i = 0; i < chains.length; i++) {
 
                 final DefUseChain chain = chains[i];
 
                 if (chain.isPredicateChain() ? chain.target == b : chain.use == b) {
-                    potcov[b].set(i);
                     if (chain.isPredicateChain()) {
                         potcovpuse[b].set(i);
+                    } else {
+                        potcovcuse[b].set(i);
                     }
                 }
 
@@ -106,10 +107,6 @@ public class CoverageMethodTransformer extends MethodTransformer {
 
                 if (chain.def != b && defs[b].contains(variables[chain.var])) {
                     disabled[b].set(i);
-                }
-
-                if (chain.isPredicateChain() && chain.use != b) {
-                    sleepy[b].set(i);
                 }
 
             }
@@ -137,12 +134,11 @@ public class CoverageMethodTransformer extends MethodTransformer {
             }
         }
 
-        AbstractInsnNode insn = methodNode.instructions.getFirst();
         final int windows = (chains.length + 63) / 64;
         final int[] indexes = new int[windows];
         for (int w = 0; w < windows; w++) {
             indexes[w] = idGen.nextId();
-            LabelFrameNode.insertBefore(insn, methodNode.instructions, init(methodNode, w));
+            methodNode.instructions.insert(init(methodNode, w));
         }
 
         for (int b = 0; b < basicBlocks.length; b++) {
