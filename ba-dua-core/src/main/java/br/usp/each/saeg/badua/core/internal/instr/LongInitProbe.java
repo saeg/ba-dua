@@ -31,8 +31,6 @@ public final class LongInitProbe extends Probe {
         mv.visitVarInsn(Opcodes.LSTORE, vCovered);
         mv.visitInsn(Opcodes.LCONST_0);
         mv.visitVarInsn(Opcodes.LSTORE, vAlive);
-        mv.visitLdcInsn(-1L);
-        mv.visitVarInsn(Opcodes.LSTORE, vSleepy);
     }
 
 }

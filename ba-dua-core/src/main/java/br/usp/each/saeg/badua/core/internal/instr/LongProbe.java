@@ -31,12 +31,6 @@ public final class LongProbe extends Probe {
         // update covered
         if (potcov != 0) {
             mv.visitVarInsn(Opcodes.LLOAD, vAlive);
-
-            if (!singlePredecessor && potcovpuse != 0) {
-                mv.visitVarInsn(Opcodes.LLOAD, vSleepy);
-                mv.visitInsn(Opcodes.LAND);
-            }
-
             mv.visitLdcInsn(potcov);
             mv.visitInsn(Opcodes.LAND);
             mv.visitVarInsn(Opcodes.LLOAD, vCovered);
@@ -61,13 +55,6 @@ public final class LongProbe extends Probe {
             mv.visitVarInsn(Opcodes.LSTORE, vAlive);
         }
 
-        // update sleepy
-        if (sleepy != 0) {
-            mv.visitLdcInsn(~sleepy);
-        } else {
-            mv.visitLdcInsn(-1L);
-        }
-        mv.visitVarInsn(Opcodes.LSTORE, vSleepy);
     }
 
 }

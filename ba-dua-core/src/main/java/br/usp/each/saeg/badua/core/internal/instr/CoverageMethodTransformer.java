@@ -18,6 +18,9 @@ import java.util.Set;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.FrameNode;
+import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.JumpInsnNode;
+import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.analysis.AnalyzerException;
 
@@ -26,6 +29,7 @@ import br.usp.each.saeg.asm.defuse.DefUseChain;
 import br.usp.each.saeg.asm.defuse.DefUseFrame;
 import br.usp.each.saeg.asm.defuse.DepthFirstDefUseChainSearch;
 import br.usp.each.saeg.asm.defuse.Variable;
+import br.usp.each.saeg.commons.ArrayUtils;
 import br.usp.each.saeg.commons.BitSetUtils;
 
 public class CoverageMethodTransformer extends MethodTransformer {
@@ -141,32 +145,77 @@ public class CoverageMethodTransformer extends MethodTransformer {
             methodNode.instructions.insert(init(methodNode, w));
         }
 
-        for (int b = 0; b < basicBlocks.length; b++) {
+        for (int i = 0; i < paths.length; i++) {
+            final int[] path = paths[i];
+            if (path != null) {
+                final long[] lCovered = BitSetUtils.toLongArray(
+                        cov(path, potcovcuse, potcovpuse, born, disabled), windows);
 
-            final long[] lPotcov = BitSetUtils.toLongArray(potcov[b], windows);
-            final long[] lPotcovpuse = BitSetUtils.toLongArray(potcovpuse[b], windows);
-            final long[] lBorn = BitSetUtils.toLongArray(born[b], windows);
-            final long[] lDisabled = BitSetUtils.toLongArray(disabled[b], windows);
-            final long[] lSleepy = BitSetUtils.toLongArray(sleepy[b], windows);
+                final long[] lPotcov = BitSetUtils.toLongArray(
+                        potcov(path, potcovcuse, potcovpuse), windows);
 
-            for (int w = 0; w < windows; w++) {
+                final long[] lBorn = BitSetUtils.toLongArray(
+                        orThenAndNot(path, born, disabled), windows);
 
-                final int nPredecessors = predecessors[basicBlocks[b][0]].length;
-                final Probe p = probe(methodNode, w, nPredecessors == 0);
+                final long[] lDisabled = BitSetUtils.toLongArray(
+                        orThenAndNot(path, disabled, born), windows);
 
-                p.potcov = lPotcov[w];
-                p.potcovpuse = lPotcovpuse[w];
-                p.born = lBorn[w];
-                p.disabled = lDisabled[w];
-                p.sleepy = lSleepy[w];
-                p.singlePredecessor = nPredecessors == 1;
+                final InsnList probes = new InsnList();
+                for (int w = 0; w < windows; w++) {
+                    final Probe p = probe(methodNode, w);
+                    p.potcov = lPotcov[w];
+                    p.born = lBorn[w];
+                    p.disabled = lDisabled[w];
+                    p.covered = lCovered[w];
+                    probes.add(p);
+                }
 
-                LabelFrameNode.insertBefore(first[b], methodNode.instructions, p);
+                final int lastBlock = path[path.length - 1];
+                final AbstractInsnNode lastInsn = last[lastBlock];
+                if (InstrSupport.isPredicate(lastInsn.getOpcode())) {
+                    final JumpInsnNode jmpInsn = (JumpInsnNode) lastInsn;
+                    if (predecessors[ArrayUtils.indexOf(insns, jmpInsn.getNext())].length > 1) {
+                        final int next = leaders[ArrayUtils.indexOf(insns, jmpInsn.getNext())];
+                        final long[] lPotcovPuse = BitSetUtils.toLongArray(potcovpuse[next], windows);
+                        for (int w = 0; w < windows; w++) {
+                            final Probe p = (Probe) probes.get(w);
+                            p.potcov |= lPotcovPuse[w];
+                        }
+                        methodNode.instructions.insertBefore(lastInsn, probes);
+                    }
+                    if (predecessors[ArrayUtils.indexOf(insns, jmpInsn.label)].length > 1) {
+                        final int target = leaders[ArrayUtils.indexOf(insns, jmpInsn.label)];
+                        final long[] lPotcovPuse = BitSetUtils.toLongArray(potcovpuse[target], windows);
+                        for (int w = 0; w < windows; w++) {
+                            final Probe p = (Probe) probes.get(w);
+                            p.potcov |= lPotcovPuse[w];
+                        }
+                        final InsnList probeJmp = new InsnList();
+                        final LabelNode intermediate = new LabelNode();
+                        probeJmp.add(new JumpInsnNode(InstrSupport.getInverted(jmpInsn.getOpcode()), intermediate));
+                        probeJmp.add(probes);
+                        probeJmp.add(new JumpInsnNode(Opcodes.GOTO, jmpInsn.label));
+                        probeJmp.add(intermediate);
+                        methodNode.instructions.insert(lastInsn, probeJmp);
+                        methodNode.instructions.remove(lastInsn);
+                    }
+                } else if (isReturn(lastInsn.getOpcode()) || InstrSupport.isGOTO(lastInsn.getOpcode())) {
+                    methodNode.instructions.insertBefore(lastInsn, probes);
+                } else {
+                    methodNode.instructions.insert(lastInsn, probes);
+                }
 
+                if (isReturn(lastInsn.getOpcode())) {
+                    for (int w = 0; w < windows; w++) {
+                        final Probe p = update(methodNode, w, indexes[w]);
+                        methodNode.instructions.insertBefore(lastInsn, p);
+                    }
+                }
             }
         }
 
         // Finally, update the frames and add exit probes
+        AbstractInsnNode insn = methodNode.instructions.getFirst();
         while (insn != null) {
             if (insn instanceof FrameNode) {
                 final FrameNode frame = (FrameNode) insn;
@@ -186,7 +235,6 @@ public class CoverageMethodTransformer extends MethodTransformer {
                 for (int i = 0; i < windows; i++) {
                     frame.local.add(type);
                     frame.local.add(type);
-                    frame.local.add(type);
                 }
             } else if (isReturn(insn.getOpcode())) {
                 for (int w = 0; w < windows; w++) {
@@ -201,6 +249,52 @@ public class CoverageMethodTransformer extends MethodTransformer {
         methodNode.maxStack = methodNode.maxStack + 6;
     }
 
+    private BitSet cov(final int[] path,
+                       final BitSet[] potcovcuse,
+                       final BitSet[] potcovpuse,
+                       final BitSet[] born,
+                       final BitSet[] disabled) {
+
+        final BitSet alive = new BitSet(chains.length);
+        final BitSet covered = new BitSet(chains.length);
+        for (final int b : path) {
+            final BitSet potcov = new BitSet(chains.length);
+            potcov.or(potcovcuse[b]);
+            potcov.or(potcovpuse[b]);
+
+            alive.and(potcov);
+            covered.or(alive);
+            alive.andNot(disabled[b]);
+            alive.or(born[b]);
+        }
+        return covered;
+    }
+
+    private BitSet potcov(final int[] path,
+                          final BitSet[] potcovcuse,
+                          final BitSet[] potcovpuse) {
+
+        final BitSet result = new BitSet(chains.length);
+        result.or(potcovcuse[path[0]]);
+        for (int i = 1; i < path.length; i++) {
+            result.or(potcovcuse[path[i]]);
+            result.or(potcovpuse[path[i]]);
+        }
+        return result;
+    }
+
+    private BitSet orThenAndNot(final int path[],
+                                final BitSet[] or,
+                                final BitSet[] andNot) {
+
+        final BitSet result = new BitSet(chains.length);
+        for (final int b : path) {
+            result.or(or[b]);
+            result.andNot(andNot[b]);
+        }
+        return result;
+    }
+
     private Probe init(final MethodNode methodNode, final int window) {
         if (chains.length <= 32) {
             return new IntegerInitProbe(methodNode);
@@ -209,19 +303,11 @@ public class CoverageMethodTransformer extends MethodTransformer {
         }
     }
 
-    private Probe probe(final MethodNode methodNode, final int window, final boolean root) {
+    private Probe probe(final MethodNode methodNode, final int window) {
         if (chains.length <= 32) {
-            if (root) {
-                return new IntegerRootProbe(methodNode);
-            } else {
-                return new IntegerProbe(methodNode);
-            }
+            return new IntegerProbe(methodNode);
         } else {
-            if (root) {
-                return new LongRootProbe(methodNode, window);
-            } else {
-                return new LongProbe(methodNode, window);
-            }
+            return new LongProbe(methodNode, window);
         }
     }
 
@@ -242,20 +328,18 @@ public class CoverageMethodTransformer extends MethodTransformer {
 
     private int numOfVars() {
         if (chains.length <= 32) {
-            // three integers
-            return 3;
+            // two integers
+            return 2;
         } else {
-            // three longs
-            return 6;
+            // two longs
+            return 4;
         }
     }
 
     private Integer typeOfVars() {
         if (chains.length <= 32) {
-            // three integers
             return Opcodes.INTEGER;
         } else {
-            // three longs
             return Opcodes.LONG;
         }
     }

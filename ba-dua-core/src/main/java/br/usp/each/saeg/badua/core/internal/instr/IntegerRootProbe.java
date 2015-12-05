@@ -31,10 +31,6 @@ public final class IntegerRootProbe extends Probe {
             InstrSupport.push(mv, (int) born);
             mv.visitVarInsn(Opcodes.ISTORE, vAlive);
         }
-        if (sleepy != 0) {
-            InstrSupport.push(mv, ~(int) sleepy);
-            mv.visitVarInsn(Opcodes.ISTORE, vSleepy);
-        }
     }
 
 }

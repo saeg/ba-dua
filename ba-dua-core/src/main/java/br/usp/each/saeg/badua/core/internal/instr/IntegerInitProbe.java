@@ -31,8 +31,6 @@ public final class IntegerInitProbe extends Probe {
         mv.visitVarInsn(Opcodes.ISTORE, vCovered);
         mv.visitInsn(Opcodes.ICONST_0);
         mv.visitVarInsn(Opcodes.ISTORE, vAlive);
-        mv.visitInsn(Opcodes.ICONST_M1);
-        mv.visitVarInsn(Opcodes.ISTORE, vSleepy);
     }
 
 }

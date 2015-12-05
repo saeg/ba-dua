@@ -29,14 +29,14 @@ public final class IntegerProbe extends Probe {
     public void accept(final MethodVisitor mv) {
 
         // update covered
+        if (covered != 0) {
+            InstrSupport.push(mv, (int) covered);
+            mv.visitVarInsn(Opcodes.ILOAD, vCovered);
+            mv.visitInsn(Opcodes.IOR);
+            mv.visitVarInsn(Opcodes.ISTORE, vCovered);
+        }
         if (potcov != 0) {
             mv.visitVarInsn(Opcodes.ILOAD, vAlive);
-
-            if (!singlePredecessor && potcovpuse != 0) {
-                mv.visitVarInsn(Opcodes.ILOAD, vSleepy);
-                mv.visitInsn(Opcodes.IAND);
-            }
-
             InstrSupport.push(mv, (int) potcov);
             mv.visitInsn(Opcodes.IAND);
             mv.visitVarInsn(Opcodes.ILOAD, vCovered);
@@ -60,10 +60,6 @@ public final class IntegerProbe extends Probe {
         if (disabled != 0 || born != 0) {
             mv.visitVarInsn(Opcodes.ISTORE, vAlive);
         }
-
-        // update sleepy
-        InstrSupport.push(mv, ~(int) sleepy);
-        mv.visitVarInsn(Opcodes.ISTORE, vSleepy);
 
     }
 

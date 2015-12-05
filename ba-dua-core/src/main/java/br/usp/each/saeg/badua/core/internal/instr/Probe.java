@@ -40,31 +40,26 @@ public abstract class Probe extends AbstractInsnNode {
 
     public final int vCovered;
     public final int vAlive;
-    public final int vSleepy;
 
     // -- fields
 
-    protected boolean singlePredecessor;
     protected long potcov;
-    protected long potcovpuse;
     protected long born;
     protected long disabled;
-    protected long sleepy;
+    protected long covered;
 
     // Used by integer probes
     protected Probe(final MethodNode methodNode) {
         super(-1);
         vCovered = methodNode.maxLocals;
         vAlive = methodNode.maxLocals + 1;
-        vSleepy = methodNode.maxLocals + 2;
     }
 
     // used by long probes
     protected Probe(final MethodNode methodNode, final int window) {
         super(-1);
-        vCovered = methodNode.maxLocals + 6 * window;
-        vAlive = methodNode.maxLocals + 6 * window + 2;
-        vSleepy = methodNode.maxLocals + 6 * window + 4;
+        vCovered = methodNode.maxLocals + 4 * window;
+        vAlive = methodNode.maxLocals + 4 * window + 2;
     }
 
     @Override

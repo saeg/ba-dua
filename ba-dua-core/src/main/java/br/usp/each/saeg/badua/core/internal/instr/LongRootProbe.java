@@ -31,10 +31,6 @@ public final class LongRootProbe extends Probe {
             mv.visitLdcInsn(born);
             mv.visitVarInsn(Opcodes.LSTORE, vAlive);
         }
-        if (sleepy != 0) {
-            mv.visitLdcInsn(~sleepy);
-            mv.visitVarInsn(Opcodes.LSTORE, vSleepy);
-        }
     }
 
 }
