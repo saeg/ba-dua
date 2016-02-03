@@ -14,10 +14,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>br.usp.each.saeg</groupId>
-	<artifactId>ba-dua</artifactId>
+	<artifactId>ba-dua-core</artifactId>
 	<version>0.1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>ba-dua</name>
+	<name>ba-dua-core</name>
 	<url>https://github.com/saeg/ba-dua</url>
 	<description>Bitwise Algorithm - powered Definition-Use Association coverage</description>
 	<inceptionYear>2014</inceptionYear>
