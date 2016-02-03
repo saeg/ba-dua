@@ -131,6 +131,11 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.eluder.coveralls</groupId>
+				<artifactId>coveralls-maven-plugin</artifactId>
+				<version>3.2.1</version>
+			</plugin>
 		</plugins>
 	</build>
 
