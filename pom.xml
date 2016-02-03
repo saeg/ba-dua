@@ -5,6 +5,54 @@
 	<artifactId>ba-dua-parent</artifactId>
 	<version>0.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
+	<name>ba-dua-parent</name>
+	<url>https://github.com/saeg/ba-dua</url>
+	<description>
+		Bitwise Algorithm - powered Definition-Use Association coverage (BA-DUA).
+		Data-flow testing coverage for Java - parent project.
+	</description>
+	<inceptionYear>2014</inceptionYear>
+
+	<licenses>
+		<license>
+			<name>Eclipse Public License v1.0</name>
+			<url>http://www.eclipse.org/legal/epl-v10.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<url>https://github.com/saeg/ba-dua</url>
+		<connection>scm:git:https://github.com/saeg/ba-dua.git</connection>
+		<developerConnection>scm:git:git@github.com:saeg/ba-dua.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+
+	<distributionManagement>
+		<repository>
+			<id>internal.repo</id>
+			<name>Temporary Staging Repository</name>
+			<url>file://${project.build.directory}/mvn-repo</url>
+		</repository>
+	</distributionManagement>
+
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/saeg/ba-dua/issues</url>
+	</issueManagement>
+
+	<developers>
+		<developer>
+			<email>roberto.andrioli@gmail.com</email>
+			<name>Roberto Araujo</name>
+			<url>https://github.com/andrioli</url>
+			<id>andrioli</id>
+		</developer>
+	</developers>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 
 	<modules>
 		<module>ba-dua-core</module>
