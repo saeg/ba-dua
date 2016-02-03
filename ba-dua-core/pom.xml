@@ -61,34 +61,17 @@
 			<plugin>
 				<groupId>com.mycila</groupId>
 				<artifactId>license-maven-plugin</artifactId>
-				<version>2.11</version>
 				<configuration>
-					<header>LICENSE-TEMPLATE.txt</header>
-					<headerSections>
-						<headerSection>
-							<key>CONTRIBUTORS_SECTION</key>
-						</headerSection>
-					</headerSections>
-					<properties>
-						<owner>University of Sao Paulo</owner>
-					</properties>
+					<header>../LICENSE-TEMPLATE.txt</header>
 					<excludes>
-						<exclude>LICENSE</exclude>
 						<!--
-							This files was copied from JaCoCo (http://jacoco.org)
-							and are licensed under EPL. We just change the package declaration
+							This files were copied from JaCoCo (http://jacoco.org)
+							and are licensed under EPL. We just changed the package declaration
 						-->
 						<exclude>src/main/java/br/usp/each/saeg/badua/core/internal/ContentTypeDetector.java</exclude>
 						<exclude>src/main/java/br/usp/each/saeg/badua/core/internal/data/CRC64.java</exclude>
 					</excludes>
 				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
