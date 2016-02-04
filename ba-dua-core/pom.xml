@@ -97,13 +97,6 @@
 							<shadedArtifactAttached>true</shadedArtifactAttached>
 							<shadedClassifierName>all</shadedClassifierName>
 							<minimizeJar>true</minimizeJar>
-							<artifactSet>
-								<includes>
-									<include>org.ow2.asm:*</include>
-									<include>args4j:args4j</include>
-									<include>br.usp.each.saeg:*</include>
-								</includes>
-							</artifactSet>
 							<relocations>
 								<relocation>
 									<pattern>org.objectweb.asm</pattern>
