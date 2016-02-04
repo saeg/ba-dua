@@ -28,7 +28,7 @@ public abstract class ValidationTest {
     }
 
     private static byte[] instrument(final String name, final byte[] bytes) {
-        final Instrumenter instrumenter = new Instrumenter(RT.class);
+        final Instrumenter instrumenter = new Instrumenter(RT.class.getName());
 
         try {
             return instrumenter.instrument(bytes, name);

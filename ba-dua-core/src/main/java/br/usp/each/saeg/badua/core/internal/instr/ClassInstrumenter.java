@@ -20,7 +20,7 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
 
     private final long classId;
 
-    private final Class<?> runtime;
+    private final String runtime;
 
     private String className;
 
@@ -31,6 +31,10 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
     private int classProbeCount;
 
     public ClassInstrumenter(final long classId, final ClassVisitor cv, final Class<?> runtime) {
+        this(classId, cv, runtime.getName());
+    }
+
+    public ClassInstrumenter(final long classId, final ClassVisitor cv, final String runtime) {
         super(Opcodes.ASM5, cv);
         this.classId = classId;
         this.runtime = runtime;
@@ -131,7 +135,7 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
         mv.visitLdcInsn(className);
         InstrSupport.push(mv, classProbeCount);
         mv.visitMethodInsn(Opcodes.INVOKESTATIC,
-                runtime.getName().replace('.', '/'),
+                runtime.replace('.', '/'),
                 InstrSupport.RUNTIME_NAME,
                 InstrSupport.RUNTIME_DESC,
                 false);

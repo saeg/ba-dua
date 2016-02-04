@@ -27,9 +27,13 @@ public class Instrumenter {
 
     private static final int DEFAULT = 0;
 
-    private final Class<?> runtime;
+    private final String runtime;
 
     public Instrumenter(final Class<?> runtime) {
+        this(runtime.getName());
+    }
+
+    public Instrumenter(final String runtime) {
         this.runtime = runtime;
     }
 

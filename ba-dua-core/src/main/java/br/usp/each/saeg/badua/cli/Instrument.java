@@ -40,7 +40,7 @@ public class Instrument {
     public Instrument(final InstrumentOptions options) {
         this.src = options.getSource();
         this.dest = options.getDestination();
-        instrumenter = new Instrumenter(Offline.class);
+        instrumenter = new Instrumenter(Offline.class.getName());
     }
 
     public int instrument() throws IOException {
