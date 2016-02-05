@@ -68,6 +68,7 @@
 
 	<modules>
 		<module>ba-dua-core</module>
+		<module>ba-dua-tests</module>
 	</modules>
 
 	<build>
