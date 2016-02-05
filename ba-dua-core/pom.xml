@@ -25,6 +25,10 @@
 	<url>https://github.com/saeg/ba-dua</url>
 	<description>BA-DUA Core</description>
 
+	<properties>
+		<license.header.fileLocation>../LICENSE-TEMPLATE.txt</license.header.fileLocation>
+	</properties>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -62,7 +66,6 @@
 				<groupId>com.mycila</groupId>
 				<artifactId>license-maven-plugin</artifactId>
 				<configuration>
-					<header>../LICENSE-TEMPLATE.txt</header>
 					<excludes>
 						<!--
 							This files were copied from JaCoCo (http://jacoco.org)
