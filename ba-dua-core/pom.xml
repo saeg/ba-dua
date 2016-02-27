@@ -86,50 +86,6 @@
 					</excludes>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.4.3</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-						<configuration>
-							<shadedArtifactAttached>true</shadedArtifactAttached>
-							<shadedClassifierName>all</shadedClassifierName>
-							<minimizeJar>true</minimizeJar>
-							<relocations>
-								<relocation>
-									<pattern>org.objectweb.asm</pattern>
-									<shadedPattern>br.usp.each.saeg.badua.asm</shadedPattern>
-								</relocation>
-								<relocation>
-									<pattern>br.usp.each.saeg.asm.defuse</pattern>
-									<shadedPattern>br.usp.each.saeg.badua.asm.defuse</shadedPattern>
-								</relocation>
-								<relocation>
-									<pattern>org.kohsuke.args4j</pattern>
-									<shadedPattern>br.usp.each.saeg.badua.args4j</shadedPattern>
-								</relocation>
-								<relocation>
-									<pattern>br.usp.each.saeg.commons</pattern>
-									<shadedPattern>br.usp.each.saeg.badua.commons</shadedPattern>
-								</relocation>
-							</relocations>
-							<transformers>
-								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>br.usp.each.saeg.badua.cli.Main</mainClass>
-									<manifestEntries>
-										<Premain-Class>br.usp.each.saeg.badua.agent.rt.internal.PreMain</Premain-Class>
-									</manifestEntries>
-								</transformer>
-							</transformers>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
 
@@ -138,11 +94,6 @@
 			<groupId>br.usp.each.saeg</groupId>
 			<artifactId>asm-defuse</artifactId>
 			<version>0.0.3</version>
-		</dependency>
-		<dependency>
-			<groupId>args4j</groupId>
-			<artifactId>args4j</artifactId>
-			<version>2.32</version>
 		</dependency>
 	</dependencies>
 

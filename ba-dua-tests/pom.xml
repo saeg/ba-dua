@@ -59,6 +59,22 @@
 												<fileset dir="../ba-dua-core/src/main/java" />
 											</sourcefiles>
 										</group>
+										<group name="ba-dua-agent-rt">
+											<classfiles>
+												<fileset dir="../ba-dua-agent-rt/target/classes" />
+											</classfiles>
+											<sourcefiles>
+												<fileset dir="../ba-dua-agent-rt/src/main/java" />
+											</sourcefiles>
+										</group>
+										<group name="ba-dua-cli">
+											<classfiles>
+												<fileset dir="../ba-dua-cli/target/classes" />
+											</classfiles>
+											<sourcefiles>
+												<fileset dir="../ba-dua-cli/src/main/java" />
+											</sourcefiles>
+										</group>
 									</structure>
 									<html destdir="${project.reporting.outputDirectory}/jacoco" footer="Code Coverage Report for BA-DUA ${project.version}" locale="en" />
 									<csv destfile="${project.reporting.outputDirectory}/jacoco/jacoco.csv" />
@@ -82,7 +98,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>ba-dua-core</artifactId>
+			<artifactId>ba-dua-agent-rt</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
