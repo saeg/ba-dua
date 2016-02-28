@@ -14,7 +14,7 @@ This is an implementation of the bitwise algorithm for data-flow testing propose
 
 The implementation is described in: "Data-flow Testing in the Large". Published in IEEE International Conference on Software Testing, Verification and Validation (ICST) 2014.
 
-ba-dua is still an experimental tool. If you are looking for a general purpose coverage tool we recommend [JaCoCo](http://www.eclemma.org/jacoco/). JaCoCo is definitely the better coverage tool for Java. If you are looking for mutation test we recommend [PIT](http://pitest.org/). If you don't know what data-flow coverage is, you can read [this](http://www.bullseye.com/coverage.html#other_dataFlow) definitions.
+ba-dua is still an experimental tool. If you are looking for a general purpose coverage tool we recommend [JaCoCo](http://www.eclemma.org/jacoco/). JaCoCo is definitely the best coverage tool for Java. If you are looking for mutation test we recommend [PIT](http://pitest.org/). If you don't know what data-flow coverage is, you can read [this link](http://www.bullseye.com/coverage.html#other_dataFlow).
 
 ## Examples
 
@@ -23,21 +23,21 @@ ba-dua is still an experimental tool. If you are looking for a general purpose c
 To instrument Java classes you should use the **instrument** program.
 
 ```
-java -jar ba-dua-VERSION-all.jar instrument
+java -jar ba-dua-cli-VERSION-all.jar instrument
 ```
 
 after instrumentation, you should run the instrumented classes with ba-dua JAR in the *classpath*.
 
 ### Agent instrumentation
 
-You can instead of offline instrumentation use the Java agent. Java agent instrument classes as they are loaded by the JVM. Just include ba-dua JAR in the JVM Java agent option.
+You can instead of offline instrumentation use the Java agent. Java agent instrument classes as they are loaded by the JVM. Just include ba-dua-agent-rt-VERSION-all.jar in the JVM Java agent option.
 
 ### Reporting
 
-After program execution a new file (coverage.ser) will be created in your current directory. You should use the **report** program to visualize the program coverage.
+After program execution a new file (coverage.ser) will be created in your current directory. You should use the **report** program to assess the coverage.
 
 ```
-java -jar ba-dua-VERSION-all.jar report
+java -jar ba-dua-cli-VERSION-all.jar report
 ```
 
 ## License
@@ -46,8 +46,7 @@ ba-dua is licensed under the Eclipse Public License - v 1.0 (http://www.eclipse.
 
 ## Notice
 
-ba-dua JAR is distributed with ASM (http://asm.ow2.org) and args4j (http://args4j.kohsuke.org) embedded.
-We also included two classes (ContentTypeDetector and CRC64) from JaCoCo project (http://www.eclemma.org/jacoco/). The only change in this classes was the package declaration. The command line interface tools is inspired by the pull request #86 from JaCoCo.
+ba-dua JAR is distributed with some classes from ASM (http://asm.ow2.org), args4j (http://args4j.kohsuke.org) and JaCoCo (http://www.eclemma.org/jacoco/) embedded (shaded). The command line interface tools were inspired by the pull request #86 from JaCoCo.
 
 - ASM is distributed under the BSD License.
 - args4j is distributed under the MIT License.
