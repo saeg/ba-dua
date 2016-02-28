@@ -45,6 +45,15 @@
 							<shadedArtifactAttached>true</shadedArtifactAttached>
 							<shadedClassifierName>all</shadedClassifierName>
 							<minimizeJar>true</minimizeJar>
+							<filters>
+								<filter>
+									<artifact>org.jacoco:org.jacoco.core</artifact>
+									<includes>
+										<include>org/jacoco/core/internal/ContentTypeDetector.class</include>
+										<include>org/jacoco/core/internal/data/CRC64.class</include>
+									</includes>
+								</filter>
+							</filters>
 							<relocations>
 								<relocation>
 									<pattern>org.objectweb.asm</pattern>
@@ -61,6 +70,10 @@
 								<relocation>
 									<pattern>br.usp.each.saeg.commons</pattern>
 									<shadedPattern>br.usp.each.saeg.badua.commons</shadedPattern>
+								</relocation>
+								<relocation>
+									<pattern>org.jacoco</pattern>
+									<shadedPattern>br.usp.each.saeg.badua</shadedPattern>
 								</relocation>
 							</relocations>
 							<transformers>

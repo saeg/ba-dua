@@ -21,6 +21,8 @@ import java.util.BitSet;
 import java.util.List;
 import java.util.Map;
 
+import org.jacoco.core.internal.ContentTypeDetector;
+import org.jacoco.core.internal.data.CRC64;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.objectweb.asm.ClassReader;
@@ -29,8 +31,6 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
-import br.usp.each.saeg.badua.core.internal.ContentTypeDetector;
-import br.usp.each.saeg.badua.core.internal.data.CRC64;
 import br.usp.each.saeg.badua.core.internal.instr.CoverageMethodTransformer;
 import br.usp.each.saeg.badua.core.internal.instr.IdGenerator;
 import br.usp.each.saeg.badua.core.internal.instr.MethodInstrumenter;

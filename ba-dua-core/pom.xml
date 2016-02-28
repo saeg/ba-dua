@@ -62,30 +62,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>com.mycila</groupId>
-				<artifactId>license-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<!--
-							This files were copied from JaCoCo (http://jacoco.org)
-							and are licensed under EPL. We just changed the package declaration
-						-->
-						<exclude>src/main/java/br/usp/each/saeg/badua/core/internal/ContentTypeDetector.java</exclude>
-						<exclude>src/main/java/br/usp/each/saeg/badua/core/internal/data/CRC64.java</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>br/usp/each/saeg/badua/core/internal/ContentTypeDetector.class</exclude>
-						<exclude>br/usp/each/saeg/badua/core/internal/data/CRC64.class</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 
@@ -94,6 +70,11 @@
 			<groupId>br.usp.each.saeg</groupId>
 			<artifactId>asm-defuse</artifactId>
 			<version>0.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jacoco</groupId>
+			<artifactId>org.jacoco.core</artifactId>
+			<version>0.7.6.201602180812</version>
 		</dependency>
 	</dependencies>
 

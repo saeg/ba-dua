@@ -14,6 +14,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.BitSet;
 
+import org.jacoco.core.internal.data.CRC64;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +25,6 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 import br.usp.each.saeg.badua.agent.rt.internal.RT;
-import br.usp.each.saeg.badua.core.internal.data.CRC64;
 import br.usp.each.saeg.badua.core.runtime.RuntimeData;
 import br.usp.each.saeg.commons.BitSetUtils;
 
