@@ -88,7 +88,7 @@
 					<dependency>
 						<groupId>org.jacoco</groupId>
 						<artifactId>org.jacoco.ant</artifactId>
-						<version>0.7.5.201505241946</version>
+						<version>${jacoco.version}</version>
 					</dependency>
 				</dependencies>
 			</plugin>

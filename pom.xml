@@ -65,6 +65,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<license.header.fileLocation>LICENSE-TEMPLATE.txt</license.header.fileLocation>
+		<jacoco.version>0.7.6.201602180812</jacoco.version>
 	</properties>
 
 	<modules>
@@ -123,7 +124,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.7.6.201602180812</version>
+				<version>${jacoco.version}</version>
 				<executions>
 					<execution>
 						<id>prepare-agent</id>
