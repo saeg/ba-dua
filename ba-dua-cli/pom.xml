@@ -52,6 +52,12 @@
 										<include>org/jacoco/core/internal/data/CRC64.class</include>
 									</includes>
 								</filter>
+								<filter>
+									<artifact>args4j:args4j</artifact>
+									<excludes>
+										<exclude>OSGI-OPT/**</exclude>
+									</excludes>
+								</filter>
 							</filters>
 							<relocations>
 								<relocation>
