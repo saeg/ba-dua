@@ -25,6 +25,10 @@
 	</description>
 	<inceptionYear>2014</inceptionYear>
 
+	<organization>
+		<name>University of Sao Paulo</name>
+	</organization>
+
 	<licenses>
 		<license>
 			<name>Eclipse Public License v1.0</name>
@@ -107,7 +111,7 @@
 						</headerSection>
 					</headerSections>
 					<properties>
-						<owner>University of Sao Paulo</owner>
+						<owner>${project.organization.name}</owner>
 					</properties>
 					<excludes>
 						<exclude>LICENSE</exclude>
