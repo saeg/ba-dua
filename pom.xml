@@ -57,6 +57,11 @@
 		<url>https://github.com/saeg/ba-dua/issues</url>
 	</issueManagement>
 
+	<ciManagement>
+		<system>Travis CI</system>
+		<url>https://travis-ci.org/saeg/ba-dua</url>
+	</ciManagement>
+
 	<developers>
 		<developer>
 			<email>roberto.andrioli@gmail.com</email>
