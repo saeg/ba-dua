@@ -27,6 +27,7 @@
 
 	<properties>
 		<license.header.fileLocation>../LICENSE-TEMPLATE.txt</license.header.fileLocation>
+		<maven.install.skip>true</maven.install.skip>
 	</properties>
 
 	<build>
@@ -91,6 +92,13 @@
 						<version>${jacoco.version}</version>
 					</dependency>
 				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<skipIfEmpty>true</skipIfEmpty>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
