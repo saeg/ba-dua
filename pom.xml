@@ -82,6 +82,7 @@
 		<module>ba-dua-agent-rt</module>
 		<module>ba-dua-cli</module>
 		<module>ba-dua-tests</module>
+		<module>ba-dua</module>
 	</modules>
 
 	<build>
