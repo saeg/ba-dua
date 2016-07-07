@@ -32,7 +32,7 @@ public class CoverageTransformer implements ClassFileTransformer {
                             final ProtectionDomain protectionDomain,
                             final byte[] classfileBuffer) throws IllegalClassFormatException {
 
-        if (skip(loader, className)) {
+        if (skip(loader)) {
             return null;
         }
         try {
@@ -44,7 +44,7 @@ public class CoverageTransformer implements ClassFileTransformer {
         }
     }
 
-    private boolean skip(final ClassLoader loader, final String className) {
+    private boolean skip(final ClassLoader loader) {
         return loader == null
                 || loader.getClass().getName().equals("sun.reflect.DelegatingClassLoader");
     }

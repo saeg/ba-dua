@@ -108,10 +108,8 @@ public class CoverageMethodTransformer extends MethodTransformer {
                     disabled[b].set(i);
                 }
 
-                if (chain.isPredicateChain()) {
-                    if (chain.use != b) {
-                        sleepy[b].set(i);
-                    }
+                if (chain.isPredicateChain() && chain.use != b) {
+                    sleepy[b].set(i);
                 }
 
             }
