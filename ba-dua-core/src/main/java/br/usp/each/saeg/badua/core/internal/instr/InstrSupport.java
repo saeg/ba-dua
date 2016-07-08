@@ -161,8 +161,8 @@ public final class InstrSupport {
     }
 
     public static boolean isPredicate(final int opcode) {
-        return (opcode >= Opcodes.IFEQ && opcode <= Opcodes.IF_ACMPNE)
-                || (opcode == Opcodes.IFNULL || opcode == Opcodes.IFNONNULL);
+        return opcode >= Opcodes.IFEQ && opcode <= Opcodes.IF_ACMPNE
+                || opcode == Opcodes.IFNULL || opcode == Opcodes.IFNONNULL;
     }
 
     public static int getInverted(final int opcode) {
