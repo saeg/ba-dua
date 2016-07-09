@@ -10,6 +10,8 @@
  */
 package br.usp.each.saeg.badua.core.internal.instr;
 
+import static br.usp.each.saeg.commons.BitSetUtils.toLongArray;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashSet;
@@ -148,17 +150,10 @@ public class CoverageMethodTransformer extends MethodTransformer {
         for (int i = 0; i < paths.length; i++) {
             final int[] path = paths[i];
             if (path != null) {
-                final long[] lCovered = BitSetUtils.toLongArray(
-                        cov(path, potcovcuse, potcovpuse, born, disabled), windows);
-
-                final long[] lPotcov = BitSetUtils.toLongArray(
-                        potcov(path, potcovcuse, potcovpuse), windows);
-
-                final long[] lBorn = BitSetUtils.toLongArray(
-                        orThenAndNot(path, born, disabled), windows);
-
-                final long[] lDisabled = BitSetUtils.toLongArray(
-                        orThenAndNot(path, disabled, born), windows);
+                final long[] lCovered = toLongArray(cov(path, potcovcuse, potcovpuse, born, disabled), windows);
+                final long[] lPotcov = toLongArray(potcov(path, potcovcuse, potcovpuse), windows);
+                final long[] lBorn = toLongArray(orThenAndNot(path, born, disabled), windows);
+                final long[] lDisabled = toLongArray(orThenAndNot(path, disabled, born), windows);
 
                 final InsnList probes = new InsnList();
                 for (int w = 0; w < windows; w++) {
@@ -180,6 +175,7 @@ public class CoverageMethodTransformer extends MethodTransformer {
                         for (int w = 0; w < windows; w++) {
                             final Probe p = (Probe) probes.get(w);
                             p.potcov |= lPotcovPuse[w];
+                            p.covered |= lBorn[w] & lPotcovPuse[w];
                         }
                         methodNode.instructions.insertBefore(lastInsn, probes);
                     }
@@ -189,6 +185,7 @@ public class CoverageMethodTransformer extends MethodTransformer {
                         for (int w = 0; w < windows; w++) {
                             final Probe p = (Probe) probes.get(w);
                             p.potcov |= lPotcovPuse[w];
+                            p.covered |= lBorn[w] & lPotcovPuse[w];
                         }
                         final InsnList probeJmp = new InsnList();
                         final LabelNode intermediate = new LabelNode();
