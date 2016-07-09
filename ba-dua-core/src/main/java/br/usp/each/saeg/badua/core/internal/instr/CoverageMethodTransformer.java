@@ -32,7 +32,6 @@ import br.usp.each.saeg.asm.defuse.DefUseFrame;
 import br.usp.each.saeg.asm.defuse.DepthFirstDefUseChainSearch;
 import br.usp.each.saeg.asm.defuse.Variable;
 import br.usp.each.saeg.commons.ArrayUtils;
-import br.usp.each.saeg.commons.BitSetUtils;
 
 public class CoverageMethodTransformer extends MethodTransformer {
 
@@ -171,7 +170,7 @@ public class CoverageMethodTransformer extends MethodTransformer {
                     final JumpInsnNode jmpInsn = (JumpInsnNode) lastInsn;
                     if (predecessors[ArrayUtils.indexOf(insns, jmpInsn.getNext())].length > 1) {
                         final int next = leaders[ArrayUtils.indexOf(insns, jmpInsn.getNext())];
-                        final long[] lPotcovPuse = BitSetUtils.toLongArray(potcovpuse[next], windows);
+                        final long[] lPotcovPuse = toLongArray(potcovpuse[next], windows);
                         for (int w = 0; w < windows; w++) {
                             final Probe p = (Probe) probes.get(w);
                             p.potcov |= lPotcovPuse[w];
@@ -181,7 +180,7 @@ public class CoverageMethodTransformer extends MethodTransformer {
                     }
                     if (predecessors[ArrayUtils.indexOf(insns, jmpInsn.label)].length > 1) {
                         final int target = leaders[ArrayUtils.indexOf(insns, jmpInsn.label)];
-                        final long[] lPotcovPuse = BitSetUtils.toLongArray(potcovpuse[target], windows);
+                        final long[] lPotcovPuse = toLongArray(potcovpuse[target], windows);
                         for (int w = 0; w < windows; w++) {
                             final Probe p = (Probe) probes.get(w);
                             p.potcov |= lPotcovPuse[w];
