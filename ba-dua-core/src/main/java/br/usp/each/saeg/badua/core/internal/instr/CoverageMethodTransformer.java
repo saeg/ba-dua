@@ -171,12 +171,19 @@ public class CoverageMethodTransformer extends MethodTransformer {
                     if (predecessors[ArrayUtils.indexOf(insns, jmpInsn.getNext())].length > 1) {
                         final int next = leaders[ArrayUtils.indexOf(insns, jmpInsn.getNext())];
                         final long[] lPotcovPuse = toLongArray(potcovpuse[next], windows);
+                        final InsnList newProbes = new InsnList();
                         for (int w = 0; w < windows; w++) {
-                            final Probe p = (Probe) probes.get(w);
+                            final Probe current = (Probe) probes.get(w);
+                            final Probe p = probe(methodNode, w);
+                            p.potcov = current.potcov;
+                            p.born = current.born;
+                            p.disabled = current.disabled;
+                            p.covered = current.covered;
                             p.potcov |= lPotcovPuse[w];
                             p.covered |= lBorn[w] & lPotcovPuse[w];
+                            newProbes.add(p);
                         }
-                        methodNode.instructions.insertBefore(lastInsn, probes);
+                        methodNode.instructions.insertBefore(lastInsn, newProbes);
                     }
                     if (predecessors[ArrayUtils.indexOf(insns, jmpInsn.label)].length > 1) {
                         final int target = leaders[ArrayUtils.indexOf(insns, jmpInsn.label)];
