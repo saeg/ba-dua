@@ -45,6 +45,10 @@ public class Instrument {
 
     public int instrument() throws IOException {
 
+        if (src.equals(dest)) {
+            throw new IOException("'src' and 'dest' can't be the same folder");
+        }
+
         if (src.isFile()) {
             return instrument(src, new File(dest, src.getName()));
         }
