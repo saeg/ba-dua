@@ -45,7 +45,7 @@ public class Instrument {
 
     public int instrument() throws IOException {
 
-        if (src.equals(dest)) {
+        if (src.getAbsoluteFile().equals(dest.getAbsoluteFile())) {
             throw new IOException("'src' and 'dest' can't be the same folder");
         }
 
