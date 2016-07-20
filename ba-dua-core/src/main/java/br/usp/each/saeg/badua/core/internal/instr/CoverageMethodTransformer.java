@@ -24,7 +24,10 @@ import org.objectweb.asm.tree.analysis.AnalyzerException;
 import br.usp.each.saeg.asm.defuse.DefUseAnalyzer;
 import br.usp.each.saeg.asm.defuse.DefUseChain;
 import br.usp.each.saeg.asm.defuse.DefUseFrame;
+import br.usp.each.saeg.asm.defuse.DefUseInterpreter;
 import br.usp.each.saeg.asm.defuse.DepthFirstDefUseChainSearch;
+import br.usp.each.saeg.asm.defuse.FlowAnalyzer;
+import br.usp.each.saeg.asm.defuse.Value;
 import br.usp.each.saeg.asm.defuse.Variable;
 import br.usp.each.saeg.commons.BitSetUtils;
 
@@ -45,7 +48,9 @@ public class CoverageMethodTransformer extends MethodTransformer {
     @SuppressWarnings("unchecked")
     public void transform(final MethodNode methodNode) {
 
-        final DefUseAnalyzer analyzer = new DefUseAnalyzer();
+        final DefUseInterpreter interpreter = new DefUseInterpreter();
+        final FlowAnalyzer<Value> flowAnalyzer = new FlowAnalyzer<Value>(interpreter);
+        final DefUseAnalyzer analyzer = new DefUseAnalyzer(flowAnalyzer, interpreter);
         try {
             analyzer.analyze(className, methodNode);
         } catch (final AnalyzerException e) {
@@ -54,10 +59,10 @@ public class CoverageMethodTransformer extends MethodTransformer {
 
         final DefUseFrame[] frames = analyzer.getDefUseFrames();
         final Variable[] variables = analyzer.getVariables();
-        final int[][] successors = analyzer.getSuccessors();
-        final int[][] predecessors = analyzer.getPredecessors();
-        final int[][] basicBlocks = analyzer.getBasicBlocks();
-        final int[] leaders = analyzer.getLeaders();
+        final int[][] successors = flowAnalyzer.getSuccessors();
+        final int[][] predecessors = flowAnalyzer.getPredecessors();
+        final int[][] basicBlocks = flowAnalyzer.getBasicBlocks();
+        final int[] leaders = flowAnalyzer.getLeaders();
 
         final DefUseChain[] chains = DefUseChain.toBasicBlock(new DepthFirstDefUseChainSearch()
                 .search(frames, variables, successors, predecessors), leaders, basicBlocks);
