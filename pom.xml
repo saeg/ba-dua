@@ -169,6 +169,11 @@
 				<groupId>org.eluder.coveralls</groupId>
 				<artifactId>coveralls-maven-plugin</artifactId>
 				<version>3.2.1</version>
+				<configuration>
+					<jacocoReports>
+						<jacocoReport>ba-dua-tests/target/site/jacoco-aggregate/jacoco.xml</jacocoReport>
+					</jacocoReports>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
