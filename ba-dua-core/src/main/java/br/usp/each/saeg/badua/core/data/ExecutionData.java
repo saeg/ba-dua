@@ -1,0 +1,52 @@
+/**
+ * Copyright (c) 2014, 2016 University of Sao Paulo and Contributors.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Roberto Araujo - initial API and implementation and/or initial documentation
+ */
+package br.usp.each.saeg.badua.core.data;
+
+public class ExecutionData {
+
+    private final long id;
+
+    private final String name;
+
+    private final long[] data;
+
+    public ExecutionData(final long id, final String name, final int length) {
+        this.id = id;
+        this.name = name;
+        this.data = new long[length];
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public long[] getData() {
+        return data;
+    }
+
+    public void assertCompatibility(final long id, final String name, final int length)
+            throws IllegalStateException {
+
+        if (this.id != id) {
+            throw new IllegalStateException(String.format(
+                    "Different ids (%016x and %016x).", this.id, id));
+        }
+        if (!this.name.equals(name)) {
+            throw new IllegalStateException(String.format(
+                    "Different class names %s and %s for id %016x.", this.name, name, id));
+        }
+        if (this.data.length != length) {
+            throw new IllegalStateException(String.format(
+                    "Incompatible execution data for class %s with id %016x.", name, id));
+        }
+    }
+
+}

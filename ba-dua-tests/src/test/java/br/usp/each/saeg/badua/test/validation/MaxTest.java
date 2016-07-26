@@ -32,14 +32,16 @@ public class MaxTest extends ValidationTest {
 
     private long classId;
 
+    private String className;
+
     @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
 
+        className = "Max";
         final int classVersion = Opcodes.V1_6;
         final int classAccessor = Opcodes.ACC_PUBLIC | Opcodes.ACC_SUPER;
-        final String className = "Max";
         final String superName = "java/lang/Object";
 
         final int methodAccessor = Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC;
@@ -212,7 +214,7 @@ public class MaxTest extends ValidationTest {
     }
 
     private void assertCoverage(final int... expectedCoveredChains) {
-        final BitSet covered = BitSetUtils.valueOf(RT.getData(classId, null, 1));
+        final BitSet covered = BitSetUtils.valueOf(RT.getData(classId, className, 1));
         final BitSet expected = new BitSet();
         for (final int ecc : expectedCoveredChains) {
             expected.set(ecc);

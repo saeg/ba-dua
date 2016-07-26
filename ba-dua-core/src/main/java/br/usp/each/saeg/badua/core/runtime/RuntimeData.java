@@ -13,23 +13,25 @@ package br.usp.each.saeg.badua.core.runtime;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.usp.each.saeg.badua.core.data.ExecutionData;
+import br.usp.each.saeg.badua.core.data.ExecutionDataStore;
+
 public class RuntimeData {
 
-    private final Map<Long, long[]> data = new HashMap<Long, long[]>();
+    private final ExecutionDataStore store = new ExecutionDataStore();
 
-    public long[] getExecutionData(final long classId, final int size) {
-        synchronized (data) {
-            long[] dataArray = data.get(classId);
-            if (dataArray == null) {
-                dataArray = new long[size];
-                data.put(classId, dataArray);
-            }
-            return dataArray;
+    public ExecutionData getExecutionData(final long id, final String name, final int size) {
+        synchronized (store) {
+            return store.get(id, name, size);
         }
     }
 
     public Object getData() {
-        return new HashMap<Long, long[]>(data);
+        final Map<Long, long[]> data = new HashMap<Long, long[]>(store.entries.size());
+        for (final ExecutionData executionData : store.entries.values()) {
+            data.put(executionData.getId(), executionData.getData());
+        }
+        return data;
     }
 
 }
