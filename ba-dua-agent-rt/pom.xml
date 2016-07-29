@@ -50,6 +50,8 @@
 									<includes>
 										<include>org/jacoco/core/internal/ContentTypeDetector.class</include>
 										<include>org/jacoco/core/internal/data/CRC64.class</include>
+										<include>org/jacoco/core/internal/data/CompactDataInput.class</include>
+										<include>org/jacoco/core/internal/data/CompactDataOutput.class</include>
 									</includes>
 								</filter>
 							</filters>
@@ -68,7 +70,7 @@
 								</relocation>
 								<relocation>
 									<pattern>org.jacoco</pattern>
-									<shadedPattern>br.usp.each.saeg.badua</shadedPattern>
+									<shadedPattern>br.usp.each.saeg.badua.jacoco</shadedPattern>
 								</relocation>
 							</relocations>
 							<transformers>

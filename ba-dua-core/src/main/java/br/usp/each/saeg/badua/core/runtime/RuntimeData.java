@@ -10,11 +10,9 @@
  */
 package br.usp.each.saeg.badua.core.runtime;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import br.usp.each.saeg.badua.core.data.ExecutionData;
 import br.usp.each.saeg.badua.core.data.ExecutionDataStore;
+import br.usp.each.saeg.badua.core.data.IExecutionDataVisitor;
 
 public class RuntimeData {
 
@@ -26,12 +24,10 @@ public class RuntimeData {
         }
     }
 
-    public Object getData() {
-        final Map<Long, long[]> data = new HashMap<Long, long[]>(store.entries.size());
-        for (final ExecutionData executionData : store.entries.values()) {
-            data.put(executionData.getId(), executionData.getData());
+    public void collect(final IExecutionDataVisitor visitor) {
+        synchronized (store) {
+            store.accept(visitor);
         }
-        return data;
     }
 
 }

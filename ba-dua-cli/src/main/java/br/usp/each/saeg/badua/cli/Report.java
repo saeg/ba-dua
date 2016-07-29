@@ -15,11 +15,9 @@ import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.List;
-import java.util.Map;
 
 import org.jacoco.core.internal.ContentTypeDetector;
 import org.jacoco.core.internal.data.CRC64;
@@ -31,6 +29,9 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
+import br.usp.each.saeg.badua.core.data.ExecutionData;
+import br.usp.each.saeg.badua.core.data.ExecutionDataReader;
+import br.usp.each.saeg.badua.core.data.ExecutionDataStore;
 import br.usp.each.saeg.badua.core.internal.instr.CoverageMethodTransformer;
 import br.usp.each.saeg.badua.core.internal.instr.IdGenerator;
 import br.usp.each.saeg.badua.core.internal.instr.MethodInstrumenter;
@@ -51,7 +52,7 @@ public class Report implements IdGenerator {
 
     private final boolean showMethods;
 
-    private Map<Long, long[]> data;
+    private ExecutionDataStore store;
 
     private long classId;
 
@@ -74,7 +75,7 @@ public class Report implements IdGenerator {
 
     public void run() throws IOException, ClassNotFoundException {
 
-        data = read(inputFile);
+        readExecutionData();
 
         final List<File> files = Files.listRecursive(classes, new FilenameFilter() {
 
@@ -143,12 +144,12 @@ public class Report implements IdGenerator {
 
         mn.accept(mi);
 
-        final long[] dataArray = data.get(classId);
+        final ExecutionData execData = store.get(classId);
         final BitSet mnData;
-        if (dataArray == null) {
+        if (execData == null) {
             mnData = new BitSet();
         } else {
-            mnData = BitSetUtils.valueOf(Arrays.copyOfRange(dataArray,
+            mnData = BitSetUtils.valueOf(Arrays.copyOfRange(execData.getData(),
                     classProbeCount - methodProbeCount, classProbeCount));
         }
 
@@ -173,13 +174,15 @@ public class Report implements IdGenerator {
         return classProbeCount++;
     }
 
-    @SuppressWarnings("unchecked")
-    private Map<Long, long[]> read(final File file) throws IOException, ClassNotFoundException {
-        final ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
+    private void readExecutionData() throws IOException {
+        store = new ExecutionDataStore();
+        final FileInputStream input = new FileInputStream(inputFile);
         try {
-            return (Map<Long, long[]>) ois.readObject();
+            final ExecutionDataReader reader = new ExecutionDataReader(input);
+            reader.setExecutionDataVisitor(store);
+            reader.read();
         } finally {
-            ois.close();
+            input.close();
         }
     }
 

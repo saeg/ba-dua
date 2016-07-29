@@ -10,13 +10,18 @@
  */
 package br.usp.each.saeg.badua.core.data;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ExecutionDataStore {
+public class ExecutionDataStore implements IExecutionDataVisitor {
 
-    // TODO: Change visibility
-    public final Map<Long, ExecutionData> entries = new HashMap<Long, ExecutionData>();
+    private final Map<Long, ExecutionData> entries = new HashMap<Long, ExecutionData>();
+
+    public ExecutionData get(final Long id) {
+        return entries.get(id);
+    }
 
     public ExecutionData get(final Long id, final String name, final int size) {
         ExecutionData entry = entries.get(id);
@@ -27,6 +32,27 @@ public class ExecutionDataStore {
             entry.assertCompatibility(id, name, size);
         }
         return entry;
+    }
+
+    public Collection<ExecutionData> getContents() {
+        return new ArrayList<ExecutionData>(entries.values());
+    }
+
+    public void accept(final IExecutionDataVisitor visitor) {
+        for (final ExecutionData data : getContents()) {
+            visitor.visitClassExecution(data);
+        }
+    }
+
+    @Override
+    public void visitClassExecution(final ExecutionData data) {
+        final Long id = data.getId();
+        final ExecutionData entry = entries.get(id);
+        if (entry == null) {
+            entries.put(id, data);
+        } else {
+            throw new UnsupportedOperationException("Entry already exist. We don't support merge yet");
+        }
     }
 
 }

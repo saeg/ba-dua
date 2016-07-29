@@ -12,8 +12,8 @@ package br.usp.each.saeg.badua.agent.rt.internal.output;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 
+import br.usp.each.saeg.badua.core.data.ExecutionDataWriter;
 import br.usp.each.saeg.badua.core.runtime.RuntimeData;
 
 public class FileOutput {
@@ -23,11 +23,11 @@ public class FileOutput {
         if (filename == null)
             filename = "coverage.ser";
 
-        final ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename));
+        final FileOutputStream output = new FileOutputStream(filename);
         try {
-            oos.writeObject(data.getData());
+            data.collect(new ExecutionDataWriter(output));
         } finally {
-            oos.close();
+            output.close();
         }
     }
 

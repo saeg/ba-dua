@@ -19,13 +19,21 @@ public class ExecutionData {
     private final long[] data;
 
     public ExecutionData(final long id, final String name, final int length) {
+        this(id, name, new long[length]);
+    }
+
+    public ExecutionData(final long id, final String name, final long[] data) {
         this.id = id;
         this.name = name;
-        this.data = new long[length];
+        this.data = data;
     }
 
     public long getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public long[] getData() {
