@@ -52,6 +52,11 @@
 										<include>org/jacoco/core/internal/data/CRC64.class</include>
 										<include>org/jacoco/core/internal/data/CompactDataInput.class</include>
 										<include>org/jacoco/core/internal/data/CompactDataOutput.class</include>
+										<include>org/jacoco/core/internal/analysis/StringPool.class</include>
+										<include>org/jacoco/core/internal/analysis/CounterImpl.class</include>
+										<include>org/jacoco/core/internal/analysis/CounterImpl$Var.class</include>
+										<include>org/jacoco/core/internal/analysis/CounterImpl$Fix.class</include>
+										<include>org/jacoco/core/analysis/ICounter.class</include>
 									</includes>
 								</filter>
 								<filter>

@@ -194,6 +194,9 @@
 				<version>3.6</version>
 				<configuration>
 					<verbose>true</verbose>
+					<excludes>
+						<exclude>**/Report.java</exclude>
+					</excludes>
 				</configuration>
 				<executions>
 					<execution>
