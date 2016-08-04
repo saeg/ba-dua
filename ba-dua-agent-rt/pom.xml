@@ -46,13 +46,20 @@
 							<minimizeJar>true</minimizeJar>
 							<filters>
 								<filter>
+									<artifact>*:*</artifact>
+									<excludes>
+										<exclude>META-INF/*.SF</exclude>
+										<exclude>META-INF/*.DSA</exclude>
+										<exclude>META-INF/*.RSA</exclude>
+										<exclude>META-INF/maven/**</exclude>
+									</excludes>
+								</filter>
+								<filter>
 									<artifact>org.jacoco:org.jacoco.core</artifact>
-									<includes>
-										<include>org/jacoco/core/internal/ContentTypeDetector.class</include>
-										<include>org/jacoco/core/internal/data/CRC64.class</include>
-										<include>org/jacoco/core/internal/data/CompactDataInput.class</include>
-										<include>org/jacoco/core/internal/data/CompactDataOutput.class</include>
-									</includes>
+									<excludes>
+										<exclude>org/jacoco/core/jacoco.properties</exclude>
+										<exclude>about.html</exclude>
+									</excludes>
 								</filter>
 							</filters>
 							<relocations>
