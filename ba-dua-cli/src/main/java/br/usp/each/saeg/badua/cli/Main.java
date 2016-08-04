@@ -15,7 +15,7 @@ import java.util.Arrays;
 public class Main {
 
     private enum Command {
-        instrument, report, report_refactor
+        instrument, report
     }
 
     public static void main(final String[] args) {
@@ -32,10 +32,8 @@ public class Main {
                 Instrument.main(commandArgs);
                 break;
             case report:
-                Report.main(commandArgs);
-                break;
-            case report_refactor:
                 ReportRefactor.main(commandArgs);
+                break;
             }
         } catch (final IllegalArgumentException e) {
             exit("no such command: " + command);
