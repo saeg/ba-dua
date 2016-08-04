@@ -32,7 +32,7 @@ public class Main {
                 Instrument.main(commandArgs);
                 break;
             case report:
-                ReportRefactor.main(commandArgs);
+                Report.main(commandArgs);
                 break;
             }
         } catch (final IllegalArgumentException e) {

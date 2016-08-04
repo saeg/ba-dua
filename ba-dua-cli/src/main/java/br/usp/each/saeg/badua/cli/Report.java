@@ -31,7 +31,7 @@ import br.usp.each.saeg.badua.core.data.ExecutionDataReader;
 import br.usp.each.saeg.badua.core.data.ExecutionDataStore;
 import br.usp.each.saeg.commons.io.Files;
 
-public class ReportRefactor {
+public class Report {
 
     private static class PrintCoverage implements ICoverageVisitor {
 
@@ -78,7 +78,7 @@ public class ReportRefactor {
 
     private final Analyzer analyzer;
 
-    public ReportRefactor(final ReportOptions options) throws IOException {
+    public Report(final ReportOptions options) throws IOException {
         classes = options.getClasses();
         analyzer = new Analyzer(readExecutionData(options.getInput()),
                 new PrintCoverage(System.out, options.showClasses(), options.showMethods()));
@@ -132,7 +132,7 @@ public class ReportRefactor {
         }
 
         try {
-            new ReportRefactor(options).run();
+            new Report(options).run();
         } catch (final Exception e) {
             System.err.println("Failed: " + e.getLocalizedMessage());
             System.exit(1);
