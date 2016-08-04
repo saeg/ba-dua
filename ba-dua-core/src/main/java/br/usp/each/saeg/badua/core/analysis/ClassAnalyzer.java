@@ -10,11 +10,12 @@
  */
 package br.usp.each.saeg.badua.core.analysis;
 
+import static br.usp.each.saeg.commons.ArrayUtils.indexOf;
 import static br.usp.each.saeg.commons.BitSetUtils.valueOf;
-import static java.util.Arrays.copyOfRange;
 import static org.jacoco.core.internal.analysis.CounterImpl.COUNTER_0_1;
 import static org.jacoco.core.internal.analysis.CounterImpl.COUNTER_1_0;
 
+import java.util.Arrays;
 import java.util.BitSet;
 
 import org.jacoco.core.internal.analysis.StringPool;
@@ -118,6 +119,10 @@ public class ClassAnalyzer extends ClassVisitor {
                         analyzer.getDefUseFrames(), analyzer.getVariables(),
                         flowAnalyzer.getSuccessors(),flowAnalyzer.getPredecessors());
 
+                // Only global DU
+                final DefUseChain[] globalInsnChains = DefUseChain.globals(insnChains,
+                        flowAnalyzer.getLeaders(), flowAnalyzer.getBasicBlocks());
+
                 // DU by basic block (the ones we monitor)
                 final DefUseChain[] blockChains = DefUseChain.toBasicBlock(insnChains,
                         flowAnalyzer.getLeaders(), flowAnalyzer.getBasicBlocks());
@@ -125,8 +130,9 @@ public class ClassAnalyzer extends ClassVisitor {
                 final BitSet data = getData(execData.getData(), blockChains.length);
 
                 final MethodCoverage methodCoverage = new MethodCoverage(name, desc);
-                for (int i = 0; i < blockChains.length; i++) {
-                    methodCoverage.increment(data.get(i) ? COUNTER_0_1 : COUNTER_1_0);
+                for (final DefUseChain chain : globalInsnChains) {
+                    final DefUseChain blockChain = DefUseChain.toBasicBlock(chain, flowAnalyzer.getLeaders());
+                    methodCoverage.increment(data.get(indexOf(blockChains, blockChain)) ? COUNTER_0_1 : COUNTER_1_0);
                 }
                 if (methodCoverage.getDUCounter().getTotalCount() > 0) {
                     coverage.addMethod(methodCoverage);
@@ -135,7 +141,7 @@ public class ClassAnalyzer extends ClassVisitor {
 
             public BitSet getData(final long[] raw, final int length) {
                 if (raw != null) {
-                    return valueOf(copyOfRange(raw, window, incrementWindow(length)));
+                    return valueOf(Arrays.copyOfRange(raw, window, incrementWindow(length)));
                 }
                 return new BitSet();
             }
