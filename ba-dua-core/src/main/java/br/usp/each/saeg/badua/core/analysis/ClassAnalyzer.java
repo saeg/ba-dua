@@ -12,8 +12,6 @@ package br.usp.each.saeg.badua.core.analysis;
 
 import static br.usp.each.saeg.commons.ArrayUtils.indexOf;
 import static br.usp.each.saeg.commons.BitSetUtils.valueOf;
-import static org.jacoco.core.internal.analysis.CounterImpl.COUNTER_0_1;
-import static org.jacoco.core.internal.analysis.CounterImpl.COUNTER_1_0;
 
 import java.util.Arrays;
 import java.util.BitSet;
@@ -23,6 +21,9 @@ import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.LineNumberNode;
+import org.objectweb.asm.tree.LocalVariableNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.analysis.AnalyzerException;
 
@@ -31,7 +32,11 @@ import br.usp.each.saeg.asm.defuse.DefUseChain;
 import br.usp.each.saeg.asm.defuse.DefUseInterpreter;
 import br.usp.each.saeg.asm.defuse.DepthFirstDefUseChainSearch;
 import br.usp.each.saeg.asm.defuse.FlowAnalyzer;
+import br.usp.each.saeg.asm.defuse.Local;
+import br.usp.each.saeg.asm.defuse.ObjectField;
+import br.usp.each.saeg.asm.defuse.StaticField;
 import br.usp.each.saeg.asm.defuse.Value;
+import br.usp.each.saeg.asm.defuse.Variable;
 import br.usp.each.saeg.badua.core.data.ExecutionData;
 import br.usp.each.saeg.badua.core.internal.instr.InstrSupport;
 
@@ -89,7 +94,7 @@ public class ClassAnalyzer extends ClassVisitor {
 
         InstrSupport.assertNotInstrumented(name, coverage.getName());
 
-        // Does not instrument:
+        // Does not analyze:
         // 1. Interfaces
         if (interfaceType)
             return null;
@@ -114,6 +119,12 @@ public class ClassAnalyzer extends ClassVisitor {
                     throw new RuntimeException(e);
                 }
 
+                // Variables
+                final Variable[] vars = analyzer.getVariables();
+
+                // Instructions by line number
+                final int[] lines = getLines();
+
                 // All DU from current method node
                 final DefUseChain[] insnChains = new DepthFirstDefUseChainSearch().search(
                         analyzer.getDefUseFrames(), analyzer.getVariables(),
@@ -130,9 +141,17 @@ public class ClassAnalyzer extends ClassVisitor {
                 final BitSet data = getData(execData.getData(), blockChains.length);
 
                 final MethodCoverage methodCoverage = new MethodCoverage(name, desc);
-                for (final DefUseChain chain : globalInsnChains) {
-                    final DefUseChain blockChain = DefUseChain.toBasicBlock(chain, flowAnalyzer.getLeaders());
-                    methodCoverage.increment(data.get(indexOf(blockChains, blockChain)) ? COUNTER_0_1 : COUNTER_1_0);
+                for (final DefUseChain c : globalInsnChains) {
+
+                    // Get the DU coverage status
+                    final boolean covered = data.get(indexOf(blockChains,
+                            DefUseChain.toBasicBlock(c, flowAnalyzer.getLeaders())));
+
+                    if (c.isComputationalChain()) {
+                        methodCoverage.increment(lines[c.def], lines[c.use], getVar(c, vars), covered);
+                    } else {
+                        methodCoverage.increment(lines[c.def], lines[c.use], lines[c.target], getVar(c, vars), covered);
+                    }
                 }
                 if (methodCoverage.getDUCounter().getTotalCount() > 0) {
                     coverage.addMethod(methodCoverage);
@@ -144,6 +163,48 @@ public class ClassAnalyzer extends ClassVisitor {
                     return valueOf(Arrays.copyOfRange(raw, window, incrementWindow(length)));
                 }
                 return new BitSet();
+            }
+
+            public int[] getLines() {
+                final int[] lines = new int[instructions.size()];
+                Arrays.fill(lines, MethodCoverage.UNKNOWN_LINE);
+                for (int i = 0; i < instructions.size(); i++) {
+                    if (instructions.get(i).getType() == AbstractInsnNode.LINE) {
+                        final LineNumberNode line = (LineNumberNode) instructions.get(i);
+                        Arrays.fill(lines, instructions.indexOf(line.start), lines.length, line.line);
+                    }
+                }
+                return lines;
+            }
+
+            public String getVar(final DefUseChain c, final Variable[] vars) {
+                return getVar(vars[c.var], c.use);
+            }
+
+            public String getVar(final Value v, final int insn) {
+                if (v instanceof StaticField) {
+                    return ((StaticField) v).name;
+                } else if (v instanceof ObjectField) {
+                    final ObjectField objField = (ObjectField) v;
+                    final String var = getVar(objField.getRoot(), insn);
+                    if (var != null) {
+                        return String.format("%s.%s", var, objField.name);
+                    }
+                } else if (v instanceof Local) {
+                    return getVar((Local) v, insn);
+                }
+                return null;
+            }
+
+            public String getVar(final Local local, final int insn) {
+                for (final LocalVariableNode lvn : localVariables) {
+                    if (lvn.index == local.var
+                            && insn >= instructions.indexOf(lvn.start)
+                            && insn < instructions.indexOf(lvn.end)) {
+                        return lvn.name;
+                    }
+                }
+                return null;
             }
 
         };
