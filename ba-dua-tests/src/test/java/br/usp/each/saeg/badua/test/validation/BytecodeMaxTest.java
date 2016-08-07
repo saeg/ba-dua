@@ -26,7 +26,7 @@ import br.usp.each.saeg.badua.agent.rt.internal.RT;
 import br.usp.each.saeg.badua.core.runtime.RuntimeData;
 import br.usp.each.saeg.commons.BitSetUtils;
 
-public class MaxTest extends ValidationTest {
+public class BytecodeMaxTest extends ValidationTest {
 
     private Method method;
 

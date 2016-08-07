@@ -28,7 +28,7 @@ import br.usp.each.saeg.badua.agent.rt.internal.RT;
 import br.usp.each.saeg.badua.core.runtime.RuntimeData;
 import br.usp.each.saeg.commons.BitSetUtils;
 
-public class SimpleTest extends ValidationTest {
+public class BytecodeFieldTest extends ValidationTest {
 
     private Method method;
 
@@ -45,7 +45,7 @@ public class SimpleTest extends ValidationTest {
     public void setUp() throws Exception {
         super.setUp();
 
-        className = "Watch";
+        className = "Field";
 
         // class
         final int classVersion = Opcodes.V1_6;
