@@ -31,7 +31,7 @@ public class Max6SourceTest extends AbstractMaxSourceTest {
         assertDU(17, 20, "i", true);
         assertDU(17, 22, "i", true);
         assertDU(22, 18, 19, "i", true);
-        assertDU(16, 19, 22, "array", true);
+        assertDU(16, 19, 20, "array", true);
         assertDU(22, 19, 22, "i", true);
         assertDU(20, 19, 22, "max", true);
         assertDU(22, 22, "i", true);
