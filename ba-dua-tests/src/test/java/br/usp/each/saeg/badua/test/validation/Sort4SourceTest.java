@@ -21,7 +21,7 @@ public class Sort4SourceTest extends AbstractSortSourceTest {
 
     @Test
     public void verifyCoveredDU() {
-        assertTotal(true, 37);
+        assertTotal(true, 45);
         assertDU(17, 18, 19, "sortupto", true);
         assertDU(17, 18, 19, "n", true);
         assertDU(17, 19, "a", true);
@@ -47,11 +47,11 @@ public class Sort4SourceTest extends AbstractSortSourceTest {
         assertDU(17, 22, 29, "n", true);
         assertDU(17, 29, "a", true);
         assertDU(17, 29, "sortupto", true);
-        // assertDU(17, 30, "a", true);
-        // assertDU(17, 30, "sortupto", true);
-        // assertDU(24, 30, "mymax", true);
-        // assertDU(17, 31, "a", true);
-        // assertDU(25, 31, "maxpos", true);
+        assertDU(17, 30, "a", true);
+        assertDU(17, 30, "sortupto", true);
+        assertDU(24, 30, "mymax", true);
+        assertDU(17, 31, "a", true);
+        assertDU(25, 31, "maxpos", true);
         assertDU(17, 32, "sortupto", true);
         assertDU(32, 18, 19, "sortupto", true);
         assertDU(32, 19, "sortupto", true);
@@ -61,9 +61,9 @@ public class Sort4SourceTest extends AbstractSortSourceTest {
         assertDU(21, 23, 27, "index", true);
         assertDU(19, 23, 27, "mymax", true);
         assertDU(32, 29, "sortupto", true);
-        // assertDU(32, 30, "sortupto", true);
-        // assertDU(19, 30, "mymax", true);
-        // assertDU(20, 31, "maxpos", true);
+        assertDU(32, 30, "sortupto", true);
+        assertDU(19, 30, "mymax", true);
+        assertDU(20, 31, "maxpos", true);
         assertDU(32, 32, "sortupto", true);
         assertDU(32, 18, 34, "sortupto", true);
         assertDU(17, 18, 34, "n", true);
