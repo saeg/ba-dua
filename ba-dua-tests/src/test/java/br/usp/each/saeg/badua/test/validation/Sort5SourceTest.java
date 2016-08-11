@@ -21,7 +21,6 @@ public class Sort5SourceTest extends AbstractSortSourceTest {
 
     @Test
     public void verifyCoveredDU() {
-        assertTotal(true, 39);
         assertDU(17, 18, 19, "sortupto", true);
         assertDU(17, 18, 19, "n", true);
         assertDU(17, 19, "a", true);
@@ -61,6 +60,12 @@ public class Sort5SourceTest extends AbstractSortSourceTest {
         assertDU(32, 32, "sortupto", true);
         assertDU(32, 18, 34, "sortupto", true);
         assertDU(17, 18, 34, "n", true);
+    }
+
+    @Test
+    public void verifyTotal() {
+        assertTotal(true, 39);
+        assertTotal(false, 10);
     }
 
 }

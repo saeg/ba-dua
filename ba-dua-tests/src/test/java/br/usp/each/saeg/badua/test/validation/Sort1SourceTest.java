@@ -21,9 +21,14 @@ public class Sort1SourceTest extends AbstractSortSourceTest {
 
     @Test
     public void verifyCoveredDU() {
-        assertTotal(true, 2);
         assertDU(17, 18, 34, "sortupto", true);
         assertDU(17, 18, 34, "n", true);
+    }
+
+    @Test
+    public void verifyTotal() {
+        assertTotal(true, 2);
+        assertTotal(false, 47);
     }
 
 }

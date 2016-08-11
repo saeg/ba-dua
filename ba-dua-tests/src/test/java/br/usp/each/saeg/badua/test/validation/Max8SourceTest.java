@@ -21,7 +21,6 @@ public class Max8SourceTest extends AbstractMaxSourceTest {
 
     @Test
     public void verifyCoveredDU() {
-        assertTotal(true, 18);
         assertDU(17, 18, 19, "i", true);
         assertDU(16, 18, 19, "length", true);
         assertDU(16, 19, 22, "array", true);
@@ -40,6 +39,12 @@ public class Max8SourceTest extends AbstractMaxSourceTest {
         assertDU(22, 18, 24, "i", true);
         assertDU(16, 18, 24, "length", true);
         assertDU(20, 24, "max", true);
+    }
+
+    @Test
+    public void verifyTotal() {
+        assertTotal(true, 18);
+        assertTotal(false, 5);
     }
 
 }

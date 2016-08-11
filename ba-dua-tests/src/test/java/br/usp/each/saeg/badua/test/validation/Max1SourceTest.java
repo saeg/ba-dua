@@ -21,10 +21,15 @@ public class Max1SourceTest extends AbstractMaxSourceTest {
 
     @Test
     public void verifyCoveredDU() {
-        assertTotal(true, 3);
         assertDU(17, 18, 24, "i", true);
         assertDU(16, 18, 24, "length", true);
         assertDU(17, 24, "max", true);
+    }
+
+    @Test
+    public void verifyTotal() {
+        assertTotal(true, 3);
+        assertTotal(false, 20);
     }
 
 }

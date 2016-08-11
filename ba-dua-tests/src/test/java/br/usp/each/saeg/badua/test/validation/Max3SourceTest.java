@@ -21,7 +21,6 @@ public class Max3SourceTest extends AbstractMaxSourceTest {
 
     @Test
     public void verifyCoveredDU() {
-        assertTotal(true, 9);
         assertDU(17, 18, 19, "i", true);
         assertDU(16, 18, 19, "length", true);
         assertDU(16, 19, 22, "array", true);
@@ -31,6 +30,12 @@ public class Max3SourceTest extends AbstractMaxSourceTest {
         assertDU(22, 18, 24, "i", true);
         assertDU(16, 18, 24, "length", true);
         assertDU(17, 24, "max", true);
+    }
+
+    @Test
+    public void verifyTotal() {
+        assertTotal(true, 9);
+        assertTotal(false, 14);
     }
 
 }
