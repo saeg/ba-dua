@@ -25,7 +25,7 @@ public class ReportOptions {
     private File classes;
 
     @Option(name = "-show-classes", aliases = "--sc", usage = "show class coverage")
-    private boolean showClasses;
+    private Boolean showClasses;
 
     @Option(name = "-show-methods", aliases = "--sm", usage = "show method coverage")
     private boolean showMethods;
@@ -39,7 +39,7 @@ public class ReportOptions {
     }
 
     public boolean showClasses() {
-        return showClasses;
+        return showClasses == null ? !showMethods : showClasses;
     }
 
     public boolean showMethods() {
