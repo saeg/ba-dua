@@ -14,10 +14,12 @@ import static java.lang.String.format;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.kohsuke.args4j.CmdLineException;
@@ -74,15 +76,42 @@ public class Report {
 
     }
 
+    private static class CoverageVisitor implements ICoverageVisitor {
+
+        private final List<ClassCoverage> classes = new ArrayList<ClassCoverage>();
+
+        private final ICoverageVisitor next;
+
+        public CoverageVisitor(final ICoverageVisitor next) {
+            this.next = next;
+        }
+
+        @Override
+        public void visitCoverage(final ClassCoverage coverage) {
+            classes.add(coverage);
+            if (next != null) {
+                next.visitCoverage(coverage);
+            }
+        }
+
+    }
+
     private final File classes;
+
+    private final File xmlFile;
+
+    private final CoverageVisitor visitor;
 
     private final Analyzer analyzer;
 
     public Report(final ReportOptions options) throws IOException {
         classes = options.getClasses();
-        analyzer = new Analyzer(readExecutionData(options.getInput()),
-                new PrintCoverage(System.out, options.showClasses(), options.showMethods()));
+        xmlFile = options.getXMLFile();
 
+        visitor = new CoverageVisitor(new PrintCoverage(
+                System.out, options.showClasses(), options.showMethods()));
+
+        analyzer = new Analyzer(readExecutionData(options.getInput()), visitor);
     }
 
     public void run() throws IOException {
@@ -102,6 +131,15 @@ public class Report {
                 analyzer.analyzeAll(input, file.getPath());
             } finally {
                 input.close();
+            }
+        }
+
+        if (xmlFile != null) {
+            final FileOutputStream output = new FileOutputStream(xmlFile);
+            try {
+                XMLCoverageWriter.write(visitor.classes, output);
+            } finally {
+                output.close();
             }
         }
     }

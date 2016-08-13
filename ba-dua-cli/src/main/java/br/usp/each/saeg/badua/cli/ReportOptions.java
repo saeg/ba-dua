@@ -30,6 +30,9 @@ public class ReportOptions {
     @Option(name = "-show-methods", aliases = "--sm", usage = "show method coverage")
     private boolean showMethods;
 
+    @Option(name = "-xml", usage = "write XML report")
+    private File xmlFile;
+
     public File getInput() {
         return input;
     }
@@ -39,11 +42,15 @@ public class ReportOptions {
     }
 
     public boolean showClasses() {
-        return showClasses == null ? !showMethods : showClasses;
+        return showClasses == null ? !showMethods && xmlFile == null : showClasses;
     }
 
     public boolean showMethods() {
         return showMethods;
+    }
+
+    public File getXMLFile() {
+        return xmlFile;
     }
 
 }
