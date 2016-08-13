@@ -49,7 +49,10 @@ public class Analyzer {
         final long classId = CRC64.checksum(reader.b);
         final ClassAnalyzer ca = new ClassAnalyzer(getData(classId, reader.getClassName()), stringPool);
         reader.accept(ca, DEFAULT);
-        visitor.visitCoverage(ca.getCoverage());
+        final ClassCoverage coverage = ca.getCoverage();
+        if (coverage.getDUCounter().getTotalCount() > 0) {
+            visitor.visitCoverage(coverage);
+        }
     }
 
     public void analyze(final InputStream input, final String location) throws IOException {
