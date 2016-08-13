@@ -61,6 +61,13 @@
 										<exclude>about.html</exclude>
 									</excludes>
 								</filter>
+								<filter>
+									<artifact>org.ow2.asm:asm-debug-all</artifact>
+									<excludes>
+										<exclude>org/objectweb/asm/xml/asm-xml.dtd</exclude>
+										<exclude>org/objectweb/asm/**/package.html</exclude>
+									</excludes>
+								</filter>
 							</filters>
 							<relocations>
 								<relocation>

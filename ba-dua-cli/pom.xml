@@ -62,6 +62,21 @@
 									</excludes>
 								</filter>
 								<filter>
+									<artifact>org.jacoco:org.jacoco.report</artifact>
+									<excludes>
+										<exclude>org/jacoco/report/xml/report.dtd</exclude>
+										<exclude>org/jacoco/report/internal/html/resources/*</exclude>
+										<exclude>about.html</exclude>
+									</excludes>
+								</filter>
+								<filter>
+									<artifact>org.ow2.asm:asm-debug-all</artifact>
+									<excludes>
+										<exclude>org/objectweb/asm/xml/asm-xml.dtd</exclude>
+										<exclude>org/objectweb/asm/**/package.html</exclude>
+									</excludes>
+								</filter>
+								<filter>
 									<artifact>args4j:args4j</artifact>
 									<excludes>
 										<exclude>LICENSE</exclude>
