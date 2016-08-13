@@ -34,7 +34,7 @@ You can instead of offline instrumentation use the Java agent. Java agent instru
 
 ### Reporting
 
-After program execution a new file (coverage.ser) will be created in your current directory. You should use the **report** program to assess the coverage.
+After program execution a new file (coverage.ser) will be created in your current directory. You should use the **report** program to assess the coverage. For default, the program print out the coverage for each class `(# of covered DU within the class/# of DU within the class)`. There is an option `-show-methods` that will print out the coverage for each method `(# of covered DU within the method/# of DU within the method)`. Alternatively, you can export a XML report with the option `-xml`. If the classes were compiled with debug information (lines and variables) the the XML report will include each actual def-use pair (DU) that are covered or not.
 
 ```
 java -jar ba-dua-cli-VERSION-all.jar report
