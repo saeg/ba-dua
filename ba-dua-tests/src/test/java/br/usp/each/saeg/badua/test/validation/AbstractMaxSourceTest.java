@@ -25,15 +25,11 @@ public abstract class AbstractMaxSourceTest extends ValidationTargetsTest {
 
     public abstract int[] input();
 
-    private int maxLength(final Class<?> klass, final int[] array, final int length) {
-        try {
-            return (Integer) klass.getMethod("max", int[].class, int.class).invoke(null, array, length);
-        } catch (final Exception ignore) {
-            throw new RuntimeException(ignore.getCause());
-        }
+    private int maxLength(final Class<?> klass, final int[] array, final int length) throws Exception {
+        return (Integer) klass.getMethod("max", int[].class, int.class).invoke(null, array, length);
     }
 
-    private int max(final Class<?> klass, final int[] array) {
+    private int max(final Class<?> klass, final int[] array) throws Exception {
         return maxLength(klass, array, array.length);
     }
 

@@ -25,15 +25,11 @@ public abstract class AbstractSortSourceTest extends ValidationTargetsTest {
 
     public abstract int[] input();
 
-    private void sortLength(final Class<?> klass, final int[] array, final int length) {
-        try {
-            klass.getMethod("sort", int[].class, int.class).invoke(null, array, length);
-        } catch (final Exception ignore) {
-            throw new RuntimeException(ignore.getCause());
-        }
+    private void sortLength(final Class<?> klass, final int[] array, final int length) throws Exception {
+        klass.getMethod("sort", int[].class, int.class).invoke(null, array, length);
     }
 
-    private void sort(final Class<?> klass, final int[] array) {
+    private void sort(final Class<?> klass, final int[] array) throws Exception {
         sortLength(klass, array, array.length);
     }
 
