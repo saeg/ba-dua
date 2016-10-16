@@ -63,6 +63,11 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
+			<artifactId>ba-dua-agent</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>ba-dua-cli</artifactId>
 			<version>${project.version}</version>
 			<classifier>all</classifier>
