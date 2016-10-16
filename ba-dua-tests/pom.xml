@@ -27,7 +27,6 @@
 
 	<properties>
 		<license.header.fileLocation>../LICENSE-TEMPLATE.txt</license.header.fileLocation>
-		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<gpg.skip>true</gpg.skip>
 		<maven.install.skip>true</maven.install.skip>
 		<maven.deploy.skip>true</maven.deploy.skip>
