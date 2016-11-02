@@ -84,11 +84,8 @@ public abstract class ValidationTargetsTest extends ValidationTest implements IC
                     && defUse.target == target
                     && defUse.var.equals(var)) {
 
-                if (defUse.covered != covered) {
-                    Assert.fail("Invalid DU status");
-                } else {
-                    return; // Success!
-                }
+                Assert.assertEquals(defUse.covered, covered);
+                return;
             }
         }
         Assert.fail("DU not found");
