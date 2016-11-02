@@ -36,6 +36,14 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.6</version>
+				<dependencies>
+					<!-- See: https://github.com/codehaus-plexus/plexus-archiver/pull/12 -->
+					<dependency>
+						<groupId>org.codehaus.plexus</groupId>
+						<artifactId>plexus-archiver</artifactId>
+						<version>3.0.3</version> <!--  Override: 3.0.1 -->
+					</dependency>
+				</dependencies>
 				<executions>
 					<execution>
 						<phase>package</phase>
