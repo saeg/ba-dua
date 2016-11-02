@@ -22,7 +22,7 @@ public class Field3SourceTest extends ValidationTargetsTest {
 
     @Override
     public final void run(final Class<?> klass) throws Exception {
-        final Object object =  klass.newInstance();
+        final Object object = klass.newInstance();
         klass.getMethod("start").invoke(object);
         klass.getMethod("start").invoke(object);
     }

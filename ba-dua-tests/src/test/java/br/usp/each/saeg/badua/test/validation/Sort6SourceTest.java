@@ -33,7 +33,7 @@ public class Sort6SourceTest extends AbstractSortSourceTest {
         assertDU(21, 23, 27, "index", true);
         assertDU(19, 23, 27, "mymax", true);
         assertDU(21, 27, "index", true);
-        assertDU(27, 22, 23,  "index", true);
+        assertDU(27, 22, 23, "index", true);
         assertDU(17, 23, 24, "a", true);
         assertDU(27, 23, 24, "index", true);
         assertDU(19, 23, 24, "mymax", true);
