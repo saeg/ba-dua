@@ -16,6 +16,10 @@ The implementation is described in: "Data-flow Testing in the Large". Published 
 
 ba-dua is still an experimental tool. If you are looking for a general purpose coverage tool we recommend [JaCoCo](http://www.eclemma.org/jacoco/). JaCoCo is definitely the best coverage tool for Java. If you are looking for mutation test we recommend [PIT](http://pitest.org/). If you don't know what data-flow coverage is, you can read [this link](http://www.bullseye.com/coverage.html#other_dataFlow).
 
+## Download
+
+Version `>= 0.3.0` are available at [Maven central](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22br.usp.each.saeg%22%20AND%20ba-dua). Older version can be found at [releases](https://github.com/saeg/ba-dua/releases) page.
+
 ## Examples
 
 ### Offline instrumentation
@@ -34,7 +38,7 @@ You can instead of offline instrumentation use the Java agent. Java agent instru
 
 ### Reporting
 
-After program execution a new file (coverage.ser) will be created in your current directory. You should use the **report** program to assess the coverage. For default, the program print out the coverage for each class `(# of covered DU within the class/# of DU within the class)`. There is an option `-show-methods` that will print out the coverage for each method `(# of covered DU within the method/# of DU within the method)`. Alternatively, you can export a XML report with the option `-xml`. If the classes were compiled with debug information (lines and variables) the the XML report will include each actual def-use pair (DU) that are covered or not.
+After program execution a new file (coverage.ser) will be created in your current directory. You should use the **report** program to assess the coverage. For default, the program print out the coverage for each class `(# of covered DU within the class/# of DU within the class)`. There is an option `-show-methods` that will print out the coverage for each method `(# of covered DU within the method/# of DU within the method)`. Alternatively, you can export a XML report with the option `-xml`. If the classes were compiled with debug information (lines and variables) the XML report will include each actual def-use pair (DU) that are covered or not.
 
 ```
 java -jar ba-dua-cli-VERSION-all.jar report
