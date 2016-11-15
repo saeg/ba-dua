@@ -14,11 +14,6 @@ import static java.lang.String.format;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.AbstractInsnNode;
-import org.objectweb.asm.tree.InsnNode;
-import org.objectweb.asm.tree.IntInsnNode;
-import org.objectweb.asm.tree.LdcInsnNode;
 
 public final class InstrSupport {
 
@@ -110,49 +105,6 @@ public final class InstrSupport {
             mv.visitIntInsn(Opcodes.SIPUSH, value);
         } else {
             mv.visitLdcInsn(Integer.valueOf(value));
-        }
-    }
-
-    /**
-     * Generates the instruction to push the given int value on the stack.
-     *
-     * @param value
-     *            the value to be pushed on the stack.
-     * @return the AbstractInsnNode that push the given int value on the stack.
-     */
-    public static AbstractInsnNode push(final int value) {
-        final AbstractInsnNode insn;
-        if (value >= -1 && value <= 5) {
-            insn = new InsnNode(Opcodes.ICONST_0 + value);
-        } else if (value >= Byte.MIN_VALUE && value <= Byte.MAX_VALUE) {
-            insn = new IntInsnNode(Opcodes.BIPUSH, value);
-        } else if (value >= Short.MIN_VALUE && value <= Short.MAX_VALUE) {
-            insn = new IntInsnNode(Opcodes.SIPUSH, value);
-        } else {
-            insn = new LdcInsnNode(value);
-        }
-        return insn;
-    }
-
-    public static void swap(final MethodVisitor mv, final Type stackTop, final Type belowTop) {
-        if (stackTop.getSize() == 1) {
-            if (belowTop.getSize() == 1) {
-                // Top = 1, below = 1
-                mv.visitInsn(Opcodes.SWAP);
-            } else {
-                // Top = 1, below = 2
-                mv.visitInsn(Opcodes.DUP_X2);
-                mv.visitInsn(Opcodes.POP);
-            }
-        } else {
-            if (belowTop.getSize() == 1) {
-                // Top = 2, below = 1
-                mv.visitInsn(Opcodes.DUP2_X1);
-            } else {
-                // Top = 2, below = 2
-                mv.visitInsn(Opcodes.DUP2_X2);
-            }
-            mv.visitInsn(Opcodes.POP2);
         }
     }
 

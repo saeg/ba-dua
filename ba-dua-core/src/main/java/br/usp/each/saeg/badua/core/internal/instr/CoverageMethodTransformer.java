@@ -269,8 +269,4 @@ public class CoverageMethodTransformer extends MethodTransformer {
         }
     }
 
-    public DefUseChain[] getDefUseChains() {
-        return chains.clone();
-    }
-
 }
