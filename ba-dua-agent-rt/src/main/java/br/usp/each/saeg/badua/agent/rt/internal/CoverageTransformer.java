@@ -46,7 +46,8 @@ public class CoverageTransformer implements ClassFileTransformer {
 
     private boolean skip(final ClassLoader loader) {
         return loader == null
-                || loader.getClass().getName().equals("sun.reflect.DelegatingClassLoader");
+                || loader.getClass().getName().equals("sun.reflect.DelegatingClassLoader")
+                || loader.getClass().getName().equals("sun.misc.Launcher$ExtClassLoader");
     }
 
 }
