@@ -19,6 +19,8 @@ import br.usp.each.saeg.badua.core.instr.Instrumenter;
 
 public class CoverageTransformer implements ClassFileTransformer {
 
+    private final static String BADUA_PACKAGE = "br/usp/each/saeg/badua/";
+
     private final Instrumenter instrumenter;
 
     public CoverageTransformer() {
@@ -32,7 +34,7 @@ public class CoverageTransformer implements ClassFileTransformer {
                             final ProtectionDomain protectionDomain,
                             final byte[] classfileBuffer) throws IllegalClassFormatException {
 
-        if (skip(loader)) {
+        if (skip(loader, className)) {
             return null;
         }
         try {
@@ -44,10 +46,11 @@ public class CoverageTransformer implements ClassFileTransformer {
         }
     }
 
-    private boolean skip(final ClassLoader loader) {
+    private boolean skip(final ClassLoader loader, final String className) {
         return loader == null
                 || loader.getClass().getName().equals("sun.reflect.DelegatingClassLoader")
-                || loader.getClass().getName().equals("sun.misc.Launcher$ExtClassLoader");
+                || loader.getClass().getName().equals("sun.misc.Launcher$ExtClassLoader")
+                || className.startsWith(BADUA_PACKAGE);
     }
 
 }
