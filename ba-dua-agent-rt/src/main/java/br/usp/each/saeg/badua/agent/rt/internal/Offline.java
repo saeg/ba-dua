@@ -14,10 +14,7 @@ import br.usp.each.saeg.badua.core.runtime.RuntimeData;
 
 public class Offline {
 
-    private static final RuntimeData DATA;
-    static {
-        DATA = Agent.getInstance().getData();
-    }
+    private static final RuntimeData DATA = Agent.getInstance().getData();
 
     private Offline() {
         // No instances
