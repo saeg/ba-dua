@@ -25,9 +25,7 @@ public final class RT {
     }
 
     public static void init(final RuntimeData data) {
-        synchronized (RT.class) {
-            DATA = data;
-        }
+        DATA = data;
     }
 
     public static long[] getData(final long classId, final String className, final int size) {
