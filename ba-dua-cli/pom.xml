@@ -90,6 +90,10 @@
 							</filters>
 							<relocations>
 								<relocation>
+									<pattern>br.usp.each.saeg.badua.agent.rt.internal</pattern>
+									<shadedPattern>${badua.runtime.package.name}</shadedPattern>
+								</relocation>
+								<relocation>
 									<pattern>org.objectweb.asm</pattern>
 									<shadedPattern>br.usp.each.saeg.badua.asm</shadedPattern>
 								</relocation>

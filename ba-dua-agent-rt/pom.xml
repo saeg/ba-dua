@@ -75,26 +75,34 @@
 							</filters>
 							<relocations>
 								<relocation>
+									<pattern>br.usp.each.saeg.badua.agent.rt.internal</pattern>
+									<shadedPattern>${badua.runtime.package.name}</shadedPattern>
+								</relocation>
+								<relocation>
+									<pattern>br.usp.each.saeg.badua.core</pattern>
+									<shadedPattern>${badua.runtime.package.name}.core</shadedPattern>
+								</relocation>
+								<relocation>
 									<pattern>org.objectweb.asm</pattern>
-									<shadedPattern>br.usp.each.saeg.badua.asm</shadedPattern>
+									<shadedPattern>${badua.runtime.package.name}.asm</shadedPattern>
 								</relocation>
 								<relocation>
 									<pattern>br.usp.each.saeg.asm.defuse</pattern>
-									<shadedPattern>br.usp.each.saeg.badua.asm.defuse</shadedPattern>
+									<shadedPattern>${badua.runtime.package.name}.asm.defuse</shadedPattern>
 								</relocation>
 								<relocation>
 									<pattern>br.usp.each.saeg.commons</pattern>
-									<shadedPattern>br.usp.each.saeg.badua.commons</shadedPattern>
+									<shadedPattern>${badua.runtime.package.name}.commons</shadedPattern>
 								</relocation>
 								<relocation>
 									<pattern>org.jacoco</pattern>
-									<shadedPattern>br.usp.each.saeg.badua.jacoco</shadedPattern>
+									<shadedPattern>${badua.runtime.package.name}.jacoco</shadedPattern>
 								</relocation>
 							</relocations>
 							<transformers>
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 									<manifestEntries>
-										<Premain-Class>br.usp.each.saeg.badua.agent.rt.internal.PreMain</Premain-Class>
+										<Premain-Class>${badua.runtime.package.name}.PreMain</Premain-Class>
 									</manifestEntries>
 								</transformer>
 							</transformers>

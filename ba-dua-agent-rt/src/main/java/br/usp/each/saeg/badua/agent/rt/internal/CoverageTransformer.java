@@ -19,7 +19,7 @@ import br.usp.each.saeg.badua.core.instr.Instrumenter;
 
 public class CoverageTransformer implements ClassFileTransformer {
 
-    private final static String BADUA_PACKAGE = "br/usp/each/saeg/badua/";
+    private final static String BADUA_PACKAGE = RT.class.getPackage().getName().replace('.', '/');
 
     private final Instrumenter instrumenter;
 
