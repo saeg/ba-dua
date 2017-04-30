@@ -91,7 +91,8 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
             return next;
 
         final CoverageMethodTransformer mt = new CoverageMethodTransformer(className, this);
-        return new MethodInstrumenter(access, name, desc, signature, exceptions, next, mt);
+        return new CatchAndThrowMethodVisitor("java/lang/RuntimeException",
+                new MethodInstrumenter(access, name, desc, signature, exceptions, next, mt));
     }
 
     @Override
