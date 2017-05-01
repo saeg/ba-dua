@@ -23,11 +23,19 @@ public abstract class AbstractTarget {
         return false;
     }
 
-    public static void ex() {
+    public static void rtex() {
+        throw new RTEx();
+    }
+
+    public static void ex() throws Ex {
         throw new Ex();
     }
 
-    public static class Ex extends RuntimeException {
+    public static class RTEx extends RuntimeException {
+        private static final long serialVersionUID = 1L;
+    }
+
+    public static class Ex extends Exception {
         private static final long serialVersionUID = 1L;
     }
 

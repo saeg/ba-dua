@@ -24,8 +24,8 @@ public class CatchException extends AbstractTarget {
             try {
                 use(var);
                 use(var);
-                ex();
-            } catch (final Ex e) {
+                rtex();
+            } catch (final RTEx e) {
             }
         }
     }
@@ -35,9 +35,9 @@ public class CatchException extends AbstractTarget {
         if (t()) {
             try {
                 use(var);
-                ex();
+                rtex();
                 use(var);
-            } catch (final Ex e) {
+            } catch (final RTEx e) {
             }
         }
     }
@@ -46,10 +46,10 @@ public class CatchException extends AbstractTarget {
         var = 0;
         if (t()) {
             try {
-                ex();
+                rtex();
                 use(var);
                 use(var);
-            } catch (final Ex e) {
+            } catch (final RTEx e) {
             }
         }
     }

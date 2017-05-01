@@ -16,6 +16,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import br.usp.each.saeg.badua.test.validation.targets.AbstractTarget.Ex;
+import br.usp.each.saeg.badua.test.validation.targets.AbstractTarget.RTEx;
 import br.usp.each.saeg.badua.test.validation.targets.NotCatchException;
 
 public class NotCatchExceptionSourceTest extends ValidationTargetsTest {
@@ -26,8 +27,40 @@ public class NotCatchExceptionSourceTest extends ValidationTargetsTest {
 
     @Override
     public final void run(final Class<?> klass) throws Exception {
-        Ex ex = null;
 
+        /**
+         * Runtime Exceptions (not checked)
+         */
+
+        RTEx rtex = null;
+        try {
+            klass.getMethod("notCatchRuntimeException1").invoke(null);
+        } catch (final InvocationTargetException e) {
+            rtex = (RTEx) e.getTargetException();
+        }
+        Assert.assertNotNull(rtex);
+
+        rtex = null;
+        try {
+            klass.getMethod("notCatchRuntimeException2").invoke(null);
+        } catch (final InvocationTargetException e) {
+            rtex = (RTEx) e.getTargetException();
+        }
+        Assert.assertNotNull(rtex);
+
+        rtex = null;
+        try {
+            klass.getMethod("notCatchRuntimeException3").invoke(null);
+        } catch (final InvocationTargetException e) {
+            rtex = (RTEx) e.getTargetException();
+        }
+        Assert.assertNotNull(rtex);
+
+        /**
+         * Exceptions (checked)
+         */
+
+        Ex ex = null;
         try {
             klass.getMethod("notCatchException1").invoke(null);
         } catch (final InvocationTargetException e) {
@@ -35,6 +68,7 @@ public class NotCatchExceptionSourceTest extends ValidationTargetsTest {
         }
         Assert.assertNotNull(ex);
 
+        ex = null;
         try {
             klass.getMethod("notCatchException2").invoke(null);
         } catch (final InvocationTargetException e) {
@@ -42,6 +76,7 @@ public class NotCatchExceptionSourceTest extends ValidationTargetsTest {
         }
         Assert.assertNotNull(ex);
 
+        ex = null;
         try {
             klass.getMethod("notCatchException3").invoke(null);
         } catch (final InvocationTargetException e) {
@@ -60,14 +95,20 @@ public class NotCatchExceptionSourceTest extends ValidationTargetsTest {
          *
          * In some future version we will address these issues
          */
-        assertTotal(true, 6); // <--- The correct value is 3
-        assertTotal(false, 0); // <--- The correct value is 3
+        assertTotal(true, 12); // <--- The correct value is 6
+        assertTotal(false, 0); // <--- The correct value is 6
         assertDU(16, 18, "var", true);
         assertDU(16, 19, "var", true);
         assertDU(25, 27, "var", true);
         assertDU(25, 29, "var", true); // <--- wrong here, exception before the use
         assertDU(34, 37, "var", true); // <--- wrong here, exception before the use
         assertDU(34, 38, "var", true); // <--- wrong here, exception before the use
+        assertDU(43, 45, "var", true);
+        assertDU(43, 46, "var", true);
+        assertDU(52, 54, "var", true);
+        assertDU(52, 56, "var", true); // <--- wrong here, exception before the use
+        assertDU(61, 64, "var", true); // <--- wrong here, exception before the use
+        assertDU(61, 65, "var", true); // <--- wrong here, exception before the use
     }
 
 }

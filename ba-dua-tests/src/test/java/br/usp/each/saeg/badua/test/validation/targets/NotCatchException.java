@@ -12,7 +12,34 @@ package br.usp.each.saeg.badua.test.validation.targets;
 
 public class NotCatchException extends AbstractTarget {
 
-    public static void notCatchException1() {
+    public static void notCatchRuntimeException1() {
+        var = 0;
+        if (t()) {
+            use(var);
+            use(var);
+            rtex();
+        }
+    }
+
+    public static void notCatchRuntimeException2() {
+        var = 0;
+        if (t()) {
+            use(var);
+            rtex();
+            use(var);
+        }
+    }
+
+    public static void notCatchRuntimeException3() {
+        var = 0;
+        if (t()) {
+            rtex();
+            use(var);
+            use(var);
+        }
+    }
+
+    public static void notCatchException1() throws Ex {
         var = 0;
         if (t()) {
             use(var);
@@ -21,7 +48,7 @@ public class NotCatchException extends AbstractTarget {
         }
     }
 
-    public static void notCatchException2() {
+    public static void notCatchException2() throws Ex {
         var = 0;
         if (t()) {
             use(var);
@@ -30,7 +57,7 @@ public class NotCatchException extends AbstractTarget {
         }
     }
 
-    public static void notCatchException3() {
+    public static void notCatchException3() throws Ex {
         var = 0;
         if (t()) {
             ex();
