@@ -45,11 +45,6 @@ public class CatchAndThrowMethodVisitor extends MethodVisitor {
     }
 
     @Override
-    public void visitEnd() { // NOPMD
-        super.visitEnd();
-    }
-
-    @Override
     public void visitMaxs(final int maxStack, final int maxLocals) {
         visitTryCatchBlockEnd();
         super.visitMaxs(Math.max(maxStack, 1), maxLocals);
