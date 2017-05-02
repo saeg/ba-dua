@@ -66,6 +66,60 @@ public class NotCatchException extends AbstractTarget {
         }
     }
 
+    public static void notCatchError1() throws Err {
+        var = 0;
+        if (t()) {
+            use(var);
+            use(var);
+            err();
+        }
+    }
+
+    public static void notCatchError2() throws Err {
+        var = 0;
+        if (t()) {
+            use(var);
+            err();
+            use(var);
+        }
+    }
+
+    public static void notCatchError3() throws Err {
+        var = 0;
+        if (t()) {
+            err();
+            use(var);
+            use(var);
+        }
+    }
+
+    public static void notCatchThrowable1() throws Thr {
+        var = 0;
+        if (t()) {
+            use(var);
+            use(var);
+            thr();
+        }
+    }
+
+    public static void notCatchThrowable2() throws Thr {
+        var = 0;
+        if (t()) {
+            use(var);
+            thr();
+            use(var);
+        }
+    }
+
+    public static void notCatchThrowable3() throws Thr {
+        var = 0;
+        if (t()) {
+            thr();
+            use(var);
+            use(var);
+        }
+    }
+
     private static int var;
 
 }

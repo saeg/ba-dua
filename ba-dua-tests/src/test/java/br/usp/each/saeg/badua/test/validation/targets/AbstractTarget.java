@@ -31,11 +31,27 @@ public abstract class AbstractTarget {
         throw new Ex();
     }
 
+    public static void err() throws Err {
+        throw new Err();
+    }
+
+    public static void thr() throws Thr {
+        throw new Thr();
+    }
+
     public static class RTEx extends RuntimeException {
         private static final long serialVersionUID = 1L;
     }
 
     public static class Ex extends Exception {
+        private static final long serialVersionUID = 1L;
+    }
+
+    public static class Err extends Error {
+        private static final long serialVersionUID = 1L;
+    }
+
+    public static class Thr extends Throwable {
         private static final long serialVersionUID = 1L;
     }
 
