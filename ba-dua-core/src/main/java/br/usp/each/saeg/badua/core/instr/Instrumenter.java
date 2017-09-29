@@ -29,18 +29,25 @@ public class Instrumenter {
 
     private final String runtime;
 
+    private final boolean exceptionHandler;
+
     public Instrumenter(final Class<?> runtime) {
         this(runtime.getName());
     }
 
     public Instrumenter(final String runtime) {
+        this(runtime, false);
+    }
+
+    public Instrumenter(final String runtime, final boolean exceptionHandler) {
         this.runtime = runtime;
+        this.exceptionHandler = exceptionHandler;
     }
 
     public byte[] instrument(final ClassReader reader) {
         final long classId = CRC64.checksum(reader.b);
         final ClassWriter writer = new ClassWriter(reader, DEFAULT);
-        final ClassVisitor ci = new ClassInstrumenter(classId, writer, runtime);
+        final ClassVisitor ci = new ClassInstrumenter(classId, writer, runtime, exceptionHandler);
         reader.accept(ci, ClassReader.EXPAND_FRAMES);
         return writer.toByteArray();
     }

@@ -24,7 +24,8 @@ public class CoverageTransformer implements ClassFileTransformer {
     private final Instrumenter instrumenter;
 
     public CoverageTransformer() {
-        instrumenter = new Instrumenter(RT.class.getName());
+        instrumenter = new Instrumenter(RT.class.getName(),
+                Boolean.valueOf(System.getProperty("badua.experimental.exception_handler")));
     }
 
     @Override

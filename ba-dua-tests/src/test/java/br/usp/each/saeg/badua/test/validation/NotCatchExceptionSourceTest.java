@@ -25,6 +25,7 @@ public class NotCatchExceptionSourceTest extends ValidationTargetsTest {
 
     public NotCatchExceptionSourceTest() {
         super(NotCatchException.class);
+        exceptionHandler = true;
     }
 
     @Override

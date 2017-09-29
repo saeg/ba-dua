@@ -40,7 +40,8 @@ public class Instrument {
     public Instrument(final InstrumentOptions options) {
         this.src = options.getSource();
         this.dest = options.getDestination();
-        instrumenter = new Instrumenter(Offline.class.getName());
+        instrumenter = new Instrumenter(Offline.class.getName(),
+                Boolean.valueOf(System.getProperty("badua.experimental.exception_handler")));
     }
 
     public int instrument() throws IOException {

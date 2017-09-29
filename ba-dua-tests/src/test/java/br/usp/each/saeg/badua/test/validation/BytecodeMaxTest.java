@@ -38,6 +38,7 @@ public class BytecodeMaxTest extends ValidationTest {
     @Before
     public void setUp() throws Exception {
         super.setUp();
+        exceptionHandler = true;
 
         className = "Max";
         final int classVersion = Opcodes.V1_6;
