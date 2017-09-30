@@ -17,10 +17,6 @@ public class MaxException2SourceTest extends AbstractMaxSourceTest {
 
     private Throwable exception;
 
-    public MaxException2SourceTest() {
-        exceptionHandler = true;
-    }
-
     @Override
     public int[] input() {
         return new int[] { 1, 2, 3 };

@@ -19,7 +19,7 @@ public abstract class ValidationTest {
 
     protected ValidationTestClassLoader loader;
 
-    protected boolean exceptionHandler = false;
+    protected boolean exceptionHandler = true;
 
     public void setUp() throws Exception {
         loader = new ValidationTestClassLoader();
