@@ -19,6 +19,8 @@ public abstract class ValidationTest {
 
     protected ValidationTestClassLoader loader;
 
+    protected boolean exceptionHandler = true;
+
     public void setUp() throws Exception {
         loader = new ValidationTestClassLoader();
     }
@@ -27,8 +29,8 @@ public abstract class ValidationTest {
         return loader.add(name, instrument(name, bytes));
     }
 
-    private static byte[] instrument(final String name, final byte[] bytes) {
-        final Instrumenter instrumenter = new Instrumenter(RT.class.getName());
+    private byte[] instrument(final String name, final byte[] bytes) {
+        final Instrumenter instrumenter = new Instrumenter(RT.class.getName(), exceptionHandler);
 
         try {
             return instrumenter.instrument(bytes, name);

@@ -10,7 +10,7 @@
  */
 package br.usp.each.saeg.badua.test.validation.targets;
 
-public class CatchException {
+public class CatchException extends AbstractTarget {
 
     public static void run() {
         catchException1();
@@ -24,8 +24,8 @@ public class CatchException {
             try {
                 use(var);
                 use(var);
-                ex();
-            } catch (final Ex e) {
+                rtex();
+            } catch (final RTEx e) {
             }
         }
     }
@@ -35,9 +35,9 @@ public class CatchException {
         if (t()) {
             try {
                 use(var);
-                ex();
+                rtex();
                 use(var);
-            } catch (final Ex e) {
+            } catch (final RTEx e) {
             }
         }
     }
@@ -46,29 +46,14 @@ public class CatchException {
         var = 0;
         if (t()) {
             try {
-                ex();
+                rtex();
                 use(var);
                 use(var);
-            } catch (final Ex e) {
+            } catch (final RTEx e) {
             }
         }
     }
 
     private static int var;
-
-    private static void use(final int var) {
-    }
-
-    private static boolean t() {
-        return true;
-    }
-
-    private static void ex() {
-        throw new Ex();
-    }
-
-    public static class Ex extends RuntimeException {
-        private static final long serialVersionUID = 1L;
-    }
 
 }

@@ -22,6 +22,8 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
 
     private final String runtime;
 
+    private final boolean exceptionHandler;
+
     private String className;
 
     private boolean withFrames;
@@ -31,13 +33,20 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
     private int classProbeCount;
 
     public ClassInstrumenter(final long classId, final ClassVisitor cv, final Class<?> runtime) {
-        this(classId, cv, runtime.getName());
+        this(classId, cv, runtime.getName(), false);
     }
 
     public ClassInstrumenter(final long classId, final ClassVisitor cv, final String runtime) {
+        this(classId, cv, runtime, false);
+    }
+
+    public ClassInstrumenter(final long classId, final ClassVisitor cv, final String runtime,
+            final boolean exceptionHandler) {
+
         super(Opcodes.ASM5, cv);
         this.classId = classId;
         this.runtime = runtime;
+        this.exceptionHandler = exceptionHandler;
     }
 
     @Override
@@ -91,7 +100,15 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
             return next;
 
         final CoverageMethodTransformer mt = new CoverageMethodTransformer(className, this);
-        return new MethodInstrumenter(access, name, desc, signature, exceptions, next, mt);
+
+        final MethodInstrumenter instrumenter =
+                new MethodInstrumenter(access, name, desc, signature, exceptions, next, mt);
+
+        // There is some edge cases with constructors and stack map frames
+        // So we will ignore constructors. We must address these issues in the future
+        return exceptionHandler && !name.equals("<init>")
+                ? new CatchAndThrowMethodVisitor("java/lang/Throwable", instrumenter, withFrames)
+                : instrumenter;
     }
 
     @Override

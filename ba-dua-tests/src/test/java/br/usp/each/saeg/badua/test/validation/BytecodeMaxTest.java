@@ -146,7 +146,7 @@ public class BytecodeMaxTest extends ValidationTest {
         } catch (final Exception ignore) {
             /* ignore */
         }
-        assertCoverage();
+        assertCoverage(0, 2, 3, 5, 7, 9, 10, 12, 15, 17, 19, 21, 22);
     }
 
     @Test

@@ -20,7 +20,22 @@ public abstract class AbstractMaxSourceTest extends ValidationTargetsTest {
 
     @Override
     public final void run(final Class<?> klass) throws Exception {
-        max(klass, input());
+        try {
+            max(klass, input());
+        } catch (final Exception e) {
+            handle(e.getCause());
+        }
+    }
+
+    protected int size(final int[] array) {
+        return array.length;
+    }
+
+    protected void handle(final Throwable e) throws Exception {
+        if (e instanceof Exception) {
+            throw (Exception) e;
+        }
+        throw new Exception(e);
     }
 
     public abstract int[] input();
@@ -30,7 +45,7 @@ public abstract class AbstractMaxSourceTest extends ValidationTargetsTest {
     }
 
     private int max(final Class<?> klass, final int[] array) throws Exception {
-        return maxLength(klass, array, array.length);
+        return maxLength(klass, array, size(array));
     }
 
 }
