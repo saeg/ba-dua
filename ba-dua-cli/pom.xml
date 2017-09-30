@@ -74,13 +74,6 @@
 									</excludes>
 								</filter>
 								<filter>
-									<artifact>org.ow2.asm:asm-debug-all</artifact>
-									<excludes>
-										<exclude>org/objectweb/asm/xml/asm-xml.dtd</exclude>
-										<exclude>org/objectweb/asm/**/package.html</exclude>
-									</excludes>
-								</filter>
-								<filter>
 									<artifact>args4j:args4j</artifact>
 									<excludes>
 										<exclude>LICENSE</exclude>
@@ -136,6 +129,14 @@
 			<groupId>org.jacoco</groupId>
 			<artifactId>org.jacoco.report</artifactId>
 			<version>${jacoco.version}</version>
+			<exclusions>
+				<!-- Avoid conflicts with asm provided by asm-defuse -->
+				<!-- The API should be the same -->
+				<exclusion>
+					<groupId>org.ow2.asm</groupId>
+					<artifactId>asm-debug-all</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>args4j</groupId>

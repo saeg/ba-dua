@@ -33,12 +33,25 @@
 		<dependency>
 			<groupId>br.usp.each.saeg</groupId>
 			<artifactId>asm-defuse</artifactId>
-			<version>0.0.5</version>
+			<version>0.0.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm-commons</artifactId>
+			<version>6.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jacoco</groupId>
 			<artifactId>org.jacoco.core</artifactId>
 			<version>${jacoco.version}</version>
+			<exclusions>
+				<!-- Avoid conflicts with asm provided by asm-defuse -->
+				<!-- The API should be the same -->
+				<exclusion>
+					<groupId>org.ow2.asm</groupId>
+					<artifactId>asm-debug-all</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 
