@@ -22,6 +22,8 @@ public class CatchAndThrowMethodVisitor extends MethodVisitor {
 
     private final String type;
 
+    private final boolean withFrames;
+
     private Label start;
 
     private Label end;
@@ -30,9 +32,10 @@ public class CatchAndThrowMethodVisitor extends MethodVisitor {
 
     private boolean started;
 
-    public CatchAndThrowMethodVisitor(final String type, final MethodNode mn) {
+    public CatchAndThrowMethodVisitor(final String type, final MethodNode mn, final boolean withFrames) {
         super(Opcodes.ASM5, mn);
         this.type = type;
+        this.withFrames = withFrames;
     }
 
     @Override
@@ -159,6 +162,11 @@ public class CatchAndThrowMethodVisitor extends MethodVisitor {
 
     private void visitTryCatchBlockEnd() {
         if (started) {
+            if (withFrames) {
+                mv.visitFrame(Opcodes.F_NEW,
+                        0, new Object[] {},
+                        1, new Object[] { "java/lang/Throwable" });
+            }
             visitLabel(end);
             visitLabel(handler);
             visitInsn(Opcodes.ATHROW);

@@ -104,7 +104,11 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
         final MethodInstrumenter instrumenter =
                 new MethodInstrumenter(access, name, desc, signature, exceptions, next, mt);
 
-        return exceptionHandler ? new CatchAndThrowMethodVisitor("java/lang/Throwable", instrumenter) : instrumenter;
+        // There is some edge cases with constructors and stack map frames
+        // So we will ignore constructors. We must address these issues in the future
+        return exceptionHandler && !name.equals("<init>")
+                ? new CatchAndThrowMethodVisitor("java/lang/Throwable", instrumenter, withFrames)
+                : instrumenter;
     }
 
     @Override
