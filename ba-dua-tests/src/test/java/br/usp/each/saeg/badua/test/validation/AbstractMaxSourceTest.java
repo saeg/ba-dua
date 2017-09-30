@@ -27,6 +27,10 @@ public abstract class AbstractMaxSourceTest extends ValidationTargetsTest {
         }
     }
 
+    protected int size(final int[] array) {
+        return array.length;
+    }
+
     protected void handle(final Throwable e) throws Exception {
         if (e instanceof Exception) {
             throw (Exception) e;
@@ -41,7 +45,7 @@ public abstract class AbstractMaxSourceTest extends ValidationTargetsTest {
     }
 
     private int max(final Class<?> klass, final int[] array) throws Exception {
-        return maxLength(klass, array, array.length);
+        return maxLength(klass, array, size(array));
     }
 
 }
