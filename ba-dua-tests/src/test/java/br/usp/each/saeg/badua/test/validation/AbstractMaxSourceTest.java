@@ -20,7 +20,18 @@ public abstract class AbstractMaxSourceTest extends ValidationTargetsTest {
 
     @Override
     public final void run(final Class<?> klass) throws Exception {
-        max(klass, input());
+        try {
+            max(klass, input());
+        } catch (final Exception e) {
+            handle(e.getCause());
+        }
+    }
+
+    protected void handle(final Throwable e) throws Exception {
+        if (e instanceof Exception) {
+            throw (Exception) e;
+        }
+        throw new Exception(e);
     }
 
     public abstract int[] input();
