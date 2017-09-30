@@ -43,7 +43,7 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
     public ClassInstrumenter(final long classId, final ClassVisitor cv, final String runtime,
             final boolean exceptionHandler) {
 
-        super(Opcodes.ASM5, cv);
+        super(Opcodes.ASM6, cv);
         this.classId = classId;
         this.runtime = runtime;
         this.exceptionHandler = exceptionHandler;

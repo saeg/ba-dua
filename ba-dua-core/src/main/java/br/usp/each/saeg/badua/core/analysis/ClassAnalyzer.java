@@ -53,7 +53,7 @@ public class ClassAnalyzer extends ClassVisitor {
     private int window;
 
     public ClassAnalyzer(final ExecutionData execData, final StringPool stringPool) {
-        super(Opcodes.ASM5);
+        super(Opcodes.ASM6);
         this.execData = execData;
         this.stringPool = stringPool;
     }
@@ -105,7 +105,7 @@ public class ClassAnalyzer extends ClassVisitor {
         else if (name.equals("<clinit>"))
             return null;
 
-        return new MethodNode(Opcodes.ASM5, access, name, desc, signature, exceptions) {
+        return new MethodNode(Opcodes.ASM6, access, name, desc, signature, exceptions) {
 
             @Override
             public void visitEnd() {
