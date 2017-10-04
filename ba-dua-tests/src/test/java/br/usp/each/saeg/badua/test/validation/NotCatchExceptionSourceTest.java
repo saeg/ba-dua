@@ -27,120 +27,37 @@ public class NotCatchExceptionSourceTest extends ValidationTargetsTest {
         super(NotCatchException.class);
     }
 
+    private static <E extends Throwable> void call(final Class<?> klass, final String name, final Class<E> exClass)
+            throws IllegalArgumentException, SecurityException, IllegalAccessException, NoSuchMethodException {
+
+        E ret = null;
+        try {
+            // Invoke a static method without arguments
+            klass.getMethod(name).invoke(null);
+        } catch (final InvocationTargetException e) {
+            // We expect this method to throw an exception of E type
+            ret = exClass.cast(e.getTargetException());
+        }
+        // Ensure an exception was thrown
+        Assert.assertNotNull(ret);
+        // And the type is the same
+        Assert.assertEquals(exClass, ret.getClass());
+    }
+
     @Override
     public final void run(final Class<?> klass) throws Exception {
-
-        /**
-         * Runtime Exceptions (not checked)
-         */
-
-        RTEx rtex = null;
-        try {
-            klass.getMethod("notCatchRuntimeException1").invoke(null);
-        } catch (final InvocationTargetException e) {
-            rtex = (RTEx) e.getTargetException();
-        }
-        Assert.assertNotNull(rtex);
-
-        rtex = null;
-        try {
-            klass.getMethod("notCatchRuntimeException2").invoke(null);
-        } catch (final InvocationTargetException e) {
-            rtex = (RTEx) e.getTargetException();
-        }
-        Assert.assertNotNull(rtex);
-
-        rtex = null;
-        try {
-            klass.getMethod("notCatchRuntimeException3").invoke(null);
-        } catch (final InvocationTargetException e) {
-            rtex = (RTEx) e.getTargetException();
-        }
-        Assert.assertNotNull(rtex);
-
-        /**
-         * Exceptions (checked)
-         */
-
-        Ex ex = null;
-        try {
-            klass.getMethod("notCatchException1").invoke(null);
-        } catch (final InvocationTargetException e) {
-            ex = (Ex) e.getTargetException();
-        }
-        Assert.assertNotNull(ex);
-
-        ex = null;
-        try {
-            klass.getMethod("notCatchException2").invoke(null);
-        } catch (final InvocationTargetException e) {
-            ex = (Ex) e.getTargetException();
-        }
-        Assert.assertNotNull(ex);
-
-        ex = null;
-        try {
-            klass.getMethod("notCatchException3").invoke(null);
-        } catch (final InvocationTargetException e) {
-            ex = (Ex) e.getTargetException();
-        }
-        Assert.assertNotNull(ex);
-
-        /**
-         * Errors
-         */
-
-        Err err = null;
-        try {
-            klass.getMethod("notCatchError1").invoke(null);
-        } catch (final InvocationTargetException e) {
-            err = (Err) e.getTargetException();
-        }
-        Assert.assertNotNull(err);
-
-        ex = null;
-        try {
-            klass.getMethod("notCatchError2").invoke(null);
-        } catch (final InvocationTargetException e) {
-            err = (Err) e.getTargetException();
-        }
-        Assert.assertNotNull(err);
-
-        ex = null;
-        try {
-            klass.getMethod("notCatchError3").invoke(null);
-        } catch (final InvocationTargetException e) {
-            err = (Err) e.getTargetException();
-        }
-        Assert.assertNotNull(err);
-
-        /**
-         * Throwable
-         */
-
-        Thr thr = null;
-        try {
-            klass.getMethod("notCatchThrowable1").invoke(null);
-        } catch (final InvocationTargetException e) {
-            thr = (Thr) e.getTargetException();
-        }
-        Assert.assertNotNull(thr);
-
-        ex = null;
-        try {
-            klass.getMethod("notCatchThrowable2").invoke(null);
-        } catch (final InvocationTargetException e) {
-            thr = (Thr) e.getTargetException();
-        }
-        Assert.assertNotNull(thr);
-
-        ex = null;
-        try {
-            klass.getMethod("notCatchThrowable3").invoke(null);
-        } catch (final InvocationTargetException e) {
-            thr = (Thr) e.getTargetException();
-        }
-        Assert.assertNotNull(thr);
+        call(klass, "notCatchRuntimeException1", RTEx.class);
+        call(klass, "notCatchRuntimeException2", RTEx.class);
+        call(klass, "notCatchRuntimeException3", RTEx.class);
+        call(klass, "notCatchException1", Ex.class);
+        call(klass, "notCatchException2", Ex.class);
+        call(klass, "notCatchException3", Ex.class);
+        call(klass, "notCatchError1", Err.class);
+        call(klass, "notCatchError2", Err.class);
+        call(klass, "notCatchError3", Err.class);
+        call(klass, "notCatchThrowable1", Thr.class);
+        call(klass, "notCatchThrowable2", Thr.class);
+        call(klass, "notCatchThrowable3", Thr.class);
     }
 
     @Test
