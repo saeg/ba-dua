@@ -35,6 +35,7 @@ public class MaxException1SourceTest extends AbstractMaxSourceTest {
 
     @Test
     public void verifyTotal() {
+        assertTotal(true, 0);
         assertTotal(false, 23);
     }
 
