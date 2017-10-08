@@ -13,15 +13,9 @@ jdk:
   - openjdk7
   - openjdk6
 
-before_script:
-  - wget https://archive.apache.org/dist/maven/maven-3/3.2.5/binaries/apache-maven-3.2.5-bin.zip
-  - unzip -qq apache-maven-3.2.5-bin.zip -d ../
-  - export M2_HOME=$PWD/../apache-maven-3.2.5
-  - export PATH=$M2_HOME/bin:$PATH
-
 install: true
 
-script: mvn verify
+script: ./mvnw verify
 
 after_success:
   - mvn coveralls:report
@@ -29,3 +23,4 @@ after_success:
 cache:
   directories:
     - '$HOME/.m2/repository'
+    - '$HOME/.m2/wrapper'

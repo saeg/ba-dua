@@ -8,21 +8,11 @@ environment:
     - JAVA_HOME: C:\Program Files (x86)\Java\jdk1.6.0
 
 cache:
-  - C:\Users\appveyor\apache-maven-3.2.5
   - C:\Users\appveyor\.m2
-
-install:
-  - if not exist C:\Users\appveyor\apache-maven-3.2.5 (
-      curl -LsS "http://www.apache.org/dyn/closer.cgi?action=download&filename=maven/maven-3/3.2.5/binaries/apache-maven-3.2.5-bin.zip" > apache-maven-3.2.5-bin.zip &&
-      unzip apache-maven-3.2.5-bin.zip -d C:\Users\appveyor
-    )
-  - SET M2_HOME=C:\Users\appveyor\apache-maven-3.2.5
-  - SET PATH=%M2_HOME%\bin;%JAVA_HOME%\bin;%PATH%
 
 before_build:
   - java -Xmx32m -version
   - javac -J-Xmx32m -version
-  - mvn --version
 
 build_script:
-  - mvn verify
+  - .\mvnw verify
