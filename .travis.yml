@@ -18,7 +18,7 @@ install: true
 script: ./mvnw verify
 
 after_success:
-  - mvn coveralls:report
+  - ./mvnw coveralls:report
 
 cache:
   directories:
