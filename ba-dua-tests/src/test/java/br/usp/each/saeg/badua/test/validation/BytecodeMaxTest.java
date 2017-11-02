@@ -135,7 +135,7 @@ public class BytecodeMaxTest extends ValidationTest {
         } catch (final Exception ignore) {
             /* ignore */
         }
-        assertCoverage();
+        assertCoverage(23);
     }
 
     @Test
@@ -146,7 +146,7 @@ public class BytecodeMaxTest extends ValidationTest {
         } catch (final Exception ignore) {
             /* ignore */
         }
-        assertCoverage(0, 2, 3, 5, 7, 9, 10, 12, 15, 17, 19, 21, 22);
+        assertCoverage(0, 2, 3, 5, 7, 9, 10, 12, 15, 17, 19, 21, 22, 23);
     }
 
     @Test
@@ -154,7 +154,7 @@ public class BytecodeMaxTest extends ValidationTest {
         final int[] array = new int[] { 1 };
 
         Assert.assertEquals(1, max(array));
-        assertCoverage(4, 6, 11);
+        assertCoverage(4, 6, 11, 23);
     }
 
     @Test
@@ -162,7 +162,7 @@ public class BytecodeMaxTest extends ValidationTest {
         final int[] array = new int[] { 1, 2 };
 
         Assert.assertEquals(2, max(array));
-        assertCoverage(0, 2, 3, 4, 5, 7, 9, 10, 12, 14, 18);
+        assertCoverage(0, 2, 3, 4, 5, 7, 9, 10, 12, 14, 18, 23);
     }
 
     @Test
@@ -170,7 +170,7 @@ public class BytecodeMaxTest extends ValidationTest {
         final int[] array = new int[] { 2, 1 };
 
         Assert.assertEquals(2, max(array));
-        assertCoverage(1, 3, 4, 5, 8, 9, 11, 13, 18);
+        assertCoverage(1, 3, 4, 5, 8, 9, 11, 13, 18, 23);
     }
 
     @Test
@@ -178,7 +178,7 @@ public class BytecodeMaxTest extends ValidationTest {
         final int[] array = new int[] { 1, 2, 3 };
 
         Assert.assertEquals(3, max(array));
-        assertCoverage(0, 2, 3, 4, 5, 7, 9, 10, 12, 14, 15, 17, 18, 19, 21, 22);
+        assertCoverage(0, 2, 3, 4, 5, 7, 9, 10, 12, 14, 15, 17, 18, 19, 21, 22, 23);
     }
 
     @Test
@@ -186,7 +186,7 @@ public class BytecodeMaxTest extends ValidationTest {
         final int[] array = new int[] { 3, 2, 1 };
 
         Assert.assertEquals(3, max(array));
-        assertCoverage(1, 3, 4, 5, 8, 9, 11, 13, 17, 18, 20, 21);
+        assertCoverage(1, 3, 4, 5, 8, 9, 11, 13, 17, 18, 20, 21, 23);
     }
 
     @Test
@@ -194,7 +194,7 @@ public class BytecodeMaxTest extends ValidationTest {
         final int[] array = new int[] { 1, 3, 2 };
 
         Assert.assertEquals(3, max(array));
-        assertCoverage(0, 1, 2, 3, 4, 5, 7, 9, 10, 12, 14, 16, 17, 18, 20, 21);
+        assertCoverage(0, 1, 2, 3, 4, 5, 7, 9, 10, 12, 14, 16, 17, 18, 20, 21, 23);
     }
 
     @Test
@@ -202,7 +202,7 @@ public class BytecodeMaxTest extends ValidationTest {
         final int[] array = new int[] { 1, 2, 3, 2 };
 
         Assert.assertEquals(3, max(array));
-        assertCoverage(0, 1, 2, 3, 4, 5, 7, 9, 10, 12, 14, 15, 16, 17, 18, 19, 20, 21, 22);
+        assertCoverage(0, 1, 2, 3, 4, 5, 7, 9, 10, 12, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23);
     }
 
     @Test
@@ -210,7 +210,7 @@ public class BytecodeMaxTest extends ValidationTest {
         final int[] array = new int[] { 2, 1, 3, 2 };
 
         Assert.assertEquals(3, max(array));
-        assertCoverage(0, 1, 2, 3, 4, 5, 8, 9, 12, 13, 14, 16, 17, 18, 19, 20, 21, 22);
+        assertCoverage(0, 1, 2, 3, 4, 5, 8, 9, 12, 13, 14, 16, 17, 18, 19, 20, 21, 22, 23);
     }
 
     private void assertCoverage(final int... expectedCoveredChains) {

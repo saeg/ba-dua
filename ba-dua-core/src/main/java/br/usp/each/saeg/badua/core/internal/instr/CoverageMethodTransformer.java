@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
@@ -29,6 +30,7 @@ import br.usp.each.saeg.asm.defuse.DepthFirstDefUseChainSearch;
 import br.usp.each.saeg.asm.defuse.FlowAnalyzer;
 import br.usp.each.saeg.asm.defuse.Value;
 import br.usp.each.saeg.asm.defuse.Variable;
+import br.usp.each.saeg.commons.ArrayUtils;
 import br.usp.each.saeg.commons.BitSetUtils;
 
 public class CoverageMethodTransformer extends MethodTransformer {
@@ -62,10 +64,14 @@ public class CoverageMethodTransformer extends MethodTransformer {
         final int[][] basicBlocks = flowAnalyzer.getBasicBlocks();
         final int[] leaders = flowAnalyzer.getLeaders();
 
-        final DefUseChain[] chains = DefUseChain.toBasicBlock(new DepthFirstDefUseChainSearch()
-                .search(frames, variables, successors, predecessors), leaders, basicBlocks);
+        final DefUseChain[] allChains = new DepthFirstDefUseChainSearch()
+                .search(frames, variables, successors, predecessors);
 
-        if (chains.length == 0)
+        final int[] locals = getBlocks(DefUseChain.locals(allChains, leaders, basicBlocks), leaders);
+        final DefUseChain[] chains = DefUseChain.toBasicBlock(allChains, leaders, basicBlocks);
+        final int length = chains.length + locals.length;
+
+        if (length == 0)
             return;
 
         // basic block definitions
@@ -85,11 +91,11 @@ public class CoverageMethodTransformer extends MethodTransformer {
         final BitSet[] sleepy = new BitSet[basicBlocks.length];
         for (int b = 0; b < basicBlocks.length; b++) {
 
-            potcov[b] = new BitSet(chains.length);
-            potcovpuse[b] = new BitSet(chains.length);
-            born[b] = new BitSet(chains.length);
-            disabled[b] = new BitSet(chains.length);
-            sleepy[b] = new BitSet(chains.length);
+            potcov[b] = new BitSet(length);
+            potcovpuse[b] = new BitSet(length);
+            born[b] = new BitSet(length);
+            disabled[b] = new BitSet(length);
+            sleepy[b] = new BitSet(length);
 
             for (int i = 0; i < chains.length; i++) {
 
@@ -116,6 +122,9 @@ public class CoverageMethodTransformer extends MethodTransformer {
 
             }
         }
+        for (int i = 0; i < locals.length; i++) {
+            potcov[locals[i]].set(chains.length + i);
+        }
 
         // first/last valid instructions
         final AbstractInsnNode[] first = new AbstractInsnNode[basicBlocks.length];
@@ -140,12 +149,14 @@ public class CoverageMethodTransformer extends MethodTransformer {
         }
 
         AbstractInsnNode insn = methodNode.instructions.getFirst();
-        final int windows = (chains.length + 63) / 64;
+        final int windows = (length + 63) / 64;
         final int[] indexes = new int[windows];
-        for (int w = 0; w < windows; w++) {
+        for (int w = 0; w < windows - 1; w++) {
             indexes[w] = idGen.nextId();
-            LabelFrameNode.insertBefore(insn, methodNode.instructions, init(chains, methodNode, w));
+            LabelFrameNode.insertBefore(insn, methodNode.instructions, init(length, methodNode, w));
         }
+        indexes[windows - 1] = idGen.nextId();
+        LabelFrameNode.insertBefore(insn, methodNode.instructions, init(length, methodNode, windows - 1, locals));
 
         for (int b = 0; b < basicBlocks.length; b++) {
 
@@ -158,7 +169,7 @@ public class CoverageMethodTransformer extends MethodTransformer {
             for (int w = 0; w < windows; w++) {
 
                 final int nPredecessors = predecessors[basicBlocks[b][0]].length;
-                final Probe p = probe(chains, methodNode, w, nPredecessors == 0);
+                final Probe p = probe(length, methodNode, w);
 
                 p.potcov = lPotcov[w];
                 p.potcovpuse = lPotcovpuse[w];
@@ -188,7 +199,7 @@ public class CoverageMethodTransformer extends MethodTransformer {
                     frame.local.add(Opcodes.TOP);
                     size++;
                 }
-                final Integer type = typeOfVars(chains);
+                final Integer type = typeOfVars(length);
                 for (int i = 0; i < windows; i++) {
                     frame.local.add(type);
                     frame.local.add(type);
@@ -196,43 +207,56 @@ public class CoverageMethodTransformer extends MethodTransformer {
                 }
             } else if (isReturn(insn.getOpcode())) {
                 for (int w = 0; w < windows; w++) {
-                    final Probe p = update(chains, methodNode, w, indexes[w]);
+                    final Probe p = update(length, methodNode, w, indexes[w]);
                     LabelFrameNode.insertBefore(insn, methodNode.instructions, p);
                 }
             }
             insn = insn.getNext();
         }
 
-        methodNode.maxLocals = methodNode.maxLocals + windows * numOfVars(chains);
+        methodNode.maxLocals = methodNode.maxLocals + windows * numOfVars(length);
         methodNode.maxStack = methodNode.maxStack + 6;
     }
 
-    private Probe init(final DefUseChain[] chains, final MethodNode methodNode, final int window) {
-        if (chains.length <= 32) {
+    private int[] getBlocks(final DefUseChain[] localChains, final int[] leaders) {
+        final Set<Integer> blocks = new TreeSet<Integer>(); // Using tree set to keep order
+        for (final DefUseChain chain : localChains) {
+            blocks.add(leaders[chain.def]);
+        }
+        return ArrayUtils.toArray(blocks, new int[blocks.size()]);
+    }
+
+    private Probe init(final int length, final MethodNode methodNode, final int window) {
+        if (length <= 32) {
             return new IntegerInitProbe(methodNode);
         } else {
             return new LongInitProbe(methodNode, window);
         }
     }
 
-    private Probe probe(final DefUseChain[] chains, final MethodNode methodNode, final int window, final boolean root) {
-        if (chains.length <= 32) {
-            if (root) {
-                return new IntegerRootProbe(methodNode);
-            } else {
-                return new IntegerProbe(methodNode);
-            }
+    private Probe init(final int length, final MethodNode methodNode, final int window, final int[] locals) {
+        final BitSet alive = new BitSet();
+        for (int i = 0; i < locals.length; i++) {
+            alive.set(length - locals.length + i);
+        }
+
+        if (length <= 32) {
+            return new IntegerInitProbe(methodNode, BitSetUtils.toInteger(alive));
         } else {
-            if (root) {
-                return new LongRootProbe(methodNode, window);
-            } else {
-                return new LongProbe(methodNode, window);
-            }
+            return new LongInitProbe(methodNode, window, BitSetUtils.toLong(alive));
         }
     }
 
-    private Probe update(final DefUseChain[] chains, final MethodNode methodNode, final int window, final int index) {
-        if (chains.length <= 32) {
+    private Probe probe(final int length, final MethodNode methodNode, final int window) {
+        if (length <= 32) {
+            return new IntegerProbe(methodNode);
+        } else {
+            return new LongProbe(methodNode, window);
+        }
+    }
+
+    private Probe update(final int length, final MethodNode methodNode, final int window, final int index) {
+        if (length <= 32) {
             return new IntegerUpdateProbe(methodNode, className, index);
         } else {
             return new LongUpdateProbe(methodNode, window, className, index);
@@ -246,8 +270,8 @@ public class CoverageMethodTransformer extends MethodTransformer {
         return opcode == Opcodes.ATHROW;
     }
 
-    private int numOfVars(final DefUseChain[] chains) {
-        if (chains.length <= 32) {
+    private int numOfVars(final int length) {
+        if (length <= 32) {
             // three integers
             return 3;
         } else {
@@ -256,8 +280,8 @@ public class CoverageMethodTransformer extends MethodTransformer {
         }
     }
 
-    private Integer typeOfVars(final DefUseChain[] chains) {
-        if (chains.length <= 32) {
+    private Integer typeOfVars(final int length) {
+        if (length <= 32) {
             // three integers
             return Opcodes.INTEGER;
         } else {

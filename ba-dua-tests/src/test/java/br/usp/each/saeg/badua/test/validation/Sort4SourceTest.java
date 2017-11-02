@@ -66,12 +66,15 @@ public class Sort4SourceTest extends AbstractSortSourceTest {
         assertDU(32, 32, "sortupto", true);
         assertDU(32, 18, 34, "sortupto", true);
         assertDU(17, 18, 34, "n", true);
+
+        assertDU(13, 13, "this", false);
+        assertDU(29, 31, "index", true);
     }
 
     @Test
     public void verifyTotal() {
-        assertTotal(true, 45);
-        assertTotal(false, 4);
+        assertTotal(true, 46);
+        assertTotal(false, 5);
     }
 
 }

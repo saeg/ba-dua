@@ -36,13 +36,14 @@ public class CatchExceptionSourceTest extends ValidationTargetsTest {
          * In some future version we will address these issues
          */
         assertTotal(true, 6); // <--- The correct value is 3
-        assertTotal(false, 0); // <--- The correct value is 3
+        assertTotal(false, 1); // <--- The correct value is 3
         assertDU(22, 25, "var", true);
         assertDU(22, 26, "var", true);
         assertDU(34, 37, "var", true);
         assertDU(34, 39, "var", true); // <--- wrong here, exception before the use
         assertDU(46, 50, "var", true); // <--- wrong here, exception before the use
         assertDU(46, 51, "var", true); // <--- wrong here, exception before the use
+        assertDU(13, 13, "this", false);
     }
 
 }

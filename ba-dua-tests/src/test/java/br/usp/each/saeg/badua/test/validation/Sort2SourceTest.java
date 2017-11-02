@@ -48,12 +48,15 @@ public class Sort2SourceTest extends AbstractSortSourceTest {
         assertDU(17, 32, "sortupto", true);
         assertDU(32, 18, 34, "sortupto", true);
         assertDU(17, 18, 34, "n", true);
+
+        assertDU(13, 13, "this", false);
+        assertDU(29, 31, "index", true);
     }
 
     @Test
     public void verifyTotal() {
-        assertTotal(true, 27);
-        assertTotal(false, 22);
+        assertTotal(true, 28);
+        assertTotal(false, 23);
     }
 
 }

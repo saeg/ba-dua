@@ -34,8 +34,9 @@ public class StaticField2SourceTest extends ValidationTargetsTest {
 
     @Test
     public void verifyNotCoveredDU() {
-        assertTotal(false, 1);
+        assertTotal(false, 2);
         assertDU(18, 18, 19, "running", false);
+        assertDU(13, 13, "this", false);
     }
 
 }

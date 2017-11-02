@@ -23,12 +23,15 @@ public class Sort1SourceTest extends AbstractSortSourceTest {
     public void verifyCoveredDU() {
         assertDU(17, 18, 34, "sortupto", true);
         assertDU(17, 18, 34, "n", true);
+
+        assertDU(13, 13, "this", false);
+        assertDU(29, 31, "index", false);
     }
 
     @Test
     public void verifyTotal() {
         assertTotal(true, 2);
-        assertTotal(false, 47);
+        assertTotal(false, 49);
     }
 
 }

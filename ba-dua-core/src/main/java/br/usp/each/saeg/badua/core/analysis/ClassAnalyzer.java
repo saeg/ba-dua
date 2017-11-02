@@ -15,6 +15,8 @@ import static br.usp.each.saeg.commons.BitSetUtils.valueOf;
 
 import java.util.Arrays;
 import java.util.BitSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.jacoco.core.internal.analysis.StringPool;
 import org.objectweb.asm.ClassVisitor;
@@ -39,6 +41,7 @@ import br.usp.each.saeg.asm.defuse.Value;
 import br.usp.each.saeg.asm.defuse.Variable;
 import br.usp.each.saeg.badua.core.data.ExecutionData;
 import br.usp.each.saeg.badua.core.internal.instr.InstrSupport;
+import br.usp.each.saeg.commons.ArrayUtils;
 
 public class ClassAnalyzer extends ClassVisitor {
 
@@ -130,6 +133,10 @@ public class ClassAnalyzer extends ClassVisitor {
                         analyzer.getDefUseFrames(), analyzer.getVariables(),
                         flowAnalyzer.getSuccessors(),flowAnalyzer.getPredecessors());
 
+                // Only local DU
+                final DefUseChain[] localInsnChains = DefUseChain.locals(insnChains,
+                        flowAnalyzer.getLeaders(), flowAnalyzer.getBasicBlocks());
+
                 // Only global DU
                 final DefUseChain[] globalInsnChains = DefUseChain.globals(insnChains,
                         flowAnalyzer.getLeaders(), flowAnalyzer.getBasicBlocks());
@@ -138,7 +145,9 @@ public class ClassAnalyzer extends ClassVisitor {
                 final DefUseChain[] blockChains = DefUseChain.toBasicBlock(insnChains,
                         flowAnalyzer.getLeaders(), flowAnalyzer.getBasicBlocks());
 
-                final BitSet data = getData(execData.getData(), blockChains.length);
+                final int[] locals = getBlocks(localInsnChains, flowAnalyzer.getLeaders());
+
+                final BitSet data = getData(execData.getData(), blockChains.length + locals.length);
 
                 final MethodCoverage methodCoverage = new MethodCoverage(name, desc);
                 for (final DefUseChain c : globalInsnChains) {
@@ -153,9 +162,22 @@ public class ClassAnalyzer extends ClassVisitor {
                         methodCoverage.increment(lines[c.def], lines[c.use], lines[c.target], getVar(c, vars), covered);
                     }
                 }
+                final int[] leaders = flowAnalyzer.getLeaders();
+                for (final DefUseChain c : localInsnChains) {
+                    final boolean covered = data.get(blockChains.length + indexOf(locals, leaders[c.def]));
+                    methodCoverage.increment(lines[c.def], lines[c.use], getVar(c, vars), covered);
+                }
                 if (methodCoverage.getDUCounter().getTotalCount() > 0) {
                     coverage.addMethod(methodCoverage);
                 }
+            }
+
+            private int[] getBlocks(final DefUseChain[] localChains, final int[] leaders) {
+                final Set<Integer> blocks = new TreeSet<Integer>(); // Using tree set to keep order
+                for (final DefUseChain chain : localChains) {
+                    blocks.add(leaders[chain.def]);
+                }
+                return ArrayUtils.toArray(blocks, new int[blocks.size()]);
             }
 
             public BitSet getData(final long[] raw, final int length) {

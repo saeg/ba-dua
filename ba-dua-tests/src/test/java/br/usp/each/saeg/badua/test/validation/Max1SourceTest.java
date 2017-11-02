@@ -24,12 +24,20 @@ public class Max1SourceTest extends AbstractMaxSourceTest {
         assertDU(17, 18, 24, "i", true);
         assertDU(16, 18, 24, "length", true);
         assertDU(17, 24, "max", true);
+        assertDU(16, 17, "array", true);
+        assertDU(16, 17, "i", true);
+        assertDU(17, 17, "i", true);
+    }
+
+    @Test
+    public void verifyNotCoveredDU() {
+        assertDU(13, 13, "this", false);
     }
 
     @Test
     public void verifyTotal() {
-        assertTotal(true, 3);
-        assertTotal(false, 20);
+        assertTotal(true, 6);
+        assertTotal(false, 21);
     }
 
 }

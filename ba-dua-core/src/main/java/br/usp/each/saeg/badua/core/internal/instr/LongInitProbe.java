@@ -16,8 +16,15 @@ import org.objectweb.asm.tree.MethodNode;
 
 public final class LongInitProbe extends Probe {
 
+    private final long alive;
+
     public LongInitProbe(final MethodNode methodNode, final int window) {
+        this(methodNode, window, 0);
+    }
+
+    public LongInitProbe(final MethodNode methodNode, final int window, final long alive) {
         super(methodNode, window);
+        this.alive = alive;
     }
 
     @Override
@@ -29,7 +36,7 @@ public final class LongInitProbe extends Probe {
     public void accept(final MethodVisitor mv) {
         mv.visitInsn(Opcodes.LCONST_0);
         mv.visitVarInsn(Opcodes.LSTORE, vCovered);
-        mv.visitInsn(Opcodes.LCONST_0);
+        mv.visitLdcInsn(alive);
         mv.visitVarInsn(Opcodes.LSTORE, vAlive);
         mv.visitLdcInsn(-1L);
         mv.visitVarInsn(Opcodes.LSTORE, vSleepy);

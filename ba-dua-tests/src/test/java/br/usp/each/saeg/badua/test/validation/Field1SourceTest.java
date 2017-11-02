@@ -28,7 +28,8 @@ public class Field1SourceTest extends ValidationTargetsTest {
 
     @Test
     public void verifyCoveredDU() {
-        assertTotal(true, 3);
+        assertTotal(true, 4);
+        assertDU(13, 13, "this", true);
         assertDU(18, 18, 19, "this", true);
         assertDU(18, 18, 19, "this.running", true);
         assertDU(18, 19, "this", true);

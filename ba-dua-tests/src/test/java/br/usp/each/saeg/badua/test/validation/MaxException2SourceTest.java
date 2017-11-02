@@ -54,12 +54,20 @@ public class MaxException2SourceTest extends AbstractMaxSourceTest {
         assertDU(20, 19, 20, "max", true);
         assertDU(22, 20, "i", true);
         assertDU(22, 22, "i", true);
+        assertDU(16, 17, "array", true);
+        assertDU(16, 17, "i", true);
+        assertDU(17, 17, "i", true);
+    }
+
+    @Test
+    public void verifyNotCoveredDU() {
+        assertDU(13, 13, "this", false);
     }
 
     @Test
     public void verifyTotal() {
-        assertTotal(true, 13);
-        assertTotal(false, 10);
+        assertTotal(true, 16);
+        assertTotal(false, 11);
     }
 
 }

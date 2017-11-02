@@ -111,14 +111,13 @@ public class BytecodeFieldTest extends ValidationTest {
         // finalize class
         cw.visitEnd();
 
+        RT.init(new RuntimeData());
         final byte[] bytes = cw.toByteArray();
         final Class<?> klass = addClass(className, bytes);
         method = klass.getMethod(methodName);
         field = klass.getField(fieldName);
         object = klass.newInstance();
         classId = CRC64.checksum(bytes);
-
-        RT.init(new RuntimeData());
     }
 
     /*
@@ -133,7 +132,7 @@ public class BytecodeFieldTest extends ValidationTest {
     public void test0() {
         final boolean running = get();
         Assert.assertEquals(false, running);
-        assertCoverage();
+        assertCoverage(0);
     }
 
     @Test
@@ -141,7 +140,7 @@ public class BytecodeFieldTest extends ValidationTest {
         invoke();
         final boolean running = get();
         Assert.assertEquals(true, running);
-        assertCoverage(0, 2, 3);
+        assertCoverage(0, 64, 66, 67);
     }
 
     @Test
@@ -150,7 +149,7 @@ public class BytecodeFieldTest extends ValidationTest {
         invoke();
         final boolean running = get();
         Assert.assertEquals(true, running);
-        assertCoverage(1, 4);
+        assertCoverage(0, 65, 68);
     }
 
     @Test
@@ -159,11 +158,11 @@ public class BytecodeFieldTest extends ValidationTest {
         invoke();
         final boolean running = get();
         Assert.assertEquals(true, running);
-        assertCoverage(0, 1, 2, 3, 4);
+        assertCoverage(0, 64, 65, 66, 67, 68);
     }
 
     private void assertCoverage(final int... expectedCoveredChains) {
-        final BitSet covered = BitSetUtils.valueOf(RT.getData(classId, className, 1));
+        final BitSet covered = BitSetUtils.valueOf(RT.getData(classId, className, 2));
         final BitSet expected = new BitSet();
         for (final int ecc : expectedCoveredChains) {
             expected.set(ecc);

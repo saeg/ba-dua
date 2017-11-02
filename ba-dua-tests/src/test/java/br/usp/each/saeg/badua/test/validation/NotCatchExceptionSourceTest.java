@@ -71,7 +71,7 @@ public class NotCatchExceptionSourceTest extends ValidationTargetsTest {
          * In some future version we will address these issues
          */
         assertTotal(true, 24); // <--- The correct value is 12
-        assertTotal(false, 0); // <--- The correct value is 12
+        assertTotal(false, 1); // <--- The correct value is 13
         assertDU(16, 18, "var", true);
         assertDU(16, 19, "var", true);
         assertDU(25, 27, "var", true);
@@ -96,6 +96,7 @@ public class NotCatchExceptionSourceTest extends ValidationTargetsTest {
         assertDU(106, 110, "var", true); // <--- wrong here, exception before the use
         assertDU(115, 118, "var", true); // <--- wrong here, exception before the use
         assertDU(115, 119, "var", true); // <--- wrong here, exception before the use
+        assertDU(13, 13, "this", false);
     }
 
 }

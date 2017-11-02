@@ -16,8 +16,15 @@ import org.objectweb.asm.tree.MethodNode;
 
 public final class IntegerInitProbe extends Probe {
 
+    private final int alive;
+
     public IntegerInitProbe(final MethodNode methodNode) {
+        this(methodNode, 0);
+    }
+
+    public IntegerInitProbe(final MethodNode methodNode, final int alive) {
         super(methodNode);
+        this.alive = alive;
     }
 
     @Override
@@ -29,7 +36,7 @@ public final class IntegerInitProbe extends Probe {
     public void accept(final MethodVisitor mv) {
         mv.visitInsn(Opcodes.ICONST_0);
         mv.visitVarInsn(Opcodes.ISTORE, vCovered);
-        mv.visitInsn(Opcodes.ICONST_0);
+        InstrSupport.push(mv, alive);
         mv.visitVarInsn(Opcodes.ISTORE, vAlive);
         mv.visitInsn(Opcodes.ICONST_M1);
         mv.visitVarInsn(Opcodes.ISTORE, vSleepy);
