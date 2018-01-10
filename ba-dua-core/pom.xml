@@ -29,6 +29,23 @@
 		<license.header.fileLocation>../LICENSE-TEMPLATE.txt</license.header.fileLocation>
 	</properties>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.mycila</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<!--
+							This file was copied from JaCoCo (http://jacoco.org)
+						-->
+						<exclude>src/main/java/br/usp/each/saeg/badua/core/internal/data/CRC64.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 	<dependencies>
 		<dependency>
 			<groupId>br.usp.each.saeg</groupId>
@@ -44,14 +61,6 @@
 			<groupId>org.jacoco</groupId>
 			<artifactId>org.jacoco.core</artifactId>
 			<version>${jacoco.version}</version>
-			<exclusions>
-				<!-- Avoid conflicts with asm provided by asm-defuse -->
-				<!-- The API should be the same -->
-				<exclusion>
-					<groupId>org.ow2.asm</groupId>
-					<artifactId>asm-debug-all</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 	</dependencies>
 

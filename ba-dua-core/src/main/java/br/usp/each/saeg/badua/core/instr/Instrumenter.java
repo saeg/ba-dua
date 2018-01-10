@@ -15,11 +15,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.jacoco.core.internal.ContentTypeDetector;
-import org.jacoco.core.internal.data.CRC64;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 
+import br.usp.each.saeg.badua.core.internal.data.CRC64;
 import br.usp.each.saeg.badua.core.internal.instr.ClassInstrumenter;
 import br.usp.each.saeg.commons.io.Files;
 

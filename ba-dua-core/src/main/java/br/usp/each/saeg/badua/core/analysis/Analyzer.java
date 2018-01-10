@@ -15,11 +15,11 @@ import java.io.InputStream;
 
 import org.jacoco.core.internal.ContentTypeDetector;
 import org.jacoco.core.internal.analysis.StringPool;
-import org.jacoco.core.internal.data.CRC64;
 import org.objectweb.asm.ClassReader;
 
 import br.usp.each.saeg.badua.core.data.ExecutionData;
 import br.usp.each.saeg.badua.core.data.ExecutionDataStore;
+import br.usp.each.saeg.badua.core.internal.data.CRC64;
 
 public class Analyzer {
 
