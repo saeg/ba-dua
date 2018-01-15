@@ -78,6 +78,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<license.header.fileLocation>LICENSE-TEMPLATE.txt</license.header.fileLocation>
 		<jacoco.version>0.8.0</jacoco.version>
+		<sonar.jacoco.reportPath>../ba-dua-tests/target/jacoco.exec</sonar.jacoco.reportPath>
+		<sonar.surefire.reportsPath>../ba-dua-tests/target/surefire-reports/</sonar.surefire.reportsPath>
 	</properties>
 
 	<modules>

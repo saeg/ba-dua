@@ -6,12 +6,18 @@ addons:
   apt:
     packages:
       - openjdk-6-jdk
+  sonarcloud:
+    organization: "saeg"
 
 jdk:
   - oraclejdk9
-  - oraclejdk8
   - openjdk7
   - openjdk6
+
+matrix:
+  include:
+    - jdk: oraclejdk8
+      env: $RUN_SONAR=true
 
 install: true
 
@@ -19,8 +25,10 @@ script: ./mvnw verify
 
 after_success:
   - ./mvnw coveralls:report
+  - if [ "$RUN_SONAR" = true ]; then ./mvnw sonar:sonar; fi
 
 cache:
   directories:
     - '$HOME/.m2/repository'
     - '$HOME/.m2/wrapper'
+    - '$HOME/.sonar/cache'
