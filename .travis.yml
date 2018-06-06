@@ -10,6 +10,7 @@ addons:
     organization: "saeg"
 
 jdk:
+  - oraclejdk10
   - oraclejdk9
   - openjdk7
   - openjdk6
