@@ -22,10 +22,10 @@ matrix:
 
 install: true
 
-script: ./mvnw verify
+script: ./mvnw verify -s .mvn/settings.xml
 
 after_success:
-  - ./mvnw coveralls:report
+  - ./mvnw coveralls:report -s .mvn/settings.xml
   - if [ "$RUN_SONAR" = true ]; then ./mvnw sonar:sonar; fi
 
 cache:
