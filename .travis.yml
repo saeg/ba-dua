@@ -15,12 +15,18 @@ jdk:
   - openjdk10
   - oraclejdk9
   - openjdk7
-  - openjdk6
 
 matrix:
   include:
     - jdk: oraclejdk8
       env: $RUN_SONAR=true
+    - jdk: oraclejdk8
+      env: $JDK=6
+
+before_install:
+  - if [[ "$JDK" = "6" ]]; then jdk_switcher use openjdk6; fi
+  - java -Xmx32m -version
+  - javac -J-Xmx32m -version
 
 install: true
 
