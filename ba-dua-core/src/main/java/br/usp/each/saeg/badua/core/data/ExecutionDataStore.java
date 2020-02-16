@@ -44,6 +44,12 @@ public class ExecutionDataStore implements IExecutionDataVisitor {
         }
     }
 
+    public void reset() {
+        for (final ExecutionData data : getContents()) {
+            data.reset();
+        }
+    }
+
     @Override
     public void visitClassExecution(final ExecutionData data) {
         final Long id = data.getId();

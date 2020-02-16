@@ -30,4 +30,10 @@ public class RuntimeData {
         }
     }
 
+    public void reset() {
+        synchronized (store) {
+            store.reset();
+        }
+    }
+
 }

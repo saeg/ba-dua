@@ -10,6 +10,8 @@
  */
 package br.usp.each.saeg.badua.core.data;
 
+import java.util.Arrays;
+
 public class ExecutionData {
 
     private final long id;
@@ -38,6 +40,10 @@ public class ExecutionData {
 
     public long[] getData() {
         return data;
+    }
+
+    public void reset() {
+        Arrays.fill(data, 0L);
     }
 
     public void assertCompatibility(final long id, final String name, final int length)
