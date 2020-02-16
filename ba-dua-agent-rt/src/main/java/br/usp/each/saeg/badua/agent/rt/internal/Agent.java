@@ -54,6 +54,10 @@ public final class Agent {
         return data;
     }
 
+    public void reset() {
+        data.reset();
+    }
+
     private static final class ShutdownHook extends Thread {
 
         private final Agent agent;
