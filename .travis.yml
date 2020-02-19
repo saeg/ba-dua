@@ -30,10 +30,10 @@ before_install:
 
 install: true
 
-script: ./mvnw verify -s .mvn/settings.xml
+script: ./mvnw verify
 
 after_success:
-  - ./mvnw coveralls:report -s .mvn/settings.xml
+  - ./mvnw coveralls:report
   - if [ "$RUN_SONAR" = true ]; then ./mvnw sonar:sonar; fi
 
 cache:

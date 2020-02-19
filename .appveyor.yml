@@ -17,4 +17,4 @@ before_build:
   - javac -J-Xmx32m -version
 
 build_script:
-  - .\mvnw verify -s .mvn\settings.xml
+  - .\mvnw verify
