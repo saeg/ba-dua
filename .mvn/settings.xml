@@ -30,13 +30,5 @@
 				</pluginRepository>
 			</pluginRepositories>
 		</profile>
-		<profile>
-			<activation>
-				<jdk>1.7</jdk>
-			</activation>
-			<properties>
-				<https.protocols>TLSv1.2</https.protocols>
-			</properties>
-		</profile>
 	</profiles>
 </settings>
