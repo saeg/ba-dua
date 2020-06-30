@@ -61,8 +61,8 @@
 	</issueManagement>
 
 	<ciManagement>
-		<system>Travis CI</system>
-		<url>https://travis-ci.org/saeg/ba-dua</url>
+		<system>GitHub Actions</system>
+		<url>https://github.com/saeg/ba-dua/actions</url>
 	</ciManagement>
 
 	<developers>

@@ -1,6 +1,5 @@
 # ba-dua
 
-[![Build Status](https://img.shields.io/travis/saeg/ba-dua.svg?style=flat-square)](https://travis-ci.org/saeg/ba-dua)
 [![Coverage Status](https://img.shields.io/coveralls/saeg/ba-dua.svg?style=flat-square)](https://coveralls.io/r/saeg/ba-dua)
 [![Maven Central](https://img.shields.io/maven-central/v/br.usp.each.saeg/ba-dua.svg?style=flat-square)](https://maven-badges.herokuapp.com/maven-central/br.usp.each.saeg/ba-dua)
 [![License](https://img.shields.io/github/license/saeg/ba-dua.svg?style=flat-square)](LICENSE)
