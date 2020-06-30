@@ -177,7 +177,6 @@
 					</properties>
 					<excludes>
 						<exclude>LICENSE</exclude>
-						<exclude>.appveyor.yml</exclude>
 						<exclude>.github/**</exclude>
 						<exclude>mvnw</exclude>
 						<exclude>mvnw.cmd</exclude>
