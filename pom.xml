@@ -192,8 +192,8 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<!-- Using JaCoCo 0.8.2 to support coverage with Java 11 -->
-				<version>0.8.2</version>
+				<!-- Using JaCoCo 0.8.3 to support coverage with Java 13 -->
+				<version>0.8.3</version>
 				<executions>
 					<execution>
 						<id>prepare-agent</id>
