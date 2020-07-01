@@ -76,8 +76,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>6</maven.compiler.source>
-		<maven.compiler.target>6</maven.compiler.target>
+		<maven.compiler.source>1.6</maven.compiler.source>
+		<maven.compiler.target>1.6</maven.compiler.target>
 		<license.header.fileLocation>LICENSE-TEMPLATE.txt</license.header.fileLocation>
 		<jacoco.version>0.8.1</jacoco.version>
 		<sonar.jacoco.reportPath>../ba-dua-tests/target/jacoco.exec</sonar.jacoco.reportPath>
@@ -280,8 +280,8 @@
 				<jdk>[12,)</jdk>
 			</activation>
 			<properties>
-				<maven.compiler.source>7</maven.compiler.source>
-				<maven.compiler.target>7</maven.compiler.target>
+				<maven.compiler.source>1.7</maven.compiler.source>
+				<maven.compiler.target>1.7</maven.compiler.target>
 			</properties>
 		</profile>
 		<profile>
