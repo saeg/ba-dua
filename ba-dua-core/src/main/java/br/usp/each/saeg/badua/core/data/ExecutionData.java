@@ -46,6 +46,13 @@ public class ExecutionData {
         Arrays.fill(data, 0L);
     }
 
+    public void merge(final ExecutionData other) {
+        assertCompatibility(other.id, other.name, other.data.length);
+        for (int i = 0; i < data.length; i++) {
+            data[i] |= other.data[i];
+        }
+    }
+
     public void assertCompatibility(final long id, final String name, final int length)
             throws IllegalStateException {
 

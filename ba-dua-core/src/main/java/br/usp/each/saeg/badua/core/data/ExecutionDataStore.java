@@ -57,7 +57,7 @@ public class ExecutionDataStore implements IExecutionDataVisitor {
         if (entry == null) {
             entries.put(id, data);
         } else {
-            throw new UnsupportedOperationException("Entry already exist. We don't support merge yet");
+            entry.merge(data);
         }
     }
 
