@@ -30,6 +30,15 @@ public class RuntimeData {
         }
     }
 
+    public void collect(final IExecutionDataVisitor visitor, final boolean reset) {
+        synchronized (store) {
+            collect(visitor);
+            if (reset) {
+                reset();
+            }
+        }
+    }
+
     public void reset() {
         synchronized (store) {
             store.reset();
