@@ -18,14 +18,14 @@ import br.usp.each.saeg.badua.core.runtime.RuntimeData;
 
 public class FileOutput {
 
-    public void writeExecutionData(final RuntimeData data) throws IOException {
+    public void writeExecutionData(final RuntimeData data, final boolean reset) throws IOException {
         String filename = System.getProperty("output.file");
         if (filename == null)
             filename = "coverage.ser";
 
-        final FileOutputStream output = new FileOutputStream(filename);
+        final FileOutputStream output = new FileOutputStream(filename, true);
         try {
-            data.collect(new ExecutionDataWriter(output));
+            data.collect(new ExecutionDataWriter(output), reset);
         } finally {
             output.close();
         }

@@ -43,7 +43,7 @@ public final class Agent {
 
     private void shutdown() {
         try {
-            output.writeExecutionData(data);
+            output.writeExecutionData(data, false);
         } catch (final IOException e) {
             System.err.println("error writing execution data");
             e.printStackTrace();
@@ -56,6 +56,10 @@ public final class Agent {
 
     public void reset() {
         data.reset();
+    }
+
+    public void dump(final boolean reset) throws IOException {
+        output.writeExecutionData(data, reset);
     }
 
     private static final class ShutdownHook extends Thread {
