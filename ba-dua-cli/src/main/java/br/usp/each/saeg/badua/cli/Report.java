@@ -99,6 +99,8 @@ public class Report {
     private final File classes;
 
     private final File xmlFile;
+    
+    private final File htmlRoot;
 
     private final CoverageVisitor visitor;
 
@@ -107,6 +109,7 @@ public class Report {
     public Report(final ReportOptions options) throws IOException {
         classes = options.getClasses();
         xmlFile = options.getXMLFile();
+        htmlRoot = options.getHTMLRoot();
 
         visitor = new CoverageVisitor(new PrintCoverage(
                 System.out, options.showClasses(), options.showMethods()));
@@ -141,6 +144,16 @@ public class Report {
             } finally {
                 output.close();
             }
+        }
+        
+        if (htmlRoot != null) {
+        	final FileOutputStream output = new FileOutputStream(htmlRoot);
+            try {
+//                XMLCoverageWriter.write(visitor.classes, output);
+            } finally {
+                output.close();
+            }
+        	
         }
     }
 

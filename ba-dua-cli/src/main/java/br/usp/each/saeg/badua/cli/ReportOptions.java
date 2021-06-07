@@ -32,6 +32,9 @@ public class ReportOptions {
 
     @Option(name = "-xml", usage = "write XML report")
     private File xmlFile;
+    
+    @Option(name = "-html", usage = "write HTML report in selected root directory")
+    private File htmlRoot;
 
     public File getInput() {
         return input;
@@ -51,6 +54,10 @@ public class ReportOptions {
 
     public File getXMLFile() {
         return xmlFile;
+    }
+    
+    public File getHTMLRoot() {
+    	return htmlRoot;
     }
 
 }
