@@ -25,6 +25,8 @@ import java.util.List;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
+import org.jacoco.report.FileMultiReportOutput;
+
 import br.usp.each.saeg.badua.core.analysis.Analyzer;
 import br.usp.each.saeg.badua.core.analysis.ClassCoverage;
 import br.usp.each.saeg.badua.core.analysis.ICoverageVisitor;
@@ -147,9 +149,10 @@ public class Report {
         }
         
         if (htmlRoot != null) {
-        	final FileOutputStream output = new FileOutputStream(htmlRoot);
+        	//multireport para diretorio
+        	final FileMultiReportOutput output = new FileMultiReportOutput(htmlRoot);
             try {
-//                XMLCoverageWriter.write(visitor.classes, output);
+            	HTMLCoverageWriter.write(visitor.classes, output);
             } finally {
                 output.close();
             }
