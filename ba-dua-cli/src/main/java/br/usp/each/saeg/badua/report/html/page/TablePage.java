@@ -1,23 +1,22 @@
 package br.usp.each.saeg.badua.report.html.page;
 
 import br.usp.each.saeg.badua.cli.HTMLCoverageWriter;
-import br.usp.each.saeg.badua.core.analysis.ClassCoverage;
+import br.usp.each.saeg.badua.report.html.table.Table;
+import org.jacoco.core.analysis.ICoverageNode;
 import org.jacoco.report.internal.ReportOutputFolder;
 import org.jacoco.report.internal.html.HTMLElement;
 import org.jacoco.report.internal.html.resources.Resources;
 import org.jacoco.report.internal.html.table.ITableItem;
-import br.usp.each.saeg.badua.report.html.table.Table;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TablePage extends ReportPage {
+public class TablePage extends ReportPage implements ITableItem{
 	
 	private final List<ITableItem> items = new ArrayList<ITableItem>();
 
-	public TablePage(final List<ClassCoverage> classes,
-					 final ReportPage parent,
+	public TablePage(final ReportPage parent,
 					 final ReportOutputFolder folder,
 					 final HTMLCoverageWriter context) {
 		super(parent, folder, context);
@@ -60,4 +59,10 @@ public class TablePage extends ReportPage {
 	}
 
 
+	@Override
+	//Node just be like Page
+	//We don't have nodes here
+	public ICoverageNode getNode() {
+		return null;
+	}
 }

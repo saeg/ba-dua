@@ -4,6 +4,7 @@ import br.usp.each.saeg.badua.cli.HTMLCoverageWriter;
 import br.usp.each.saeg.badua.core.analysis.ClassCoverage;
 import org.jacoco.report.ISourceFileLocator;
 import org.jacoco.report.internal.ReportOutputFolder;
+import org.jacoco.report.internal.html.HTMLElement;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,39 +24,36 @@ public class ProjectPage extends TablePage{
 					   final ReportPage parent,
 					   final ISourceFileLocator locator,
 					   final ReportOutputFolder folder) {
-		super(classes, parent, folder, new HTMLCoverageWriter());
+		super(parent, folder, new HTMLCoverageWriter());
 		this.classes = classes;
 		this.locator = locator;
 	}
 
 	public void render() throws IOException {
+		renderClasses();
+		super.render();
 
 	}
 
 	private void renderClasses() throws IOException {
 		for(ClassCoverage cc : classes) {
+
+			//Getting Class Info
 			final String className = cc.getName();
-//			final ClassPage page = new ClassPage(cc.getMethods(), this, );
+			final String folderName = className.length() == 0 ? "default"
+					: className.replace('/', '.');
+
+			//Rendering class' methods
+			final ClassPage page = new ClassPage( cc.getMethods(), this, folder.subFolder(folderName), context );
+			page.render();
+
+			//Adding page to table
+			addItem(page);
 
 		}
 
 	}
 
-	private void renderPackages() throws IOException {
-//		for (final IPackageCoverage p : bundle.getPackages()) {
-//			if (!p.containsCode()) {
-//				continue;
-//			}
-//			final String packagename = p.getName();
-//			final String foldername = packagename.length() == 0 ? "default"
-//					: packagename.replace('/', '.');
-//			final PackagePage page = new PackagePage(p, this, locator,
-//					folder.subFolder(foldername), context);
-//			page.render();
-//			addItem(page);
-//		}
-	}
-	
 	protected String getOnload() {
 		return "initialSort(['breadcrumb', 'coveragetable'])";
 	}
@@ -64,7 +62,7 @@ public class ProjectPage extends TablePage{
 		return "index.html";
 	}
 
-//	protected void content(HTMLElement body) throws IOException {
+	protected void content(HTMLElement body) throws IOException {
 //		if (bundle.getPackages().isEmpty()) {
 //			body.p().text("No class files specified.");
 //		} else if (!bundle.containsCode()) {
@@ -73,6 +71,6 @@ public class ProjectPage extends TablePage{
 //		} else {
 //			super.content(body);
 //		}
-//	}
+	}
 
 }
