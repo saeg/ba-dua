@@ -1,68 +1,82 @@
 package br.usp.each.saeg.badua.report.html.table;
 
+import br.usp.each.saeg.badua.core.analysis.CoverageNode;
 import org.jacoco.report.internal.ReportOutputFolder;
 import org.jacoco.report.internal.html.HTMLElement;
 import org.jacoco.report.internal.html.resources.Resources;
 import org.jacoco.report.internal.html.resources.Styles;
-import org.jacoco.report.internal.html.table.IColumnRenderer;
-import org.jacoco.report.internal.html.table.ITableItem;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class Table {
 
-    private final List<Column> colunas;
-    private Comparator<ITableItem> defaultComparator;
+    /**
+     * Sem aderir o Comparator*/
+
+    private final List<Column> columns;
+//    private Comparator<ITableItem> defaultComparator;
 
     public Table() {
-        this.colunas = new ArrayList<Table.Column>();
+        this.columns = new ArrayList<Table.Column>();
     }
 
-    public void add(final String header, final String style,
-                    final IColumnRenderer renderer, final boolean defaultSorting) {
-        colunas.add(new Column(colunas.size(), header, style, renderer,
-                defaultSorting));
-        if (defaultSorting) {
-            if (defaultComparator != null) {
-                throw new IllegalStateException(
-                        "Default sorting only allowed for one column.");
-            }
-            this.defaultComparator = renderer.getComparator();
-        }
+    /**
+     * Adciona uma nova coluna com as propriedades passadas
+     * */
+    public void add(final String header,
+                    final String style,
+                    final IColumnRenderer renderer) {
+        columns.add(new Column(columns.size(), header, style, renderer));
+//        if (defaultSorting) {
+//            if (defaultComparator != null) {
+//                throw new IllegalStateException(
+//                        "Default sorting only allowed for one column.");
+//            }
+//            this.defaultComparator = renderer.getComparator();
+//        }
     }
 
+    /**
+     * Renderização real da tabela
+     */
     public void render(final HTMLElement parent,
                        final List<? extends ITableItem> items,
+                       final CoverageNode total,
                        final Resources resources,
                        final ReportOutputFolder base)
             throws IOException {
+
+//        Sem sort de itens por enquanto
+//        final List<? extends ITableItem> sortedItems = sort(items);
+
         final HTMLElement table = parent.table(Styles.COVERAGETABLE);
         table.attr("id", "coveragetable");
-        header(table, items);
-        footer(table, resources, base);
+        header(table, items, total);
+        footer(table, total, resources, base);
         body(table, items, resources, base);
     }
 
     private void header(final HTMLElement table,
-                        final List<? extends ITableItem> items)
+                        final List<? extends ITableItem> items,
+                        final CoverageNode total)
             throws IOException {
+
         final HTMLElement tr = table.thead().tr();
-        for (final Column c : colunas) {
-            c.init(tr, items);
+        for (final Column c : columns) {
+            c.init(tr, items, total);
         }
     }
 
     private void footer(final HTMLElement table,
+                        final CoverageNode total,
                         final Resources resources,
                         final ReportOutputFolder base)
             throws IOException {
         final HTMLElement tr = table.tfoot().tr();
-        for (final Column c : colunas) {
-            c.footer(tr, resources, base);
+        for (final Column c : columns) {
+            c.footer(tr, total, resources, base);
         }
     }
 
@@ -75,7 +89,7 @@ public class Table {
         int idx = 0;
         for (final ITableItem item : items) {
             final HTMLElement tr = tbody.tr();
-            for (final Column c : colunas) {
+            for (final Column c : columns) {
                 c.body(tr, idx, item, resources, base);
             }
             idx++;
@@ -86,28 +100,37 @@ public class Table {
 
         private final char idprefix;
         private final String header;
-        private final Column renderer;
-        //private final SortIndex<ITableItem> index;
+        private final IColumnRenderer renderer;
+//        private final SortIndex<ITableItem> index;
         private final String style, headerStyle;
 
         private boolean visible;
 
-        Column(final int idx, final String header, final String style,
-               final Column renderer, final boolean defaultSorting) {
+        /**
+         * Construtor da Coluna
+         * Passando qual será o renderizador base dela*/
+        Column(final int idx,
+               final String header,
+               final String style,
+               final IColumnRenderer renderer) {
             this.idprefix = (char) ('a' + idx);
             this.header = header;
             this.renderer = renderer;
 //            index = new SortIndex<ITableItem>(renderer.getComparator());
             this.style = style;
-            this.headerStyle = Styles.combine(
-                    defaultSorting ? Styles.DOWN : null, Styles.SORTABLE,
-                    style);
+            this.headerStyle = Styles.combine(null, Styles.SORTABLE, style);
+//            this.headerStyle = Styles.combine(
+//                    defaultSorting ? Styles.DOWN : null, Styles.SORTABLE,
+//                    style);
         }
 
+        /**
+         * Iniciador da coluna*/
         void init(final HTMLElement tr,
-                  final List<? extends ITableItem> items)
+                  final List<? extends ITableItem> items,
+                  final CoverageNode total)
                 throws IOException {
-//            visible = renderer.init(items, total);
+            visible = renderer.init(items, total);
             if (visible) {
 //                index.init(items);
                 final HTMLElement td = tr.td(headerStyle);
@@ -118,20 +141,27 @@ public class Table {
         }
 
         void footer(final HTMLElement tr,
-                    final Resources resources, final ReportOutputFolder base)
+                    final CoverageNode total,
+                    final Resources resources,
+                    final ReportOutputFolder base)
                 throws IOException {
             if (visible) {
                 renderer.footer(tr.td(style), total, resources, base);
             }
         }
 
-        void body(final HTMLElement tr, final int idx, final ITableItem item,
-                  final Resources resources, final ReportOutputFolder base)
+        void body(final HTMLElement tr,
+                  final int idx,
+                  final ITableItem item,
+                  final Resources resources,
+                  final ReportOutputFolder base)
                 throws IOException {
             if (visible) {
                 final HTMLElement td = tr.td(style);
                 td.attr("id",
-                        idprefix + String.valueOf(index.getPosition(idx)));
+                        idprefix);
+//                td.attr("id",
+//                        idprefix + String.valueOf(index.getPosition(idx)));
                 renderer.item(td, item, resources, base);
             }
         }
