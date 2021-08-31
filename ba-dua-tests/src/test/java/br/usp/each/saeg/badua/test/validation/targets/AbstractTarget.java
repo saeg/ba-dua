@@ -12,6 +12,9 @@ package br.usp.each.saeg.badua.test.validation.targets;
 
 public abstract class AbstractTarget {
 
+	public static void nop() {
+	}
+
     public static void use(final int var) {
     }
 
