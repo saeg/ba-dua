@@ -20,10 +20,6 @@ public final class RT {
         // No instances
     }
 
-    public static void init() {
-        init(Agent.getInstance().getData());
-    }
-
     public static void init(final RuntimeData data) {
         DATA = data;
     }

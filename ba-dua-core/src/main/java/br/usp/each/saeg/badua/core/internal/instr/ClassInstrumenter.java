@@ -32,10 +32,6 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
 
     private int classProbeCount;
 
-    public ClassInstrumenter(final long classId, final ClassVisitor cv, final Class<?> runtime) {
-        this(classId, cv, runtime.getName(), false);
-    }
-
     public ClassInstrumenter(final long classId, final ClassVisitor cv, final String runtime) {
         this(classId, cv, runtime, false);
     }
