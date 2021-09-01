@@ -19,11 +19,12 @@ import br.usp.each.saeg.badua.core.instr.Instrumenter;
 
 public class CoverageTransformer implements ClassFileTransformer {
 
-    private final static String BADUA_PACKAGE = RT.class.getPackage().getName().replace('.', '/');
+    private final String skipPackageName;
 
     private final Instrumenter instrumenter;
 
-    public CoverageTransformer(final String runtime) {
+    public CoverageTransformer(final String runtime, final String skipPackageName) {
+        this.skipPackageName = skipPackageName.replace('.', '/');
         instrumenter = new Instrumenter(runtime,
                 Boolean.valueOf(System.getProperty("badua.experimental.exception_handler")));
     }
@@ -51,7 +52,7 @@ public class CoverageTransformer implements ClassFileTransformer {
         return loader == null
                 || loader.getClass().getName().equals("sun.reflect.DelegatingClassLoader")
                 || loader.getClass().getName().equals("sun.misc.Launcher$ExtClassLoader")
-                || className.startsWith(BADUA_PACKAGE);
+                || className.startsWith(skipPackageName);
     }
 
 }
