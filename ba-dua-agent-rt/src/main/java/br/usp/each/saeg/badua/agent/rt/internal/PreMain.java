@@ -20,7 +20,7 @@ public final class PreMain {
 
     public static void premain(final String opts, final Instrumentation inst) {
         RT.init(Agent.getInstance().getData());
-        inst.addTransformer(new CoverageTransformer());
+        inst.addTransformer(new CoverageTransformer(RT.class.getName()));
     }
 
 }
