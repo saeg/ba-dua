@@ -31,10 +31,6 @@ public class Instrumenter {
 
     private final boolean exceptionHandler;
 
-    public Instrumenter(final Class<?> runtime) {
-        this(runtime.getName());
-    }
-
     public Instrumenter(final String runtime) {
         this(runtime, false);
     }
