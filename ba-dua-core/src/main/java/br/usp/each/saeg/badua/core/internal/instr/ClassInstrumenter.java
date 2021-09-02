@@ -17,7 +17,6 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 import br.usp.each.saeg.badua.core.runtime.IExecutionDataAccessorGenerator;
-import br.usp.each.saeg.badua.core.runtime.StaticAccessGenerator;
 
 public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
 
@@ -35,18 +34,19 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
 
     private int classProbeCount;
 
-    public ClassInstrumenter(final long classId, final ClassVisitor cv, final String runtime) {
-        this(classId, cv, runtime, false);
+    public ClassInstrumenter(final long classId, final ClassVisitor cv,
+            final IExecutionDataAccessorGenerator accessorGenerator) {
+        this(classId, cv, accessorGenerator, false);
     }
 
-    public ClassInstrumenter(final long classId, final ClassVisitor cv, final String runtime,
+    public ClassInstrumenter(final long classId, final ClassVisitor cv,
+            final IExecutionDataAccessorGenerator accessorGenerator,
             final boolean exceptionHandler) {
 
         super(Opcodes.ASM6, cv);
         this.classId = classId;
+        this.accessorGenerator = accessorGenerator;
         this.exceptionHandler = exceptionHandler;
-
-        accessorGenerator = new StaticAccessGenerator(runtime);
     }
 
     @Override

@@ -16,6 +16,7 @@ import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
 
 import br.usp.each.saeg.badua.core.instr.Instrumenter;
+import br.usp.each.saeg.badua.core.runtime.IExecutionDataAccessorGenerator;
 
 public class CoverageTransformer implements ClassFileTransformer {
 
@@ -23,9 +24,10 @@ public class CoverageTransformer implements ClassFileTransformer {
 
     private final Instrumenter instrumenter;
 
-    public CoverageTransformer(final String runtime, final String skipPackageName) {
+    public CoverageTransformer(
+            final IExecutionDataAccessorGenerator accessorGenerator, final String skipPackageName) {
         this.skipPackageName = skipPackageName.replace('.', '/');
-        instrumenter = new Instrumenter(runtime,
+        instrumenter = new Instrumenter(accessorGenerator,
                 Boolean.valueOf(System.getProperty("badua.experimental.exception_handler")));
     }
 

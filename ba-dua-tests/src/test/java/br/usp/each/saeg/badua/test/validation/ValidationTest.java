@@ -14,6 +14,7 @@ import java.io.IOException;
 
 import br.usp.each.saeg.badua.agent.rt.internal.RT;
 import br.usp.each.saeg.badua.core.instr.Instrumenter;
+import br.usp.each.saeg.badua.core.runtime.StaticAccessGenerator;
 
 public abstract class ValidationTest {
 
@@ -30,7 +31,8 @@ public abstract class ValidationTest {
     }
 
     private byte[] instrument(final String name, final byte[] bytes) {
-        final Instrumenter instrumenter = new Instrumenter(RT.class.getName(), exceptionHandler);
+        final Instrumenter instrumenter = new Instrumenter(
+                new StaticAccessGenerator(RT.class.getName()), exceptionHandler);
 
         try {
             return instrumenter.instrument(bytes, name);
