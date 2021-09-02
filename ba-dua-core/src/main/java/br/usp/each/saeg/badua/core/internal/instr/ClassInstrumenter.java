@@ -17,6 +17,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 import br.usp.each.saeg.badua.core.runtime.IExecutionDataAccessorGenerator;
+import br.usp.each.saeg.badua.core.runtime.StaticAccessGenerator;
 
 public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
 
@@ -45,24 +46,7 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
         this.classId = classId;
         this.exceptionHandler = exceptionHandler;
 
-        accessorGenerator = new IExecutionDataAccessorGenerator() {
-
-            @Override
-            public int generateDataAccessor(
-                    final long classId, final String className, final int size, final MethodVisitor mv) {
-
-                mv.visitLdcInsn(classId);
-                mv.visitLdcInsn(className);
-                InstrSupport.push(mv, size);
-                mv.visitMethodInsn(Opcodes.INVOKESTATIC,
-                        runtime.replace('.', '/'),
-                        InstrSupport.RUNTIME_NAME,
-                        InstrSupport.RUNTIME_DESC,
-                        false);
-
-                return 4;
-            }
-        };
+        accessorGenerator = new StaticAccessGenerator(runtime);
     }
 
     @Override
