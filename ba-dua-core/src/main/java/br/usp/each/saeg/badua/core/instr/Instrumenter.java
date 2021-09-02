@@ -21,29 +21,31 @@ import org.objectweb.asm.ClassWriter;
 
 import br.usp.each.saeg.badua.core.internal.data.CRC64;
 import br.usp.each.saeg.badua.core.internal.instr.ClassInstrumenter;
+import br.usp.each.saeg.badua.core.runtime.IExecutionDataAccessorGenerator;
 import br.usp.each.saeg.commons.io.Files;
 
 public class Instrumenter {
 
     private static final int DEFAULT = 0;
 
-    private final String runtime;
+    private final IExecutionDataAccessorGenerator accessorGenerator;
 
     private final boolean exceptionHandler;
 
-    public Instrumenter(final String runtime) {
-        this(runtime, false);
+    public Instrumenter(final IExecutionDataAccessorGenerator accessorGenerator) {
+        this(accessorGenerator, false);
     }
 
-    public Instrumenter(final String runtime, final boolean exceptionHandler) {
-        this.runtime = runtime;
+    public Instrumenter(
+            final IExecutionDataAccessorGenerator accessorGenerator, final boolean exceptionHandler) {
+        this.accessorGenerator = accessorGenerator;
         this.exceptionHandler = exceptionHandler;
     }
 
     public byte[] instrument(final ClassReader reader) {
         final long classId = CRC64.checksum(reader.b);
         final ClassWriter writer = new ClassWriter(reader, DEFAULT);
-        final ClassVisitor ci = new ClassInstrumenter(classId, writer, runtime, exceptionHandler);
+        final ClassVisitor ci = new ClassInstrumenter(classId, writer, accessorGenerator, exceptionHandler);
         reader.accept(ci, ClassReader.EXPAND_FRAMES);
         return writer.toByteArray();
     }

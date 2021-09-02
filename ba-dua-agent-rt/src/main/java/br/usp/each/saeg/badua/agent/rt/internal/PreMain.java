@@ -12,6 +12,8 @@ package br.usp.each.saeg.badua.agent.rt.internal;
 
 import java.lang.instrument.Instrumentation;
 
+import br.usp.each.saeg.badua.core.runtime.StaticAccessGenerator;
+
 public final class PreMain {
 
     private PreMain() {
@@ -20,7 +22,8 @@ public final class PreMain {
 
     public static void premain(final String opts, final Instrumentation inst) {
         RT.init(Agent.getInstance().getData());
-        inst.addTransformer(new CoverageTransformer(RT.class.getName(), RT.class.getPackage().getName()));
+        inst.addTransformer(new CoverageTransformer(
+                new StaticAccessGenerator(RT.class.getName()), RT.class.getPackage().getName()));
     }
 
 }

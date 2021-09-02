@@ -26,6 +26,7 @@ import org.kohsuke.args4j.CmdLineParser;
 
 import br.usp.each.saeg.badua.agent.rt.internal.Offline;
 import br.usp.each.saeg.badua.core.instr.Instrumenter;
+import br.usp.each.saeg.badua.core.runtime.StaticAccessGenerator;
 import br.usp.each.saeg.commons.io.Files;
 import br.usp.each.saeg.commons.time.TimeWatch;
 
@@ -40,7 +41,7 @@ public class Instrument {
     public Instrument(final InstrumentOptions options) {
         this.src = options.getSource();
         this.dest = options.getDestination();
-        instrumenter = new Instrumenter(Offline.class.getName(),
+        instrumenter = new Instrumenter(new StaticAccessGenerator(Offline.class.getName()),
                 Boolean.valueOf(System.getProperty("badua.experimental.exception_handler")));
     }
 

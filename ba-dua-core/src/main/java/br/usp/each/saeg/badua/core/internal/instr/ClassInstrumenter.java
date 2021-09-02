@@ -16,11 +16,13 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
+import br.usp.each.saeg.badua.core.runtime.IExecutionDataAccessorGenerator;
+
 public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
 
     private final long classId;
 
-    private final String runtime;
+    private final IExecutionDataAccessorGenerator accessorGenerator;
 
     private final boolean exceptionHandler;
 
@@ -32,16 +34,18 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
 
     private int classProbeCount;
 
-    public ClassInstrumenter(final long classId, final ClassVisitor cv, final String runtime) {
-        this(classId, cv, runtime, false);
+    public ClassInstrumenter(final long classId, final ClassVisitor cv,
+            final IExecutionDataAccessorGenerator accessorGenerator) {
+        this(classId, cv, accessorGenerator, false);
     }
 
-    public ClassInstrumenter(final long classId, final ClassVisitor cv, final String runtime,
+    public ClassInstrumenter(final long classId, final ClassVisitor cv,
+            final IExecutionDataAccessorGenerator accessorGenerator,
             final boolean exceptionHandler) {
 
         super(Opcodes.ASM6, cv);
         this.classId = classId;
-        this.runtime = runtime;
+        this.accessorGenerator = accessorGenerator;
         this.exceptionHandler = exceptionHandler;
     }
 
@@ -144,14 +148,7 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
 
         // Stack[0]: [J
         mv.visitInsn(Opcodes.POP);
-        mv.visitLdcInsn(classId);
-        mv.visitLdcInsn(className);
-        InstrSupport.push(mv, classProbeCount);
-        mv.visitMethodInsn(Opcodes.INVOKESTATIC,
-                runtime.replace('.', '/'),
-                InstrSupport.RUNTIME_NAME,
-                InstrSupport.RUNTIME_DESC,
-                false);
+        final int maxStack = accessorGenerator.generateDataAccessor(classId, className, classProbeCount, mv);
 
         // Stack[0]: [J
 
@@ -173,7 +170,7 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
         mv.visitLabel(alreadyInitialized);
         mv.visitInsn(Opcodes.ARETURN);
 
-        mv.visitMaxs(4, 0);
+        mv.visitMaxs(Math.max(2, maxStack), 0);
         mv.visitEnd();
 
         super.visitEnd();
