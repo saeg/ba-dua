@@ -10,14 +10,21 @@
  */
 package br.usp.each.saeg.badua.agent.rt.internal;
 
+import br.usp.each.saeg.badua.core.runtime.IRuntime;
 import br.usp.each.saeg.badua.core.runtime.RuntimeData;
+import br.usp.each.saeg.badua.core.runtime.StaticAccessGenerator;
 
-public final class RT {
+public final class RT extends StaticAccessGenerator implements IRuntime {
 
     private static RuntimeData DATA;
 
-    private RT() {
-        // No instances
+    public RT() {
+        super(RT.class.getName());
+    }
+
+    @Override
+    public void startup(final RuntimeData data) {
+        init(data);
     }
 
     public static void init(final RuntimeData data) {
