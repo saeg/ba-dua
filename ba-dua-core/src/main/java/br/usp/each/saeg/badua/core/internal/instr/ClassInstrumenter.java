@@ -24,8 +24,6 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
 
     private final IExecutionDataAccessorGenerator accessorGenerator;
 
-    private final boolean exceptionHandler;
-
     private String className;
 
     private boolean withFrames;
@@ -36,17 +34,10 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
 
     public ClassInstrumenter(final long classId, final ClassVisitor cv,
             final IExecutionDataAccessorGenerator accessorGenerator) {
-        this(classId, cv, accessorGenerator, false);
-    }
-
-    public ClassInstrumenter(final long classId, final ClassVisitor cv,
-            final IExecutionDataAccessorGenerator accessorGenerator,
-            final boolean exceptionHandler) {
 
         super(Opcodes.ASM6, cv);
         this.classId = classId;
         this.accessorGenerator = accessorGenerator;
-        this.exceptionHandler = exceptionHandler;
     }
 
     @Override
@@ -106,9 +97,8 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
 
         // There is some edge cases with constructors and stack map frames
         // So we will ignore constructors. We must address these issues in the future
-        return exceptionHandler && !name.equals("<init>")
-                ? new CatchAndThrowMethodVisitor("java/lang/Throwable", instrumenter, withFrames)
-                : instrumenter;
+        return name.equals("<init>") ? instrumenter
+                : new CatchAndThrowMethodVisitor("java/lang/Throwable", instrumenter, withFrames);
     }
 
     @Override

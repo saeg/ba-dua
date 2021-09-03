@@ -20,8 +20,6 @@ public abstract class ValidationTest {
 
     protected ValidationTestClassLoader loader;
 
-    protected boolean exceptionHandler = true;
-
     public void setUp() throws Exception {
         loader = new ValidationTestClassLoader();
     }
@@ -32,7 +30,7 @@ public abstract class ValidationTest {
 
     private byte[] instrument(final String name, final byte[] bytes) {
         final Instrumenter instrumenter = new Instrumenter(
-                new StaticAccessGenerator(RT.class.getName()), exceptionHandler);
+                new StaticAccessGenerator(RT.class.getName()));
 
         try {
             return instrumenter.instrument(bytes, name);
