@@ -13,6 +13,7 @@ package br.usp.each.saeg.badua.agent.rt.internal;
 import java.lang.instrument.Instrumentation;
 
 import br.usp.each.saeg.badua.core.runtime.IRuntime;
+import br.usp.each.saeg.badua.core.runtime.ModifiedSystemClassRuntime;
 
 public final class PreMain {
 
@@ -20,8 +21,11 @@ public final class PreMain {
         // No instances
     }
 
-    public static void premain(final String opts, final Instrumentation inst) {
-        final IRuntime runtime = new RT();
+    public static void premain(final String opts, final Instrumentation inst) throws Exception {
+        final IRuntime runtime = Boolean.getBoolean("badua.experimental.ModifiedSystemClassRuntime")
+                ? ModifiedSystemClassRuntime.createFor(inst, "java/lang/UnknownError")
+                : new RT();
+
         runtime.startup(Agent.getInstance().getData());
         inst.addTransformer(new CoverageTransformer(runtime, PreMain.class.getPackage().getName()));
     }

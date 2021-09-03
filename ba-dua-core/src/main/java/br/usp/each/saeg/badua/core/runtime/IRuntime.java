@@ -12,6 +12,6 @@ package br.usp.each.saeg.badua.core.runtime;
 
 public interface IRuntime extends IExecutionDataAccessorGenerator {
 
-    void startup(RuntimeData data);
+    void startup(RuntimeData data) throws Exception;
 
 }

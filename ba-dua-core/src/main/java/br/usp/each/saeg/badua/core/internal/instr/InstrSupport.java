@@ -14,6 +14,9 @@ import static java.lang.String.format;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
+
+import br.usp.each.saeg.badua.core.runtime.RuntimeData;
 
 public final class InstrSupport {
 
@@ -21,9 +24,23 @@ public final class InstrSupport {
         // No instances
     }
 
+    public static final String RUNTIME_FIELD_NAME = "DATA";
+
+    public static final String RUNTIME_FIELD_DESC = Type.getDescriptor(RuntimeData.class);
+
+    public static final int RUNTIME_FIELD_ACC = Opcodes.ACC_SYNTHETIC |
+                                                Opcodes.ACC_PUBLIC |
+                                                Opcodes.ACC_STATIC |
+                                                Opcodes.ACC_TRANSIENT;
+
     public static final String RUNTIME_NAME = "getData";
 
     public static final String RUNTIME_DESC = "(JLjava/lang/String;I)[J";
+
+    public static final int RUNTIME_ACC = Opcodes.ACC_SYNTHETIC |
+                                          Opcodes.ACC_PUBLIC |
+                                          Opcodes.ACC_STATIC |
+                                          Opcodes.ACC_FINAL;
 
     // --- Data Field
 
