@@ -30,22 +30,14 @@ public class Instrumenter {
 
     private final IExecutionDataAccessorGenerator accessorGenerator;
 
-    private final boolean exceptionHandler;
-
     public Instrumenter(final IExecutionDataAccessorGenerator accessorGenerator) {
-        this(accessorGenerator, false);
-    }
-
-    public Instrumenter(
-            final IExecutionDataAccessorGenerator accessorGenerator, final boolean exceptionHandler) {
         this.accessorGenerator = accessorGenerator;
-        this.exceptionHandler = exceptionHandler;
     }
 
     public byte[] instrument(final ClassReader reader) {
         final long classId = CRC64.checksum(reader.b);
         final ClassWriter writer = new ClassWriter(reader, DEFAULT);
-        final ClassVisitor ci = new ClassInstrumenter(classId, writer, accessorGenerator, exceptionHandler);
+        final ClassVisitor ci = new ClassInstrumenter(classId, writer, accessorGenerator);
         reader.accept(ci, ClassReader.EXPAND_FRAMES);
         return writer.toByteArray();
     }

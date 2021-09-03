@@ -27,8 +27,7 @@ public class CoverageTransformer implements ClassFileTransformer {
     public CoverageTransformer(
             final IExecutionDataAccessorGenerator accessorGenerator, final String skipPackageName) {
         this.skipPackageName = skipPackageName.replace('.', '/');
-        instrumenter = new Instrumenter(accessorGenerator,
-                Boolean.valueOf(System.getProperty("badua.experimental.exception_handler")));
+        instrumenter = new Instrumenter(accessorGenerator);
     }
 
     @Override
