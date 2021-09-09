@@ -14,6 +14,7 @@ import br.usp.each.saeg.badua.core.runtime.IRuntime;
 import br.usp.each.saeg.badua.core.runtime.RuntimeData;
 import br.usp.each.saeg.badua.core.runtime.StaticAccessGenerator;
 
+@Deprecated
 public final class RT extends StaticAccessGenerator implements IRuntime {
 
     private static RuntimeData DATA;
