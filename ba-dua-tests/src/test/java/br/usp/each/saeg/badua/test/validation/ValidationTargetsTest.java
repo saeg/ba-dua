@@ -19,14 +19,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.objectweb.asm.ClassReader;
 
-import br.usp.each.saeg.badua.agent.rt.internal.RT;
 import br.usp.each.saeg.badua.core.analysis.Analyzer;
 import br.usp.each.saeg.badua.core.analysis.ClassCoverage;
 import br.usp.each.saeg.badua.core.analysis.ICoverageVisitor;
 import br.usp.each.saeg.badua.core.analysis.MethodCoverage;
 import br.usp.each.saeg.badua.core.analysis.SourceLineDefUseChain;
 import br.usp.each.saeg.badua.core.data.ExecutionDataStore;
-import br.usp.each.saeg.badua.core.runtime.RuntimeData;
 
 public abstract class ValidationTargetsTest extends ValidationTest implements ICoverageVisitor {
 
@@ -57,11 +55,9 @@ public abstract class ValidationTargetsTest extends ValidationTest implements IC
     }
 
     private ExecutionDataStore execute(final byte[] bytes) throws Exception {
-        final RuntimeData data = new RuntimeData();
-        RT.init(data);
         run(addClass(target.getName(), bytes));
         final ExecutionDataStore store = new ExecutionDataStore();
-        data.collect(store);
+        DATA.collect(store);
         return store;
     }
 
