@@ -12,16 +12,23 @@ package br.usp.each.saeg.badua.test.validation;
 
 import java.io.IOException;
 
-import br.usp.each.saeg.badua.agent.rt.internal.RT;
 import br.usp.each.saeg.badua.core.instr.Instrumenter;
+import br.usp.each.saeg.badua.core.runtime.RuntimeData;
 import br.usp.each.saeg.badua.core.runtime.StaticAccessGenerator;
 
 public abstract class ValidationTest {
+
+    public static RuntimeData DATA;
+
+    public static long[] getData(final long classId, final String className, final int size) {
+        return DATA.getExecutionData(classId, className, size).getData();
+    }
 
     protected ValidationTestClassLoader loader;
 
     public void setUp() throws Exception {
         loader = new ValidationTestClassLoader();
+        DATA = new RuntimeData();
     }
 
     public Class<?> addClass(final String name, final byte[] bytes) {
@@ -30,7 +37,7 @@ public abstract class ValidationTest {
 
     private byte[] instrument(final String name, final byte[] bytes) {
         final Instrumenter instrumenter = new Instrumenter(
-                new StaticAccessGenerator(RT.class.getName()));
+                new StaticAccessGenerator(ValidationTest.class.getName()));
 
         try {
             return instrumenter.instrument(bytes, name);

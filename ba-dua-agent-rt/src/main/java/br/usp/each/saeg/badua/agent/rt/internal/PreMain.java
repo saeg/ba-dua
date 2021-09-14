@@ -22,8 +22,7 @@ public final class PreMain {
     }
 
     public static void premain(final String opts, final Instrumentation inst) throws Exception {
-        final IRuntime runtime = Boolean.getBoolean("badua.experimental.RT") ? new RT()
-                : ModifiedSystemClassRuntime.createFor(inst, "java/lang/UnknownError");
+        final IRuntime runtime = ModifiedSystemClassRuntime.createFor(inst, "java/lang/UnknownError");
         runtime.startup(Agent.getInstance().getData());
         inst.addTransformer(new CoverageTransformer(runtime, PreMain.class.getPackage().getName()));
     }

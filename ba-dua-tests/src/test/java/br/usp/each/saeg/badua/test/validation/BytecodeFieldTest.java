@@ -23,9 +23,7 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-import br.usp.each.saeg.badua.agent.rt.internal.RT;
 import br.usp.each.saeg.badua.core.internal.data.CRC64;
-import br.usp.each.saeg.badua.core.runtime.RuntimeData;
 import br.usp.each.saeg.commons.BitSetUtils;
 
 public class BytecodeFieldTest extends ValidationTest {
@@ -117,8 +115,6 @@ public class BytecodeFieldTest extends ValidationTest {
         field = klass.getField(fieldName);
         object = klass.newInstance();
         classId = CRC64.checksum(bytes);
-
-        RT.init(new RuntimeData());
     }
 
     /*
@@ -163,7 +159,7 @@ public class BytecodeFieldTest extends ValidationTest {
     }
 
     private void assertCoverage(final int... expectedCoveredChains) {
-        final BitSet covered = BitSetUtils.valueOf(RT.getData(classId, className, 1));
+        final BitSet covered = BitSetUtils.valueOf(getData(classId, className, 1));
         final BitSet expected = new BitSet();
         for (final int ecc : expectedCoveredChains) {
             expected.set(ecc);
