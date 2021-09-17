@@ -91,6 +91,7 @@
 		<module>ba-dua-cli</module>
 		<module>ba-dua-tests</module>
 		<module>ba-dua</module>
+		<module>ba-dua-example</module>
 	</modules>
 
 	<build>
