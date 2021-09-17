@@ -91,7 +91,6 @@
 		<module>ba-dua-cli</module>
 		<module>ba-dua-tests</module>
 		<module>ba-dua</module>
-		<module>ba-dua-example</module>
 	</modules>
 
 	<build>
@@ -264,6 +263,15 @@
 	</build>
 
 	<profiles>
+		<profile>
+			<id>example</id>
+			<activation>
+				<jdk>[1.6,9]</jdk>
+			</activation>
+			<modules>
+				<module>ba-dua-example</module>
+			</modules>
+		</profile>
 		<!-- http://openjdk.java.net/jeps/182 -->
 		<profile>
 			<id>jdk12</id>
