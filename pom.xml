@@ -266,7 +266,7 @@
 		<profile>
 			<id>example</id>
 			<activation>
-				<jdk>[1.6,9]</jdk>
+				<jdk>[1.6,10)</jdk>
 			</activation>
 			<modules>
 				<module>ba-dua-example</module>
