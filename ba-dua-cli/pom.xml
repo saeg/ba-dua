@@ -129,6 +129,14 @@
 			<groupId>org.jacoco</groupId>
 			<artifactId>org.jacoco.report</artifactId>
 			<version>${jacoco.version}</version>
+			<!-- Avoid conflicts with asm provided by asm-defuse -->
+			<!-- The API should be the same -->
+			<exclusions>
+				<exclusion>
+					<groupId>org.ow2.asm</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>args4j</groupId>
