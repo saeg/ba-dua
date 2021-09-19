@@ -40,6 +40,7 @@
 							This file was copied from JaCoCo (http://jacoco.org)
 						-->
 						<exclude>src/main/java/br/usp/each/saeg/badua/core/internal/data/CRC64.java</exclude>
+						<exclude>src/main/java/br/usp/each/saeg/badua/core/internal/ContentTypeDetector.java</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
@@ -50,17 +51,25 @@
 		<dependency>
 			<groupId>br.usp.each.saeg</groupId>
 			<artifactId>asm-defuse</artifactId>
-			<version>0.0.6</version>
+			<version>0.0.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.ow2.asm</groupId>
 			<artifactId>asm-commons</artifactId>
-			<version>6.0</version>
+			<version>9.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jacoco</groupId>
 			<artifactId>org.jacoco.core</artifactId>
 			<version>${jacoco.version}</version>
+			<!-- Avoid conflicts with asm provided by asm-defuse -->
+			<!-- The API should be the same -->
+			<exclusions>
+				<exclusion>
+					<groupId>org.ow2.asm</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 
