@@ -13,12 +13,12 @@ package br.usp.each.saeg.badua.core.analysis;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.jacoco.core.internal.ContentTypeDetector;
 import org.jacoco.core.internal.analysis.StringPool;
 import org.objectweb.asm.ClassReader;
 
 import br.usp.each.saeg.badua.core.data.ExecutionData;
 import br.usp.each.saeg.badua.core.data.ExecutionDataStore;
+import br.usp.each.saeg.badua.core.internal.ContentTypeDetector;
 import br.usp.each.saeg.badua.core.internal.data.CRC64;
 
 public class Analyzer {

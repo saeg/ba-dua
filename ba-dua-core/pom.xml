@@ -40,6 +40,7 @@
 							This file was copied from JaCoCo (http://jacoco.org)
 						-->
 						<exclude>src/main/java/br/usp/each/saeg/badua/core/internal/data/CRC64.java</exclude>
+						<exclude>src/main/java/br/usp/each/saeg/badua/core/internal/ContentTypeDetector.java</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
