@@ -33,7 +33,7 @@ public class MethodInstrumenter extends MethodNode {
                               final MethodVisitor next,
                               final MethodTransformer mt) {
 
-        super(Opcodes.ASM6, access, name, desc, signature, exceptions);
+        super(Opcodes.ASM9, access, name, desc, signature, exceptions);
         this.exceptions = exceptions;
         this.next = next;
         this.mt = mt;
