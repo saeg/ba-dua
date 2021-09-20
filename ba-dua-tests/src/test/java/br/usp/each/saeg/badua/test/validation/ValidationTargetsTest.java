@@ -17,7 +17,6 @@ import java.util.Collection;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.objectweb.asm.ClassReader;
 
 import br.usp.each.saeg.badua.core.analysis.Analyzer;
 import br.usp.each.saeg.badua.core.analysis.ClassCoverage;
@@ -47,7 +46,7 @@ public abstract class ValidationTargetsTest extends ValidationTest implements IC
         final byte[] bytes = ValidationTestClassLoader.getClassDataAsBytes(target);
         final ExecutionDataStore store = execute(bytes);
         final Analyzer analyzer = new Analyzer(store, this);
-        analyzer.analyze(new ClassReader(bytes));
+        analyzer.analyze(bytes);
         Assert.assertEquals(1, classes.size());
         for (final MethodCoverage coverage : classes.iterator().next().getMethods()) {
             defUses.addAll(coverage.getDefUses());

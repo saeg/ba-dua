@@ -20,6 +20,7 @@ import br.usp.each.saeg.badua.core.data.ExecutionData;
 import br.usp.each.saeg.badua.core.data.ExecutionDataStore;
 import br.usp.each.saeg.badua.core.internal.ContentTypeDetector;
 import br.usp.each.saeg.badua.core.internal.data.CRC64;
+import br.usp.each.saeg.commons.io.Files;
 
 public class Analyzer {
 
@@ -45,8 +46,9 @@ public class Analyzer {
         return new ExecutionData(classId, className, null);
     }
 
-    public void analyze(final ClassReader reader) {
-        final long classId = CRC64.checksum(reader.b);
+    public void analyze(final byte[] buffer) {
+        final long classId = CRC64.checksum(buffer);
+        final ClassReader reader = new ClassReader(buffer);
         final ClassAnalyzer ca = new ClassAnalyzer(getData(classId, reader.getClassName()), stringPool);
         reader.accept(ca, DEFAULT);
         final ClassCoverage coverage = ca.getCoverage();
@@ -57,7 +59,7 @@ public class Analyzer {
 
     public void analyze(final InputStream input, final String location) throws IOException {
         try {
-            analyze(new ClassReader(input));
+            analyze(Files.toByteArray(input));
         } catch (final RuntimeException e) {
             throw analyzeError(location, e);
         }
