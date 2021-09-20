@@ -73,7 +73,7 @@ public class ModifiedSystemClassRuntime extends StaticAccessGenerator implements
     private static byte[] instrument(final byte[] buffer) {
         final ClassReader reader = new ClassReader(buffer);
         final ClassWriter writer = new ClassWriter(reader, 0);
-        reader.accept(new ClassVisitor(Opcodes.ASM6, writer) {
+        reader.accept(new ClassVisitor(Opcodes.ASM9, writer) {
             @Override
             public void visitEnd() {
 

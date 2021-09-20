@@ -33,7 +33,7 @@ public class CatchAndThrowMethodVisitor extends MethodVisitor {
     private boolean started;
 
     public CatchAndThrowMethodVisitor(final String type, final MethodNode mn, final boolean withFrames) {
-        super(Opcodes.ASM6, mn);
+        super(Opcodes.ASM9, mn);
         this.type = type;
         this.withFrames = withFrames;
     }

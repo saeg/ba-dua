@@ -35,7 +35,7 @@ public class ClassInstrumenter extends ClassVisitor implements IdGenerator {
     public ClassInstrumenter(final long classId, final ClassVisitor cv,
             final IExecutionDataAccessorGenerator accessorGenerator) {
 
-        super(Opcodes.ASM6, cv);
+        super(Opcodes.ASM9, cv);
         this.classId = classId;
         this.accessorGenerator = accessorGenerator;
     }
