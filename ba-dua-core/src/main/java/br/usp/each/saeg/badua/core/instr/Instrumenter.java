@@ -34,8 +34,9 @@ public class Instrumenter {
         this.accessorGenerator = accessorGenerator;
     }
 
-    public byte[] instrument(final ClassReader reader) {
-        final long classId = CRC64.checksum(reader.b);
+    public byte[] instrument(final byte[] buffer) {
+        final long classId = CRC64.checksum(buffer);
+        final ClassReader reader = new ClassReader(buffer);
         final ClassWriter writer = new ClassWriter(reader, DEFAULT);
         final ClassVisitor ci = new ClassInstrumenter(classId, writer, accessorGenerator);
         reader.accept(ci, ClassReader.EXPAND_FRAMES);
@@ -44,7 +45,7 @@ public class Instrumenter {
 
     public byte[] instrument(final byte[] buffer, final String name) throws IOException {
         try {
-            return instrument(new ClassReader(buffer));
+            return instrument(buffer);
         } catch (final RuntimeException e) {
             throw instrumentError(name, e);
         }
@@ -53,7 +54,7 @@ public class Instrumenter {
     public void instrument(final InputStream input, final OutputStream output, final String name)
             throws IOException {
         try {
-            output.write(instrument(new ClassReader(input)));
+            output.write(instrument(Files.toByteArray(input)));
         } catch (final RuntimeException e) {
             throw instrumentError(name, e);
         }
