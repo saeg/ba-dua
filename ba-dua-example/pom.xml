@@ -26,6 +26,7 @@
 		<maven.compiler.source>${java.specification.version}</maven.compiler.source>
 		<maven.compiler.target>${java.specification.version}</maven.compiler.target>
 		<argLine>-javaagent:target/dependency/ba-dua-agent-rt-${project.version}-all.jar -Doutput.file=target/badua.ser</argLine>
+		<maven.deploy.skip>true</maven.deploy.skip>
 	</properties>
 
 	<build>
