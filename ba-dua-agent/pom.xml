@@ -16,7 +16,7 @@
 	<parent>
 		<groupId>br.usp.each.saeg</groupId>
 		<artifactId>ba-dua-parent</artifactId>
-		<version>0.5.1-SNAPSHOT</version>
+		<version>0.6.0</version>
 	</parent>
 
 	<artifactId>ba-dua-agent</artifactId>

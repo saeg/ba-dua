@@ -15,7 +15,7 @@
 
 	<groupId>br.usp.each.saeg</groupId>
 	<artifactId>ba-dua-parent</artifactId>
-	<version>0.5.1-SNAPSHOT</version>
+	<version>0.6.0</version>
 	<packaging>pom</packaging>
 	<name>ba-dua-parent</name>
 	<url>https://github.com/saeg/ba-dua</url>
@@ -41,7 +41,7 @@
 		<url>https://github.com/saeg/ba-dua</url>
 		<connection>scm:git:https://github.com/saeg/ba-dua.git</connection>
 		<developerConnection>scm:git:git@github.com:saeg/ba-dua.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>ba-dua-0.6.0</tag>
 	</scm>
 
 	<distributionManagement>
