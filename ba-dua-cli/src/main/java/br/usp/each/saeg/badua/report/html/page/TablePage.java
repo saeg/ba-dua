@@ -1,68 +1,85 @@
 package br.usp.each.saeg.badua.report.html.page;
 
 import br.usp.each.saeg.badua.cli.HTMLCoverageWriter;
-import br.usp.each.saeg.badua.report.html.table.Table;
-import org.jacoco.core.analysis.ICoverageNode;
+import br.usp.each.saeg.badua.core.analysis.CoverageNode;
+import br.usp.each.saeg.badua.report.html.table.ITableItem;
+
 import org.jacoco.report.internal.ReportOutputFolder;
 import org.jacoco.report.internal.html.HTMLElement;
 import org.jacoco.report.internal.html.resources.Resources;
-import org.jacoco.report.internal.html.table.ITableItem;
+import org.jacoco.report.internal.html.resources.Styles;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TablePage extends ReportPage implements ITableItem{
+public abstract class TablePage extends ReportPage implements ITableItem {
 	
 	private final List<ITableItem> items = new ArrayList<ITableItem>();
+	protected CoverageNode node;
 
-	public TablePage(final ReportPage parent,
+	/**
+	 * Construtor de uma novo node para Tabelas
+	 * @param node nó de cobertura referente
+	 * @param parent pagina-pai
+	 * @param folder pasta base
+	 * @param context contexto
+	 */
+	public TablePage(final CoverageNode node,
+					 final ReportPage parent,
 					 final ReportOutputFolder folder,
 					 final HTMLCoverageWriter context) {
-		super(parent, folder, context);
+		super(parent, folder, context); //Chamada pro ReportPage
+		this.node = node;
 	}
 
+	/**
+	 * Adição de itens para serem renderizados na tabela
+	 * @param item
+	 */
 	public void addItem(final ITableItem item){
 		items.add(item);
 	}
 
-	@Override
+	/**
+	 * Componente HEAD do report com tabelas
+	 * @param head	-> É isso ai
+	 * @throws IOException
+	 */
 	protected void head(final HTMLElement head) throws IOException {
 		super.head(head);
 		head.script(context.getResources().getLink(folder, Resources.SORT_SCRIPT));
 	}
 
-	@Override
+	/**
+	 * Renderização do body com a tabela
+	 * @param body -> Tag do body
+	 * @throws IOException
+	 */
 	protected void content(final HTMLElement body) throws IOException {
-		Table table = context.getTable();
-		context.getTable().render(body, items, context.getResources(), folder);
+		context.getBaduaTable().render(body, items, node, context.getResources(), folder);
 		// free memory, otherwise we will keep the complete page tree:
 		items.clear();
 	}
 
-	@Override
-	public String getLinkLabel() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
+	//Rever isso aqui
 	public String getLinkStyle() {
-		// TODO Auto-generated method stub
-		return null;
+		if(isRootPage()) {
+			return Styles.EL_REPORT;
+		} else {
+			//Fazer um switch pra retornar conforme o tipo de cobertura
+			return null;
+		}
 	}
 
-	@Override
-	protected String getFileName() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getLinkLabel() {
+		if (node == null) {
+			return "Project Level";
+		}
+		return node.getName();
 	}
 
-
-	@Override
-	//Node just be like Page
-	//We don't have nodes here
-	public ICoverageNode getNode() {
-		return null;
+	public CoverageNode getNode() {
+		return node;
 	}
 }

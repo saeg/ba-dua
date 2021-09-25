@@ -17,7 +17,15 @@ public abstract class ReportPage implements ILinkable {
 	protected final ReportOutputFolder folder;
 	protected final HTMLCoverageWriter context;
 
-	public ReportPage(final ReportPage parent, final ReportOutputFolder folder, final HTMLCoverageWriter context) {
+	/**
+	 * Construtor do
+	 * @param parent -> Página "pai"
+	 * @param folder -> Pasta
+	 * @param context -> Recursos pra construção do HTML
+	 */
+	public ReportPage(final ReportPage parent,
+					  final ReportOutputFolder folder,
+					  final HTMLCoverageWriter context) {
 		this.parent = parent;
 		this.context = context;
 		this.folder = folder;
@@ -27,7 +35,12 @@ public abstract class ReportPage implements ILinkable {
 		return parent == null;
 	}
 
+	/**
+	 * Renderiza a pagina de report e as páginas sequenciais
+	 * @throws IOException -> Se a página não puder ser escrita
+	 */
 	public void render() throws IOException {
+		System.out.println(getFileName());
 		final HTMLElement html = new HTMLElement(folder.createFile(getFileName()), context.getOutputEncoding());
 		html.attr("lang", context.getLocale().getLanguage());
 		head(html.head());
@@ -35,6 +48,11 @@ public abstract class ReportPage implements ILinkable {
 		html.close();
 	}
 
+	/**
+	 * Cria o componente do HEAD
+	 * @param head
+	 * @throws IOException
+	 */
 	protected void head(final HTMLElement head) throws IOException {
 		head.meta("Content-Type", "text/html;charset=UTF-8");
 		head.link("stylesheet", context.getResources().getLink(folder, Resources.STYLESHEET), "text/css");
@@ -42,6 +60,11 @@ public abstract class ReportPage implements ILinkable {
 		head.title().text(getLinkLabel());
 	}
 
+	/**
+	 * Cria o componente do body
+	 * @param body
+	 * @throws IOException
+	 */
 	private void body(final HTMLElement body) throws IOException {
 		body.attr("onload", getOnload());
 		final HTMLElement navigation = body.div(Styles.BREADCRUMB);
@@ -69,7 +92,7 @@ public abstract class ReportPage implements ILinkable {
 	 * @throws IOException in case of IO problems with the report writer
 	 */
 	protected void infoLinks(final HTMLElement span) throws IOException {
-		span.a(context.getSessionsPage(), folder);
+//		span.a(context.getSessionsPage(), folder);
 	}
 
 	private void breadcrumb(final HTMLElement div, final ReportOutputFolder base) throws IOException {
@@ -86,6 +109,11 @@ public abstract class ReportPage implements ILinkable {
 		}
 	}
 
+	/**
+	 * Criando o footer
+	 * @param body
+	 * @throws IOException
+	 */
 	private void footer(final HTMLElement body) throws IOException {
 		final HTMLElement footer = body.div(Styles.FOOTER);
 		final HTMLElement versioninfo = footer.span(Styles.RIGHT);
@@ -98,6 +126,11 @@ public abstract class ReportPage implements ILinkable {
 
 	protected abstract String getFileName();
 
+	/**
+	 * Cria o conteudo da página mesmo
+	 * @param body -> Tag do body
+	 * @throws IOException
+	 */
 	protected abstract void content(final HTMLElement body) throws IOException;
 
 	// === ILinkable ===
