@@ -1,8 +1,6 @@
 package br.usp.each.saeg.badua.report.html.page;
 
 import br.usp.each.saeg.badua.cli.HTMLCoverageWriter;
-
-import org.jacoco.core.JaCoCo;
 import org.jacoco.report.internal.ReportOutputFolder;
 import org.jacoco.report.internal.html.HTMLElement;
 import org.jacoco.report.internal.html.ILinkable;
@@ -118,9 +116,9 @@ public abstract class ReportPage implements ILinkable {
 		final HTMLElement footer = body.div(Styles.FOOTER);
 		final HTMLElement versioninfo = footer.span(Styles.RIGHT);
 		versioninfo.text("Created with ");
-		versioninfo.a(JaCoCo.HOMEURL).text("Ba-dua");
+		versioninfo.a("https://github.com/saeg/ba-dua").text("Ba-dua");
 		versioninfo.text(" ");
-		versioninfo.text(JaCoCo.VERSION);
+		versioninfo.text("0.5.0");
 		footer.text(context.getFooterText());
 	}
 
