@@ -17,6 +17,7 @@ public abstract class TablePage extends ReportPage implements ITableItem {
 	
 	private final List<ITableItem> items = new ArrayList<ITableItem>();
 	protected CoverageNode node;
+	private boolean dua = false;
 
 	/**
 	 * Construtor de uma novo node para Tabelas
@@ -30,6 +31,16 @@ public abstract class TablePage extends ReportPage implements ITableItem {
 					 final ReportOutputFolder folder,
 					 final HTMLCoverageWriter context) {
 		super(parent, folder, context); //Chamada pro ReportPage
+		this.node = node;
+	}
+
+	public TablePage(final CoverageNode node,
+					 final ReportPage parent,
+					 final ReportOutputFolder folder,
+					 final HTMLCoverageWriter context,
+					 boolean dua) {
+		super(parent, folder, context); //Chamada pro ReportPage
+		this.dua = dua;
 		this.node = node;
 	}
 
@@ -57,8 +68,7 @@ public abstract class TablePage extends ReportPage implements ITableItem {
 	 * @throws IOException
 	 */
 	protected void content(final HTMLElement body) throws IOException {
-		context.getBaduaTable().render(body, items, node, context.getResources(), folder);
-		// free memory, otherwise we will keep the complete page tree:
+		context.getBaduaTable(this.dua).render(body, items, node, context.getResources(), folder);
 		items.clear();
 	}
 

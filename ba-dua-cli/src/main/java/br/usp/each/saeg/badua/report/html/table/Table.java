@@ -16,9 +16,14 @@ public class Table {
      * Sem aderir o Comparator*/
 
     private final List<Column> columns;
+    private boolean dua = false;
 //    private Comparator<ITableItem> defaultComparator;
 
     public Table() {
+        this.columns = new ArrayList<Table.Column>();
+    }
+    public Table(boolean dua) {
+        this.dua = true;
         this.columns = new ArrayList<Table.Column>();
     }
 
@@ -54,7 +59,7 @@ public class Table {
         final HTMLElement table = parent.table(Styles.COVERAGETABLE);
         table.attr("id", "coveragetable");
         header(table, items, total);
-        footer(table, total, resources, base);
+        if (!dua) footer(table, total, resources, base);
         body(table, items, resources, base);
     }
 
@@ -68,6 +73,7 @@ public class Table {
             c.init(tr, items, total);
         }
     }
+    // Fazer outro header pra tabela de dua
 
     private void footer(final HTMLElement table,
                         final CoverageNode total,
@@ -79,6 +85,8 @@ public class Table {
             c.footer(tr, total, resources, base);
         }
     }
+    //Tabela de dua não vai ter footer
+
 
     private void body(final HTMLElement table,
                       final List<? extends ITableItem> items,
