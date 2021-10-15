@@ -3,10 +3,7 @@ package br.usp.each.saeg.badua.cli;
 import br.usp.each.saeg.badua.core.analysis.ClassCoverage;
 import br.usp.each.saeg.badua.core.analysis.CoverageNode;
 import br.usp.each.saeg.badua.report.html.page.ProjectPage;
-import br.usp.each.saeg.badua.report.html.table.BarColumn;
-import br.usp.each.saeg.badua.report.html.table.LabelColumn;
-import br.usp.each.saeg.badua.report.html.table.PercentageColumn;
-import br.usp.each.saeg.badua.report.html.table.Table;
+import br.usp.each.saeg.badua.report.html.table.*;
 import org.jacoco.report.*;
 import org.jacoco.report.internal.ReportOutputFolder;
 import org.jacoco.report.internal.html.IHTMLReportContext;
@@ -48,7 +45,7 @@ public class HTMLCoverageWriter implements IHTMLReportContext {
 		resources.copyResources();
 		index = new ElementIndex(root);
 
-		CoverageNode projectNode = new CoverageNode("project");
+		CoverageNode projectNode = new CoverageNode("Classes of Project");
 		for (ClassCoverage c : classes)
 		{
 			projectNode.increment(c);
@@ -94,29 +91,44 @@ public class HTMLCoverageWriter implements IHTMLReportContext {
 		return null;
 	}
 
-	public Table getBaduaTable() {
+	public Table getBaduaTable(boolean dua) {
 		if (table == null) {
-			table = createTable();
+			table = dua ? createDuaTable() : createGeneralTable();
 		}
 		return table;
 	}
 
-	private Table createTable() {
+	private Table createGeneralTable() {
 		//Sem uso do defaultSort
 		final Table t = new Table();
 		t.add("Element", null, new LabelColumn());
 		t.add("Missed DUAs", Styles.BAR, new BarColumn(locale));
 		t.add("Cov.", Styles.CTR2, new PercentageColumn(locale));
-//		addMissedTotalColumns(t, "Methods");
-//		addMissedTotalColumns(t, "Classes");
+		addMissedTotalColumns(t, "Methods");
+		addMissedTotalColumns(t, "Classes");
+
 		return t;
 	}
+
+	private Table createDuaTable(){
+		final Table t = new Table(true);
+
+		t.add("Var", null, new LabelColumn());
+		t.add("Def Line", null, new LabelColumn());
+		t.add("Use Line", null, new LabelColumn());
+		t.add("Target Line", null, new LabelColumn());
+		t.add("Status", null, new LabelColumn());
+
+		System.out.println("Gerou a tabela de DUAs");
+
+		return t;
+	}
+
 //
-//	private void addMissedTotalColumns(final Table table, final String label) {
-//		table.add(label, Styles.CTR1, )
-////		table.add("Missed", Styles.CTR1, CounterColumn.newMissed(entity, locale));
-////		table.add(label, Styles.CTR2, CounterColumn.newTotal(entity, locale));
-//	}
+	private void addMissedTotalColumns(final Table table, final String label) {
+		table.add(label, Styles.CTR1, CounterColumn.newTotal(label, locale));
+		table.add("Missed", Styles.CTR1, CounterColumn.newMissed(label, locale));
+	}
 
 	public String getFooterText() {
 		return footerText;
