@@ -4,6 +4,7 @@ import br.usp.each.saeg.badua.cli.HTMLCoverageWriter;
 import br.usp.each.saeg.badua.core.analysis.ClassCoverage;
 import br.usp.each.saeg.badua.core.analysis.MethodCoverage;
 import org.jacoco.report.internal.ReportOutputFolder;
+import org.jacoco.report.internal.html.resources.Styles;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -50,7 +51,6 @@ public class ClassPage extends TablePage{
 			//Rendering the method page
 			final MethodPage page = new MethodPage(mc, this, folder.subFolder(folderName));
 			page.render();
-			System.out.println("até aqui ok");
 
 			//Adding method page to classpage
 			addItem(page);
@@ -63,6 +63,10 @@ public class ClassPage extends TablePage{
 
 	protected String getFileName() {
 		return "index.html";
+	}
+
+	public String getLinkStyle() {
+		return Styles.EL_CLASS;
 	}
 
 }

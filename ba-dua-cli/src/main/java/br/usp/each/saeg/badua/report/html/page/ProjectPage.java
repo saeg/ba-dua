@@ -40,14 +40,6 @@ public class ProjectPage extends TablePage{
 		this.locator = locator;
 	}
 
-//	private CoverageNode createProjectNode (List<ClassCoverage> classes) {
-//		CoverageNode sum = new CoverageNode("Project");
-//		for (ClassCoverage c : classes){
-//			sum.increment(c);
-//		}
-//		return sum;
-//	}
-
 	/**
 	 * Renderização da pagina
 	 * @throws IOException
