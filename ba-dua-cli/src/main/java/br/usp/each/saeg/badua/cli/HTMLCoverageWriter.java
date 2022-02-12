@@ -56,7 +56,9 @@ public class HTMLCoverageWriter implements IHTMLReportContext {
 		output.close();
 	}
 
-	public static void visitClasses(final CoverageNode projectNode, final List<ClassCoverage> classes, final ISourceFileLocator locator) throws IOException {
+	public static void visitClasses(final CoverageNode projectNode,
+									final List<ClassCoverage> classes,
+									final ISourceFileLocator locator) throws IOException {
 		final ProjectPage page = new ProjectPage(projectNode, classes, null, locator, root);
 		try {
 			page.render();
@@ -118,8 +120,6 @@ public class HTMLCoverageWriter implements IHTMLReportContext {
 		t.add("Use Line", null, new LabelColumn());
 		t.add("Target Line", null, new LabelColumn());
 		t.add("Status", null, new LabelColumn());
-
-		System.out.println("Gerou a tabela de DUAs");
 
 		return t;
 	}

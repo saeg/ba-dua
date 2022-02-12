@@ -20,6 +20,9 @@ public class ProjectPage extends TablePage{
 	private final ISourceFileLocator locator;
 	private List<ClassCoverage> classes;
 
+	private final ProjectSourcePage projectSourcePage;
+//	private final boolean sourceCoverageExists = false;
+
 
 	/**
 	 * Construtor da página do projeto
@@ -36,6 +39,7 @@ public class ProjectPage extends TablePage{
 					   final ReportOutputFolder folder) {
 
 		super(projectNode, parent, folder, new HTMLCoverageWriter());
+		projectSourcePage = new ProjectSourcePage(null, parent, locator, classes, folder, this);
 		this.classes = classes;
 		this.locator = locator;
 	}
@@ -45,6 +49,7 @@ public class ProjectPage extends TablePage{
 	 * @throws IOException
 	 */
 	public void render() throws IOException {
+		projectSourcePage.render();
 		renderClasses();
 		super.render();
 

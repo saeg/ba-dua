@@ -38,7 +38,7 @@ public abstract class ReportPage implements ILinkable {
 	 * @throws IOException -> Se a página não puder ser escrita
 	 */
 	public void render() throws IOException {
-		System.out.println(getFileName());
+//		System.out.println(getFileName());
 		final HTMLElement html = new HTMLElement(folder.createFile(getFileName()), context.getOutputEncoding());
 		html.attr("lang", context.getLocale().getLanguage());
 		head(html.head());
