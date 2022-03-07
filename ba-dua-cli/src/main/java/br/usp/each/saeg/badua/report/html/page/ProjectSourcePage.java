@@ -3,8 +3,6 @@ package br.usp.each.saeg.badua.report.html.page;
 import br.usp.each.saeg.badua.cli.HTMLCoverageWriter;
 import br.usp.each.saeg.badua.core.analysis.ClassCoverage;
 import br.usp.each.saeg.badua.core.analysis.CoverageNode;
-import br.usp.each.saeg.badua.core.analysis.MethodCoverage;
-import br.usp.each.saeg.badua.core.analysis.SourceLineDefUseChain;
 import org.jacoco.report.ISourceFileLocator;
 import org.jacoco.report.internal.ReportOutputFolder;
 import org.jacoco.report.internal.html.ILinkable;
@@ -41,7 +39,7 @@ public class ProjectSourcePage extends TablePage{
 
     public void render() throws IOException {
         renderSourceFilePages();
-        super.render();
+//        super.render();
     }
 
     private final void renderSourceFilePages() throws IOException {
@@ -52,22 +50,23 @@ public class ProjectSourcePage extends TablePage{
             if (reader == null)
                 System.out.println("Arquivo não encontrado");
             else {
-                for (final MethodCoverage mc : cc.getMethods()) {
-                    for (final SourceLineDefUseChain dua : mc.getDefUses()) {
-                        final SourceFilePage sourcePage = new SourceFilePage(reader,
-                                locator.getTabWidth(), this, folder, dua);
-                        sourcePage.render();
-                        sourceFilePages.put(sourcename[1] + ".java", sourcePage);
-                        addItem(sourcePage);
-                    }
-                }
+                final SourceFilePage sourcePage = new SourceFilePage(
+                        reader,
+                        locator.getTabWidth(),
+                        this, folder,
+                        String.format("%s.%s",sourcename[0], sourcename[1])
+                );
+                sourcePage.render();
+                sourceFilePages.put(sourcename[1] + ".java", sourcePage);
+                addItem(sourcePage);
+
             }
         }
     }
 
     @Override
     protected String getFileName() {
-        return "index.source.html";
+        return "project.source.html";
     }
 
     @Override
@@ -75,8 +74,10 @@ public class ProjectSourcePage extends TablePage{
         return "initialSort(['breadcrumb', 'coveragetable'])";
     }
 
+    @Override
     public String getLinkLabel() {
-        return context.getLanguageNames().getPackageName(getNode().getName());
+        return this.getFileName();
+//        return context.getLanguageNames().getPackageName(getNode().getName());
     }
 
 

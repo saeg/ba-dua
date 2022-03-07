@@ -2,7 +2,6 @@ package br.usp.each.saeg.badua.report.html.page;
 
 import br.usp.each.saeg.badua.cli.HTMLCoverageWriter;
 import br.usp.each.saeg.badua.core.analysis.CoverageNode;
-import br.usp.each.saeg.badua.core.analysis.SourceLineDefUseChain;
 import br.usp.each.saeg.badua.report.html.table.ITableItem;
 import org.jacoco.report.internal.ReportOutputFolder;
 import org.jacoco.report.internal.html.HTMLElement;
@@ -15,24 +14,24 @@ import static java.lang.String.format;
 
 public class SourceFilePage extends ReportPage implements ITableItem {
 
+    private final String nameFile;
     private final Reader sourceReader;
     private final int tabWidth;
-    private final SourceLineDefUseChain dua;
 
     public SourceFilePage(final Reader sourceReader,
                           final int tabWidth,
                           final ReportPage parent,
                           final ReportOutputFolder folder,
-                          final SourceLineDefUseChain dua) {
+                          final String nameFile) {
         super(parent, folder, new HTMLCoverageWriter());
-        this.dua = dua;
         this.sourceReader = sourceReader;
         this.tabWidth = tabWidth;
+        this.nameFile = nameFile;
     }
 
     @Override
     protected void content(HTMLElement body) throws IOException {
-        final SourceHighlighter hl = new SourceHighlighter(context.getLocale(), dua);
+        final SourceHighlighter hl = new SourceHighlighter(context.getLocale());
         hl.render(body, sourceReader);
         sourceReader.close();
 
@@ -56,22 +55,21 @@ public class SourceFilePage extends ReportPage implements ITableItem {
 
     @Override
     protected String getFileName() {
-        return null;
-    }
-
-
-    @Override
-    public CoverageNode getNode() {
-        return null;
+        return nameFile + ".java.html";
     }
 
     @Override
     public String getLinkLabel() {
-        return null;
+        return this.nameFile;
     }
 
     @Override
     public String getLinkStyle() {
+        return null;
+    }
+
+    @Override
+    public CoverageNode getNode() {
         return null;
     }
 }

@@ -1,6 +1,5 @@
 package br.usp.each.saeg.badua.report.html.page;
 
-import br.usp.each.saeg.badua.core.analysis.SourceLineDefUseChain;
 import org.jacoco.report.internal.html.HTMLElement;
 import org.jacoco.report.internal.html.resources.Styles;
 
@@ -12,13 +11,11 @@ import java.util.Locale;
 public class SourceHighlighter{
 
     private final Locale locale;
-    SourceLineDefUseChain dua;
     private String lang;
 
-    public SourceHighlighter (final Locale locale, SourceLineDefUseChain dua) {
+    public SourceHighlighter (final Locale locale) {
         this.locale = locale;
         lang = "java";
-        this.dua = dua;
     }
 
     public void setLanguage(final String lang) {
@@ -50,22 +47,32 @@ public class SourceHighlighter{
                                 final String linesrc,
                                 final int lineNr)
         throws IOException {
-        highlight(pre, lineNr).text(linesrc);
+        final String lineId = "L" + Integer.toString(lineNr);
+        pre.span(lineId).text(linesrc);
+//        highlight(pre, lineNr).text(linesrc);
         pre.text("\n");
     }
 
-    HTMLElement highlight(final HTMLElement pre,
-                          final int lineNr)
-            throws IOException {
-        final String lineId = "L" + Integer.toString(lineNr);
-        final String style;
-
-        //Se a linha for relacionada a dua sob análise, já retorna
-        if (!(lineNr == dua.def || lineNr == dua.use || lineNr == dua.target)) return pre;
-
-        style = dua.covered? Styles.FULLY_COVERED : Styles.NOT_COVERED;
-        return pre.span(style, lineId);
+    private HTMLElement span(HTMLElement parent, String idattr) throws IOException {
+        HTMLElement span = parent.span();
+        span.attr("id", idattr);
+        return span;
     }
+
+//    HTMLElement
+
+//    HTMLElement highlight(final HTMLElement pre,
+//                          final int lineNr)
+//            throws IOException {
+//
+//        final String style;
+//
+////        //Se a linha for relacionada a dua sob análise, já retorna
+////        if (!(lineNr == dua.def || lineNr == dua.use || lineNr == dua.target)) return pre;
+////
+////        style = dua.covered? Styles.FULLY_COVERED : Styles.NOT_COVERED;
+//        return pre.span(style, lineId);
+//    }
 
 
 }
