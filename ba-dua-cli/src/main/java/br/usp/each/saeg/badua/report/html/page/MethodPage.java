@@ -4,6 +4,7 @@ import br.usp.each.saeg.badua.cli.HTMLCoverageWriter;
 import br.usp.each.saeg.badua.core.analysis.MethodCoverage;
 import br.usp.each.saeg.badua.core.analysis.SourceLineDefUseChain;
 import org.jacoco.report.internal.ReportOutputFolder;
+import org.jacoco.report.internal.html.ILinkable;
 import org.jacoco.report.internal.html.resources.Styles;
 
 import java.io.IOException;
@@ -12,7 +13,7 @@ import java.util.Collection;
 public class MethodPage extends TablePage {
 
     private Collection<SourceLineDefUseChain> defUses;
-//    private final ILinkable sourcePage;
+    private final ILinkable sourcePage;
 
     /**
      * Construtor e é isso ai
@@ -22,9 +23,11 @@ public class MethodPage extends TablePage {
      */
     public MethodPage(final MethodCoverage methodNode,
                       final ReportPage parent,
+                      final ILinkable sourcePage,
                       final ReportOutputFolder folder) {
         super(methodNode, parent, folder, new HTMLCoverageWriter(), true);
         this.defUses = methodNode.getDefUses();
+        this.sourcePage = sourcePage;
     }
 
     /**
@@ -33,7 +36,7 @@ public class MethodPage extends TablePage {
      */
     public void render() throws IOException {
         for (SourceLineDefUseChain dua : defUses) {
-            addItem(new DuaItem(dua,null));
+            addItem(new DuaItem(dua,sourcePage));
         }
         super.render();
     }
@@ -47,7 +50,7 @@ public class MethodPage extends TablePage {
     @Override
     protected String getFileName() {
         String shortname = node.getName();
-        return shortname + "()";
+        return shortname + "().html";
 
     }
 

@@ -6,6 +6,7 @@ import br.usp.each.saeg.badua.core.analysis.CoverageNode;
 import org.jacoco.report.ISourceFileLocator;
 import org.jacoco.report.internal.ReportOutputFolder;
 import org.jacoco.report.internal.html.HTMLElement;
+import org.jacoco.report.internal.html.ILinkable;
 
 import java.io.IOException;
 import java.util.List;
@@ -39,7 +40,7 @@ public class ProjectPage extends TablePage{
 					   final ReportOutputFolder folder) {
 
 		super(projectNode, parent, folder, new HTMLCoverageWriter());
-		projectSourcePage = new ProjectSourcePage(null, parent, locator, classes, folder, this);
+		projectSourcePage = new ProjectSourcePage(projectNode, parent, locator, classes, folder.subFolder("sourceFiles"), this);
 		this.classes = classes;
 		this.locator = locator;
 	}
@@ -62,12 +63,13 @@ public class ProjectPage extends TablePage{
 	private void renderClasses() throws IOException {
 		for(ClassCoverage cc : classes) {
 			//Getting Class Info
-			final String className = cc.getName();
-			final String folderName = className.length() == 0 ? "default"
-					: className.replace('/', '.');
+			final String[] className = cc.getName().split("/");
+			final String folderName = className.length == 0 ? "default"
+					: className[0]+"."+className[1];
 
 			//Rendering class' methods
-			final ClassPage page = new ClassPage( cc, this, folder.subFolder(folderName));
+			final ILinkable sourceFilePage = projectSourcePage.getSourceFilePage(className[1]+".java");
+			final ClassPage page = new ClassPage( cc, this, sourceFilePage, folder.subFolder(folderName));
 			page.render();
 
 			//Adding page to table

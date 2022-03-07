@@ -68,7 +68,9 @@ public abstract class TablePage extends ReportPage implements ITableItem {
 	 * @throws IOException
 	 */
 	protected void content(final HTMLElement body) throws IOException {
-		context.getBaduaTable(this.dua).render(body, items, node, context.getResources(), folder);
+		context
+				.getBaduaTable(this.dua)
+				.render(body, items, node, context.getResources(), folder);
 		items.clear();
 	}
 

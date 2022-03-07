@@ -7,6 +7,8 @@ import org.jacoco.report.internal.ReportOutputFolder;
 import org.jacoco.report.internal.html.ILinkable;
 import org.jacoco.report.internal.html.resources.Styles;
 
+import java.util.HashMap;
+
 public class DuaItem implements ITableItem {
 
     private final SourceLineDefUseChain dua;
@@ -52,8 +54,24 @@ public class DuaItem implements ITableItem {
         if (sourcePage == null) {
             return null;
         }
-//        final String link = sourcePage.getLink(base);
-        return "";
+        final String link = sourcePage.getLink(base) + this.generateUrlParams();
+        return link;
+    }
+
+    private String generateUrlParams(){
+        StringBuilder urlParams = new StringBuilder("?");
+
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("covered", String.valueOf(this.dua.covered));
+        params.put("def", String.valueOf(this.dua.def));
+        params.put("use", String.valueOf(this.dua.use));
+        if(this.dua.target != this.dua.NONE) params.put("target", String.valueOf(this.dua.target));
+
+        for(String key: params.keySet()) {
+            urlParams.append(key + "=" + params.get(key) + "&");
+        }
+
+        return  urlParams.toString();
     }
 
     @Override

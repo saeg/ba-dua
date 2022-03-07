@@ -72,6 +72,7 @@ public class HTMLCoverageWriter implements IHTMLReportContext {
 		for (final File f : sourceFiles) {
 			multi.add(new DirectorySourceFileLocator(f, encoding, tabwidth));
 		}
+
 		return multi;
 	}
 
