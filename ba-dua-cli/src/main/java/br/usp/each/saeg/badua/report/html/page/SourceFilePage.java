@@ -44,6 +44,9 @@ public class SourceFilePage extends ReportPage implements ITableItem {
                 Resources.PRETTIFY_STYLESHEET), "text/css");
         head.script(context.getResources().getLink(folder,
                 Resources.PRETTIFY_SCRIPT));
+        head.script(context.getResources().getLink(folder,
+                Resources.DUA_SCRIPT));
+//        this.script(head);
     }
 
     @Override
@@ -71,5 +74,14 @@ public class SourceFilePage extends ReportPage implements ITableItem {
     @Override
     public CoverageNode getNode() {
         return null;
+    }
+
+    private void script(HTMLElement parent) throws IOException {
+        HTMLElement script = parent.element("script");
+        script.text("" +
+                "window.onload = function() {\n" +
+                "    DuaHighlight()\n" +
+                "}");
+        script.close();
     }
 }

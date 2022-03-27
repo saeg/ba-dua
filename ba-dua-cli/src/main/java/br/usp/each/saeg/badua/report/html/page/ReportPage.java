@@ -133,7 +133,7 @@ public abstract class ReportPage implements ILinkable {
 
 	// === ILinkable ===
 
-	public final String getLink(final ReportOutputFolder base) {
+	public String getLink(final ReportOutputFolder base) {
 		return folder.getLink(base, getFileName());
 	}
 }

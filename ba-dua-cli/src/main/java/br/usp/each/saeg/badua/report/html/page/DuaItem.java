@@ -63,6 +63,7 @@ public class DuaItem implements ITableItem {
 
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("covered", String.valueOf(this.dua.covered));
+        params.put("var", String.valueOf(this.dua.var));
         params.put("def", String.valueOf(this.dua.def));
         params.put("use", String.valueOf(this.dua.use));
         if(this.dua.target != this.dua.NONE) params.put("target", String.valueOf(this.dua.target));

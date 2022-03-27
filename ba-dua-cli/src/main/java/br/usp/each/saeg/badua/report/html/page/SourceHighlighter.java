@@ -48,7 +48,7 @@ public class SourceHighlighter{
                                 final int lineNr)
         throws IOException {
         final String lineId = "L" + Integer.toString(lineNr);
-        pre.span(lineId).text(linesrc);
+        pre.span(lineId,lineId).text(linesrc);
 //        highlight(pre, lineNr).text(linesrc);
         pre.text("\n");
     }
