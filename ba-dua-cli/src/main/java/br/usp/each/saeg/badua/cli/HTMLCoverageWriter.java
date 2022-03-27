@@ -3,15 +3,18 @@ package br.usp.each.saeg.badua.cli;
 import br.usp.each.saeg.badua.core.analysis.ClassCoverage;
 import br.usp.each.saeg.badua.core.analysis.CoverageNode;
 import br.usp.each.saeg.badua.report.html.page.ProjectPage;
+import br.usp.each.saeg.badua.report.html.resources.Resources;
+import br.usp.each.saeg.badua.report.html.resources.Styles;
 import br.usp.each.saeg.badua.report.html.table.*;
+
 import org.jacoco.report.*;
 import org.jacoco.report.internal.ReportOutputFolder;
 import org.jacoco.report.internal.html.IHTMLReportContext;
 import org.jacoco.report.internal.html.ILinkable;
 import org.jacoco.report.internal.html.index.ElementIndex;
 import org.jacoco.report.internal.html.index.IIndexUpdate;
-import org.jacoco.report.internal.html.resources.Resources;
-import org.jacoco.report.internal.html.resources.Styles;
+//import org.jacoco.report.internal.html.resources.Resources;
+//import org.jacoco.report.internal.html.resources.Styles;
 import org.kohsuke.args4j.Option;
 
 import java.io.File;

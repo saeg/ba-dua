@@ -2,10 +2,10 @@ package br.usp.each.saeg.badua.report.html.page;
 
 import br.usp.each.saeg.badua.cli.HTMLCoverageWriter;
 import br.usp.each.saeg.badua.core.analysis.CoverageNode;
+import br.usp.each.saeg.badua.report.html.resources.Resources;
 import br.usp.each.saeg.badua.report.html.table.ITableItem;
 import org.jacoco.report.internal.ReportOutputFolder;
 import org.jacoco.report.internal.html.HTMLElement;
-import org.jacoco.report.internal.html.resources.Resources;
 
 import java.io.IOException;
 import java.io.Reader;
