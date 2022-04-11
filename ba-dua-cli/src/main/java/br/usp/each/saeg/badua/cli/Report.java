@@ -137,7 +137,7 @@ public class Report {
         if (xmlFile != null) {
             final FileOutputStream output = new FileOutputStream(xmlFile);
             try {
-//                XMLCoverageWriter.write(visitor.classes, output);
+                XMLCoverageWriter.write(visitor.classes, output);
             } finally {
                 output.close();
             }
