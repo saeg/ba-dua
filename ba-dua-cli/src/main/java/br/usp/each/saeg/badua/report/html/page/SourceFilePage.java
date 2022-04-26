@@ -18,6 +18,14 @@ public class SourceFilePage extends ReportPage implements ITableItem {
     private final Reader sourceReader;
     private final int tabWidth;
 
+    /**
+     * Página que abriga o código fonte renderizado proveniente de alguma classe testada
+     * @param sourceReader  -> reader refererenciando o código fonte .java
+     * @param tabWidth
+     * @param parent
+     * @param folder
+     * @param nameFile
+     */
     public SourceFilePage(final Reader sourceReader,
                           final int tabWidth,
                           final ReportPage parent,
@@ -29,6 +37,11 @@ public class SourceFilePage extends ReportPage implements ITableItem {
         this.nameFile = nameFile;
     }
 
+    /**
+     * Renderização do código fonte do body da página
+     * @param body -> Tag do body
+     * @throws IOException
+     */
     @Override
     protected void content(HTMLElement body) throws IOException {
         final SourceHighlighter hl = new SourceHighlighter(context.getLocale());
@@ -46,7 +59,6 @@ public class SourceFilePage extends ReportPage implements ITableItem {
                 Resources.PRETTIFY_SCRIPT));
         head.script(context.getResources().getLink(folder,
                 Resources.DUA_SCRIPT));
-//        this.script(head);
     }
 
     @Override
@@ -76,6 +88,11 @@ public class SourceFilePage extends ReportPage implements ITableItem {
         return null;
     }
 
+    /**
+     * Inclusão do script para Highlight das linhas da DUA passada por parametro
+     * @param parent
+     * @throws IOException
+     */
     private void script(HTMLElement parent) throws IOException {
         HTMLElement script = parent.element("script");
         script.text("" +

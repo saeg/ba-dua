@@ -16,11 +16,11 @@ public class ClassPage extends TablePage{
 	private final ILinkable sourcePage;
 
 	/**
-	 * Construtor de uma pagina com tabela para listagem dos metódos em uma classe
-	 *
-	 * @param classNode -> Node da Classe
-	 * @param parent	-> Pagina-pai
-	 * @param folder	-> Pasta base
+	 * Página com tabela que apresenta os métodos de uma classe
+	 * @param classNode
+	 * @param parent
+	 * @param sourcePage - Página de source onde o código fonte da pagina foi renderizado
+	 * @param folder
 	 */
 	public ClassPage(final ClassCoverage classNode,
 					 final ReportPage parent,
@@ -31,17 +31,14 @@ public class ClassPage extends TablePage{
 		this.sourcePage = sourcePage;
 	}
 
-	/**
-	 * Renderização base
-	 * @throws IOException
-	 */
 	public void render() throws IOException{
 		renderMethods();
 		super.render();
 	}
 
 	/**
-	 * Renderização dos metodos
+	 * Renderização das páginas de método com suas tabela de DUAs
+	 * Esse método alimenta a list - vinda do TablePage - que ira renderizar a tabela nesta página
 	 * @throws IOException
 	 */
 	private void renderMethods() throws IOException {

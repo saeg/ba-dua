@@ -38,7 +38,7 @@ public class ReportOptions {
     @Option(name = "-html", usage = "write HTML report in selected root directory")
     private File htmlRoot;
 
-    @Option(name = "-sourcefiles", usage = "location of the source files", metaVar = "<path>")
+    @Option(name = "-sourcefiles", required = true, usage = "location of the source files", metaVar = "<path>")
     private List<File> sourceFiles = new ArrayList<File>();
 
     public File getInput() {

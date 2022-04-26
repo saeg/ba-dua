@@ -13,7 +13,11 @@ import java.util.List;
 public class Table {
 
     /**
-     * Sem aderir o Comparator*/
+     * Essa classe - e suas páginas relacionadas - tem como base e foi fortemente inspirada o pacote Table da JaCoco
+     * Dado isso, em contrapartida, muito de seus métodos incluem rotinas necessárias da JaCoco mesmo que não utilizadas na BADUA
+     *
+     * A primeiro momento, não está implementada as funções de ordenação da tabela, tendo seus rescpetivos codigos inativos
+     */
 
     private final List<Column> columns;
     private boolean dua = false;
@@ -59,7 +63,7 @@ public class Table {
         final HTMLElement table = parent.table(Styles.COVERAGETABLE);
         table.attr("id", "coveragetable");
         header(table, items, total);
-        if (!dua) footer(table, total, resources, base);
+        if (!dua) footer(table, total, resources, base); //A tabela de DUA não implementa footer
         body(table, items, resources, base);
     }
 
@@ -73,7 +77,6 @@ public class Table {
             c.init(tr, items, total);
         }
     }
-    // Fazer outro header pra tabela de dua
 
     private void footer(final HTMLElement table,
                         final CoverageNode total,
@@ -85,7 +88,6 @@ public class Table {
             c.footer(tr, total, resources, base);
         }
     }
-    //Tabela de dua não vai ter footer
 
 
     private void body(final HTMLElement table,

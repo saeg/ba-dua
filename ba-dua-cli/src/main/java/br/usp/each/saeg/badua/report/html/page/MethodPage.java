@@ -16,9 +16,10 @@ public class MethodPage extends TablePage {
     private final ILinkable sourcePage;
 
     /**
-     * Construtor e é isso ai
+     * Página com tabela que apresenta as DUAs de um método de uma classe
      * @param methodNode
      * @param parent
+     * @param sourcePage - Página de source onde o código fonte da pagina foi renderizado
      * @param folder
      */
     public MethodPage(final MethodCoverage methodNode,
@@ -31,7 +32,8 @@ public class MethodPage extends TablePage {
     }
 
     /**
-     * Renderização base
+     * Renderização das páginas dinamicas das DUAs existentes no metodo
+     * Esse método alimenta a list - vinda do TablePage - que ira renderizar a tabela de DUAs nesta página
      * @throws IOException
      */
     public void render() throws IOException {
@@ -40,12 +42,6 @@ public class MethodPage extends TablePage {
         }
         super.render();
     }
-
-    /**
-     * Renderização para as DUAs
-     *
-     * @throws IOException
-     */
 
     @Override
     protected String getFileName() {

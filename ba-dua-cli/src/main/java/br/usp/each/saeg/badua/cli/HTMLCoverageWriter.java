@@ -97,6 +97,12 @@ public class HTMLCoverageWriter implements IHTMLReportContext {
 		return null;
 	}
 
+	/**
+	 * Inicializador das tabelas da BADUA
+	 * Todas as páginas, exceto a MethodPage, recebem a tabela geral. A MethodPage recebe a tabela de DUAs
+	 * @param dua
+	 * @return
+	 */
 	public Table getBaduaTable(boolean dua) {
 		if (table == null) {
 			table = dua ? createDuaTable() : createGeneralTable();
@@ -104,31 +110,34 @@ public class HTMLCoverageWriter implements IHTMLReportContext {
 		return table;
 	}
 
+	/**
+	 * Método especifico para uso de tabela referente a listagem de outras páginas
+	 * @return
+	 */
 	private Table createGeneralTable() {
-		//Sem uso do defaultSort
 		final Table t = new Table();
 		t.add("Element", null, new LabelColumn());
 		t.add("Missed DUAs", Styles.BAR, new BarColumn(locale));
 		t.add("Cov.", Styles.CTR2, new PercentageColumn(locale));
 		addMissedTotalColumns(t, "Methods");
 		addMissedTotalColumns(t, "Classes");
-
 		return t;
 	}
 
+	/**
+	 * Método especifico para uso de tabela referente a listagem de item de DUA
+	 * @return
+	 */
 	private Table createDuaTable(){
 		final Table t = new Table(true);
-
 		t.add("Var", null, new LabelColumn());
 		t.add("Def Line", null, new LabelColumn());
 		t.add("Use Line", null, new LabelColumn());
 		t.add("Target Line", null, new LabelColumn());
 		t.add("Status", null, new LabelColumn());
-
 		return t;
 	}
 
-//
 	private void addMissedTotalColumns(final Table table, final String label) {
 		table.add(label, Styles.CTR1, CounterColumn.newTotal(label, locale));
 		table.add("Missed", Styles.CTR1, CounterColumn.newMissed(label, locale));

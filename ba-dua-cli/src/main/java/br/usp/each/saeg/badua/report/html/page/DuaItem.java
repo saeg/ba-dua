@@ -15,6 +15,12 @@ public class DuaItem implements ITableItem {
     private int counter = 0;
     private final ILinkable sourcePage;
 
+    /**
+     * Essa classe representa o item de DUA que será listado na tabela da MethodPage
+     * Cada item é modelado de forma com que leve, de forma dinamica, as suas respectivas linhas no código fonte renderizado da classe origem
+     * @param dua
+     * @param sourcePage -> Página de source onde o código fonte da pagina foi renderizado
+     */
     DuaItem(final SourceLineDefUseChain dua,
             final ILinkable sourcePage) {
         this.dua = dua;
@@ -50,6 +56,11 @@ public class DuaItem implements ITableItem {
         return Styles.INFO;
     }
 
+    /**
+     * Link que leva à pagina do respectivo código fonte junto dos parametros da DUA
+     * @param base
+     * @return
+     */
     public String getLink(final ReportOutputFolder base) {
         if (sourcePage == null) {
             return null;
@@ -58,6 +69,10 @@ public class DuaItem implements ITableItem {
         return link;
     }
 
+    /**
+     * Construção da URL com os params que ativam o funcionamento dinamico da página de código fonte
+     * @return
+     */
     private String generateUrlParams(){
         StringBuilder urlParams = new StringBuilder("?");
 

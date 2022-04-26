@@ -13,6 +13,10 @@ public class SourceHighlighter{
     private final Locale locale;
     private String lang;
 
+    /**
+     * Essa classe auxilia na renderização do código fonte a partir do reader, modelando-o para uma página HTML
+     * @param locale
+     */
     public SourceHighlighter (final Locale locale) {
         this.locale = locale;
         lang = "java";
@@ -49,7 +53,6 @@ public class SourceHighlighter{
         throws IOException {
         final String lineId = "L" + Integer.toString(lineNr);
         pre.span(lineId,lineId).text(linesrc);
-//        highlight(pre, lineNr).text(linesrc);
         pre.text("\n");
     }
 
@@ -58,21 +61,4 @@ public class SourceHighlighter{
         span.attr("id", idattr);
         return span;
     }
-
-//    HTMLElement
-
-//    HTMLElement highlight(final HTMLElement pre,
-//                          final int lineNr)
-//            throws IOException {
-//
-//        final String style;
-//
-////        //Se a linha for relacionada a dua sob análise, já retorna
-////        if (!(lineNr == dua.def || lineNr == dua.use || lineNr == dua.target)) return pre;
-////
-////        style = dua.covered? Styles.FULLY_COVERED : Styles.NOT_COVERED;
-//        return pre.span(style, lineId);
-//    }
-
-
 }

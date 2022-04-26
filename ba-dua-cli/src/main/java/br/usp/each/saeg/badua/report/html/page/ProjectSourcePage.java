@@ -20,6 +20,15 @@ public class ProjectSourcePage extends TablePage{
     private final ILinkable projectPage;
     private final List<ClassCoverage> classes;
 
+    /**
+     * Página para renderização da listagem de páginas com o código fonte das classes cobertas
+     * @param projectNode
+     * @param parent
+     * @param locator
+     * @param classes
+     * @param folder
+     * @param projectPage
+     */
     public ProjectSourcePage (final CoverageNode projectNode,
                               final ReportPage parent,
                               final ISourceFileLocator locator,
@@ -37,11 +46,26 @@ public class ProjectSourcePage extends TablePage{
         return sourceFilePages.get(name);
     }
 
+    /**
+     * Renderização da tabela com a listagem de paginas de código fonte
+     * @throws IOException
+     */
     public void render() throws IOException {
         renderSourceFilePages();
+        /**
+         * O código abaixo não está ativo pois depende de uma regra de modelagem nativa da JaCoco que não existe na BA-DUA
+         * e de implementação custosa a curto prazo
+         *
+         * Sua inativação não afeta a rotina principal
+         */
 //        super.render();
     }
 
+    /**
+     * Renderização de cada página de código fonte encontrada para o projeto
+     * Os arquivos .java das classes devem estar listados no folder e corresponder ao respectivo nome de classe testada
+     * @throws IOException
+     */
     private final void renderSourceFilePages() throws IOException {
         for (final ClassCoverage cc : classes) {
             final String[] sourcename = cc.getName().split("/");
@@ -59,7 +83,6 @@ public class ProjectSourcePage extends TablePage{
                 sourcePage.render();
                 sourceFilePages.put(sourcename[1] + ".java", sourcePage);
                 addItem(sourcePage);
-
             }
         }
     }
@@ -77,10 +100,5 @@ public class ProjectSourcePage extends TablePage{
     @Override
     public String getLinkLabel() {
         return this.getFileName();
-//        return context.getLanguageNames().getPackageName(getNode().getName());
     }
-
-
-
-
 }

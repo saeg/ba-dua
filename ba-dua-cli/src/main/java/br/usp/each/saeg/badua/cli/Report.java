@@ -144,7 +144,6 @@ public class Report {
         }
         
         if (htmlRoot != null) {
-        	//multireport para diretorio
         	final FileMultiReportOutput output = new FileMultiReportOutput(htmlRoot);
             try {
             	HTMLCoverageWriter.write(visitor.classes, output, sourceFiles);

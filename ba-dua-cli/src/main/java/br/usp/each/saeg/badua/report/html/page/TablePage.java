@@ -13,6 +13,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Essa classe tem como base e foi fortemente inspirada na classe TablePage da JaCoco
+ * Dado isso, em contrapartida, muito de seus métodos incluem rotinas necessárias da JaCoco mesmo que não utilizadas na BADUA
+ */
 public abstract class TablePage extends ReportPage implements ITableItem {
 	
 	private final List<ITableItem> items = new ArrayList<ITableItem>();
@@ -30,7 +34,7 @@ public abstract class TablePage extends ReportPage implements ITableItem {
 					 final ReportPage parent,
 					 final ReportOutputFolder folder,
 					 final HTMLCoverageWriter context) {
-		super(parent, folder, context); //Chamada pro ReportPage
+		super(parent, folder, context);
 		this.node = node;
 	}
 
@@ -39,7 +43,7 @@ public abstract class TablePage extends ReportPage implements ITableItem {
 					 final ReportOutputFolder folder,
 					 final HTMLCoverageWriter context,
 					 boolean dua) {
-		super(parent, folder, context); //Chamada pro ReportPage
+		super(parent, folder, context);
 		this.dua = dua;
 		this.node = node;
 	}

@@ -9,6 +9,11 @@ import org.jacoco.report.internal.html.resources.Styles;
 
 import java.io.IOException;
 
+/**
+ * Essa classe tem como base e foi fortemente inspirada na classe ReportPage da JaCoco
+ * Dado isso, em contrapartida, muito de seus métodos incluem rotinas necessárias da JaCoco mesmo que não utilizadas na BADUA
+ */
+
 public abstract class ReportPage implements ILinkable {
 
 	private final ReportPage parent;
@@ -16,7 +21,7 @@ public abstract class ReportPage implements ILinkable {
 	protected final HTMLCoverageWriter context;
 
 	/**
-	 * Construtor do
+	 * Página generica de report que pode ser renderizada como HTML
 	 * @param parent -> Página "pai"
 	 * @param folder -> Pasta
 	 * @param context -> Recursos pra construção do HTML
@@ -38,7 +43,6 @@ public abstract class ReportPage implements ILinkable {
 	 * @throws IOException -> Se a página não puder ser escrita
 	 */
 	public void render() throws IOException {
-//		System.out.println(getFileName());
 		final HTMLElement html = new HTMLElement(folder.createFile(getFileName()), context.getOutputEncoding());
 		html.attr("lang", context.getLocale().getLanguage());
 		head(html.head());

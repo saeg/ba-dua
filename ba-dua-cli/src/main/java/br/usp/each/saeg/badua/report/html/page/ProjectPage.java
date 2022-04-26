@@ -20,18 +20,15 @@ public class ProjectPage extends TablePage{
 	
 	private final ISourceFileLocator locator;
 	private List<ClassCoverage> classes;
-
 	private final ProjectSourcePage projectSourcePage;
-//	private final boolean sourceCoverageExists = false;
-
 
 	/**
-	 * Construtor da página do projeto
-	 *
-	 * @param classes	-> Lista de cobertura das classes do projeto
-	 * @param parent	-> Página pai
-	 * @param locator	-> Localização do código fonte
-	 * @param folder	-> Pasta da página
+	 * Página inicial do projeto com a tabela contendo a listagem de classes sob analise
+	 * @param projectNode
+	 * @param classes
+	 * @param parent
+	 * @param locator
+	 * @param folder
 	 */
 	public ProjectPage(final CoverageNode projectNode,
 					   final List<ClassCoverage> classes,
