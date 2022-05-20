@@ -167,9 +167,7 @@ public class CoverageMethodTransformer extends MethodTransformer {
                 p.sleepy = lSleepy[w];
                 p.singlePredecessor = nPredecessors == 1;
 
-                if (first[b] != null) {
-                    LabelFrameNode.insertBefore(first[b], methodNode.instructions, p);
-                }
+                LabelFrameNode.insertBefore(first[b], methodNode.instructions, p);
 
             }
         }
