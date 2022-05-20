@@ -157,6 +157,7 @@ public class CatchAndThrowMethodVisitor extends MethodVisitor {
             started = true;
             visitTryCatchBlock(start, end, handler, type);
             visitLabel(start);
+            visitInsn(Opcodes.NOP);
         }
     }
 
