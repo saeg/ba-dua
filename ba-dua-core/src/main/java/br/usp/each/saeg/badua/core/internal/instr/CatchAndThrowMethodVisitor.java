@@ -40,7 +40,7 @@ public class CatchAndThrowMethodVisitor extends MethodVisitor {
 
     @Override
     public void visitCode() {
-        start = new Label();
+        start = null;
         end = new Label();
         handler = new Label();
         started = false;
@@ -118,7 +118,7 @@ public class CatchAndThrowMethodVisitor extends MethodVisitor {
 
     @Override
     public void visitLabel(final Label label) {
-        visitTryCatchBlockStart();
+        visitTryCatchBlockStart(label);
         super.visitLabel(label);
     }
 
@@ -153,10 +153,16 @@ public class CatchAndThrowMethodVisitor extends MethodVisitor {
     }
 
     private void visitTryCatchBlockStart() {
+        final Label start = new Label();
+        visitTryCatchBlockStart(start);
+        visitLabel(start);
+    }
+
+    private void visitTryCatchBlockStart(final Label label) {
         if (!started) {
             started = true;
+            start = label;
             visitTryCatchBlock(start, end, handler, type);
-            visitLabel(start);
         }
     }
 
