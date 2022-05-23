@@ -10,12 +10,15 @@
  */
 package br.usp.each.saeg.badua.agent.rt.internal;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import br.usp.each.saeg.badua.agent.rt.IAgent;
 import br.usp.each.saeg.badua.agent.rt.internal.output.FileOutput;
+import br.usp.each.saeg.badua.core.data.ExecutionDataWriter;
 import br.usp.each.saeg.badua.core.runtime.RuntimeData;
 
-public final class Agent {
+public final class Agent implements IAgent {
 
     // --- Static
 
@@ -54,12 +57,27 @@ public final class Agent {
         return data;
     }
 
+    @Override
     public void reset() {
         data.reset();
     }
 
+    @Override
     public void dump(final boolean reset) throws IOException {
         output.writeExecutionData(data, reset);
+    }
+
+    @Override
+    public byte[] getExecutionData(final boolean reset) {
+        final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        try {
+            final ExecutionDataWriter writer = new ExecutionDataWriter(buffer);
+            data.collect(writer, reset);
+        } catch (final IOException ignore) {
+            /* never happens */
+            throw new RuntimeException(ignore);
+        }
+        return buffer.toByteArray();
     }
 
     private static final class ShutdownHook extends Thread {
