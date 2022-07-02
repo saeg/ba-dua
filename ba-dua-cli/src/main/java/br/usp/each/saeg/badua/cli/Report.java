@@ -10,21 +10,6 @@
  */
 package br.usp.each.saeg.badua.cli;
 
-import static java.lang.String.format;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.kohsuke.args4j.CmdLineException;
-import org.kohsuke.args4j.CmdLineParser;
-
 import br.usp.each.saeg.badua.core.analysis.Analyzer;
 import br.usp.each.saeg.badua.core.analysis.ClassCoverage;
 import br.usp.each.saeg.badua.core.analysis.ICoverageVisitor;
@@ -32,6 +17,15 @@ import br.usp.each.saeg.badua.core.analysis.MethodCoverage;
 import br.usp.each.saeg.badua.core.data.ExecutionDataReader;
 import br.usp.each.saeg.badua.core.data.ExecutionDataStore;
 import br.usp.each.saeg.commons.io.Files;
+import org.jacoco.report.FileMultiReportOutput;
+import org.kohsuke.args4j.CmdLineException;
+import org.kohsuke.args4j.CmdLineParser;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.lang.String.format;
 
 public class Report {
 
@@ -99,6 +93,10 @@ public class Report {
     private final File classes;
 
     private final File xmlFile;
+    
+    private final File htmlRoot;
+
+    private final List<File> sourceFiles;
 
     private final CoverageVisitor visitor;
 
@@ -107,6 +105,8 @@ public class Report {
     public Report(final ReportOptions options) throws IOException {
         classes = options.getClasses();
         xmlFile = options.getXMLFile();
+        htmlRoot = options.getHTMLRoot();
+        sourceFiles = options.getSourceFiles();
 
         visitor = new CoverageVisitor(new PrintCoverage(
                 System.out, options.showClasses(), options.showMethods()));
@@ -141,6 +141,20 @@ public class Report {
             } finally {
                 output.close();
             }
+        }
+        
+        if (htmlRoot != null) {
+        	final FileMultiReportOutput output = new FileMultiReportOutput(htmlRoot);
+            try {
+            	HTMLCoverageWriter.write(visitor.classes, output, sourceFiles);
+            }
+            catch(Exception e) {
+                System.out.println(e.getStackTrace());
+            }
+            finally {
+                output.close();
+            }
+        	
         }
     }
 

@@ -10,9 +10,11 @@
  */
 package br.usp.each.saeg.badua.cli;
 
-import java.io.File;
-
 import org.kohsuke.args4j.Option;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReportOptions {
 
@@ -32,6 +34,12 @@ public class ReportOptions {
 
     @Option(name = "-xml", usage = "write XML report")
     private File xmlFile;
+    
+    @Option(name = "-html", usage = "write HTML report in selected root directory")
+    private File htmlRoot;
+
+    @Option(name = "-sourcefiles", required = true, usage = "location of the source files", metaVar = "<path>")
+    private List<File> sourceFiles = new ArrayList<File>();
 
     public File getInput() {
         return input;
@@ -52,5 +60,11 @@ public class ReportOptions {
     public File getXMLFile() {
         return xmlFile;
     }
+    
+    public File getHTMLRoot() {
+    	return htmlRoot;
+    }
+
+    public List<File> getSourceFiles() { return  sourceFiles; }
 
 }
