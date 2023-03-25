@@ -51,12 +51,12 @@
 		<dependency>
 			<groupId>br.usp.each.saeg</groupId>
 			<artifactId>asm-defuse</artifactId>
-			<version>0.0.8</version>
+			<version>0.0.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.ow2.asm</groupId>
 			<artifactId>asm-commons</artifactId>
-			<version>9.3</version>
+			<version>9.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jacoco</groupId>
