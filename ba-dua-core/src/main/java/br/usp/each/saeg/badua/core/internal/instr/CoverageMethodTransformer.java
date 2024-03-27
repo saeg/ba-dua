@@ -151,12 +151,16 @@ public class CoverageMethodTransformer extends MethodTransformer {
         AbstractInsnNode insn = methodNode.instructions.getFirst();
         final int windows = (length + 63) / 64;
         final int[] indexes = new int[windows];
-        for (int w = 0; w < windows - 1; w++) {
-            indexes[w] = idGen.nextId();
-            LabelFrameNode.insertBefore(insn, methodNode.instructions, init(length, methodNode, w));
+
+        final BitSet alive = new BitSet();
+        for (int i = 0; i < locals.length; i++) {
+            alive.set(length - locals.length + i);
         }
-        indexes[windows - 1] = idGen.nextId();
-        LabelFrameNode.insertBefore(insn, methodNode.instructions, init(length, methodNode, windows - 1, locals));
+        final long[] alives = BitSetUtils.toLongArray(alive, windows);
+        for (int w = 0; w < windows; w++) {
+            indexes[w] = idGen.nextId();
+            LabelFrameNode.insertBefore(insn, methodNode.instructions, init(length, methodNode, w, alives[w]));
+        }
 
         for (int b = 0; b < basicBlocks.length; b++) {
 
@@ -226,24 +230,11 @@ public class CoverageMethodTransformer extends MethodTransformer {
         return ArrayUtils.toArray(blocks, new int[blocks.size()]);
     }
 
-    private Probe init(final int length, final MethodNode methodNode, final int window) {
+    private Probe init(final int length, final MethodNode methodNode, final int window, final long alive) {
         if (length <= 32) {
-            return new IntegerInitProbe(methodNode);
+            return new IntegerInitProbe(methodNode, (int) alive);
         } else {
-            return new LongInitProbe(methodNode, window);
-        }
-    }
-
-    private Probe init(final int length, final MethodNode methodNode, final int window, final int[] locals) {
-        final BitSet alive = new BitSet();
-        for (int i = 0; i < locals.length; i++) {
-            alive.set(length - locals.length + i);
-        }
-
-        if (length <= 32) {
-            return new IntegerInitProbe(methodNode, BitSetUtils.toInteger(alive));
-        } else {
-            return new LongInitProbe(methodNode, window, BitSetUtils.toLong(alive));
+            return new LongInitProbe(methodNode, window, alive);
         }
     }
 
